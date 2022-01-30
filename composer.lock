@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4041c4c4205510bd8ed68485d56ff4a9",
+    "content-hash": "4c956dc1516bb1def817bf8cea04cd3d",
     "packages": [
         {
             "name": "codeigniter4/framework",
@@ -63,6 +63,57 @@
                 "source": "https://github.com/codeigniter4/CodeIgniter4"
             },
             "time": "2022-01-24T17:41:56+00:00"
+        },
+        {
+            "name": "codeigniter4/translations",
+            "version": "v4.1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codeigniter4/translations.git",
+                "reference": "3d4fbcca80a6d37b4513350d45f68aef64e5a288"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codeigniter4/translations/zipball/3d4fbcca80a6d37b4513350d45f68aef64e5a288",
+                "reference": "3d4fbcca80a6d37b4513350d45f68aef64e5a288",
+                "shasum": ""
+            },
+            "require": {
+                "ext-intl": "*",
+                "php": "^7.2 || ^8.0"
+            },
+            "require-dev": {
+                "codeigniter/coding-standard": "^1.1",
+                "codeigniter4/codeigniter4": "4.x-dev",
+                "ext-tokenizer": "*",
+                "friendsofphp/php-cs-fixer": "^3.1",
+                "nexusphp/cs-config": "^3.3",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "project",
+            "extra": {
+                "branch-alias": {
+                    "dev-develop": "4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Translations\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Translations for CodeIgniter v4 web framework",
+            "homepage": "https://codeigniter.com",
+            "support": {
+                "forum": "http://forum.codeigniter.com/",
+                "issues": "https://github.com/codeigniter4/translations/issues",
+                "slack": "https://codeigniterchat.slack.com",
+                "source": "https://github.com/codeigniter4/translations"
+            },
+            "time": "2022-01-05T06:41:39+00:00"
         },
         {
             "name": "kint-php/kint",

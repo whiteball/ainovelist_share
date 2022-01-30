@@ -49,4 +49,9 @@ class BaseController extends Controller
 
         // E.g.: $this->session = \Config\Services::session();
     }
+
+    public function isPost()
+    {
+        return $this->request->getMethod() === 'post';
+    }
 }
