@@ -4,13 +4,17 @@
 		</div>
 
 		<ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-			<li><a href="#" class="nav-link px-2 link-dark">ホーム</a></li>
+			<li><a href="<?= site_url('/')?>" class="nav-link px-2 link-dark">ホーム</a></li>
 			<li><a href="#" class="nav-link px-2 link-dark">サイトについて</a></li>
 		</ul>
 
 		<div class="col-md-3 text-end">
-			<a type="button" class="btn btn-outline-primary me-2">サインイン</a>
-			<a type="button" class="btn btn-primary" href="<?= site_url('register') ?>">登録</a>
+			<?php if (isset($_SESSION['login'])): ?>
+				<a type="button" class="btn btn-outline-primary me-2" href="<?= site_url('config') ?>">マイページ</a>
+			<?php else: ?>
+				<a type="button" class="btn btn-outline-primary me-2" href="<?= site_url('login') ?>">サインイン</a>
+				<a type="button" class="btn btn-primary" href="<?= site_url('register') ?>">登録</a>
+			<?php endif ?>
 		</div>
 	</header>
 </div>

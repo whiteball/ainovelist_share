@@ -13,7 +13,6 @@ class Home extends BaseController
 
     public function register()
     {
-        helper('form');
         if ($this->isPost() && $this->validate([
             'login_name' => ['label' => 'ログインID', 'rules' => ['required', 'alpha_numeric', 'max_length[255]', 'is_unique[users.login_name]']],
             'screen_name' => ['label' => 'ユーザー名', 'rules' => ['required', 'max_length[100]']],
@@ -23,13 +22,71 @@ class Home extends BaseController
             /** @var User */
             $user = model(User::class);
             $user->save([
-                'login_name' => $this->request->getPost('login_name'),
+                'login_name'  => $this->request->getPost('login_name'),
                 'screen_name' => $this->request->getPost('screen_name'),
-                'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+                'password'    => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
             ]);
+
             return view('register/complete');
         }
 
         return view('register/index', ['validation' => service('validation')]);
+    }
+
+    public function login()
+    {
+        if ($this->isPost() && $this->validate([
+            'login_name' => ['label' => 'ログインID', 'rules' => ['required', 'alpha_numeric', 'max_length[255]']],
+            'password' => ['label' => 'パスワード', 'rules' => ['required']],
+        ])) {
+            /** @var User */
+            $user      = model(User::class);
+            $loginUser = $user->where('login_name', $this->request->getPost('login_name'))->first();
+            if (empty($loginUser) || ! password_verify($this->request->getPost('password'), $loginUser->password)) {
+                return view('login', ['validation' => service('validation'), 'error_message' => 'ログインIDかパスワードが違います']);
+            }
+
+            $_SESSION['login'] = $loginUser->id;
+
+            return redirect('/');
+        }
+
+        return view('login', ['validation' => service('validation')]);
+    }
+
+    public function config()
+    {
+        if (! isset($_SESSION['login'])) {
+            return redirect('/');
+        }
+
+        /** @var User */
+        $user      = model(User::class);
+        $loginUser = $user->find($_SESSION['login']);
+
+        $success_message = '';
+        if ($this->isPost() && $this->validate([
+            'screen_name' => ['label' => 'ユーザー名', 'rules' => ['required', 'max_length[100]']],
+        ])) {
+            $loginUser->screen_name = $this->request->getPost('screen_name');
+            $user->save($loginUser);
+            $success_message = 'ユーザー名変更しました';
+        }
+
+        return view('config', ['validation' => service('validation'), 'screen_name' => $loginUser->screen_name, 'success_message' => $success_message]);
+    }
+
+    public function logout()
+    {
+        if (! isset($_SESSION['login'])) {
+            return redirect('/');
+        }
+
+        if (! $this->isPost()) {
+            return redirect('/config');
+        }
+
+        unset($_SESSION['login']);
+        return redirect('/');
     }
 }
