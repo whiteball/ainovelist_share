@@ -11,8 +11,17 @@ class Home extends BaseController
         return view('index');
     }
 
+    public function about()
+    {
+        return view('about');
+    }
+
     public function register()
     {
+        if (isset($_SESSION['login'])) {
+            return redirect('config');
+        }
+
         if ($this->isPost() && $this->validate([
             'login_name' => ['label' => 'ログインID', 'rules' => ['required', 'alpha_numeric', 'max_length[255]', 'is_unique[users.login_name]']],
             'screen_name' => ['label' => 'ユーザー名', 'rules' => ['required', 'max_length[100]']],
@@ -83,7 +92,7 @@ class Home extends BaseController
         }
 
         if (! $this->isPost()) {
-            return redirect('/config');
+            return redirect('config');
         }
 
         unset($_SESSION['login']);
