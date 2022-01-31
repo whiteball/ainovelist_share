@@ -10,8 +10,8 @@
 
 		<div class="col-md-3 text-end">
 			<?php if (isset($_SESSION['login'])): ?>
-				<a type="button" class="btn btn-success me-2 btn-sm" href="<?= site_url('create') ?>">投稿</a>
-				<a type="button" class="btn btn-info me-2 btn-sm" href="<?= site_url('config') ?>">マイページ</a>
+				<a type="button" class="btn btn-outline-success me-2 btn-sm" href="<?= site_url('create') ?>">投稿</a>
+				<a type="button" class="btn btn-outline-info me-2 btn-sm" href="<?= site_url('config') ?>">マイページ</a>
 			<?php else: ?>
 				<a type="button" class="btn btn-outline-primary me-2 btn-sm" href="<?= site_url('login') ?>">サインイン</a>
 				<a type="button" class="btn btn-primary btn-sm" href="<?= site_url('register') ?>">登録</a>

@@ -7,9 +7,18 @@ use App\Models\User;
 
 class Home extends BaseController
 {
+    public const ITEM_PER_PAGE = 12;
+
     public function index()
     {
-        return view('index');
+        $page = (int) ($this->request->getGet('p') ?? 1);
+
+        /** @var Prompt */
+        $prompt  = model(Prompt::class);
+        $prompts = $prompt->orderBy('updated_at', 'desc')->findAll(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1));
+        $count   = $prompt->countAll();
+
+        return view('index', ['prompts' => $prompts, 'count' => $count, 'page' => $page, 'last_page' => (int) ceil($count / self::ITEM_PER_PAGE)]);
     }
 
     public function about()
@@ -97,6 +106,53 @@ class Home extends BaseController
             'success_message' => $success_message,
             'prompts'         => $prompts,
         ]);
+    }
+
+    public function prompt($prompt_id, $asFile = false)
+    {
+        /** @var Prompt */
+        $prompt     = model(Prompt::class);
+        $promptData = $prompt->find($prompt_id);
+
+        if (empty($promptData)) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('指定のプロンプトは存在しません。');
+        }
+
+        /** @var User */
+        $user     = model(User::class);
+        $userData = $user->find($promptData->user_id);
+
+        $promptData->{'char_book'} = json_decode($promptData->character_book, JSON_OBJECT_AS_ARRAY);
+        $promptData->{'script'}    = json_decode($promptData->scripts, JSON_OBJECT_AS_ARRAY);
+
+        if ($asFile) {
+            $main      = str_replace(' ', '&nbsp;', preg_replace('/[\r\n]/u', '', nl2br($promptData->prompt)));
+            $param     = '31<>29<>93<>150<>256<>3<>1024<>NaN<>0<>NaN<>40<>128<>37<>30<>20<>20<>20<>';
+            $char_book = '';
+            $scripts   = '';
+
+            if (! empty($promptData->char_book)) {
+                foreach ($promptData->char_book as $char) {
+                    $char_book .= $char['tag'] . '<|entry|>' . $char['content'] . '<|entry|>';
+                }
+            }
+
+            if (! empty($promptData->script)) {
+                foreach ($promptData->script as $script) {
+                    if (! empty($scripts)) {
+                        $scripts .= '<|entry|>';
+                    }
+
+                    $scripts .= $script['type'] . '<|sp|>' . $script['in'] . '<|sp|>' . $script['out'];
+                }
+            }
+
+            $novel = preg_replace('/\r\n|\r/u', "\n", "{$main}<|endofsection|>{$promptData->memory}<|endofsection|>{$promptData->authors_note}<|endofsection|>{$param}<|endofsection|>{$char_book}<|endofsection|>{$promptData->ng_words}<|endofsection|>{$promptData->title}<|endofsection|><|endofsection|>{$scripts}");
+
+            return $this->response->download($promptData->title . '.novel', $novel);
+        }
+
+        return view('prompt', ['prompt' => $promptData, 'author' => $userData->screen_name]);
     }
 
     public function logout()
