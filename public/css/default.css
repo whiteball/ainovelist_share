@@ -4,3 +4,7 @@
   padding: 15px;
   margin: auto;
 }
+
+main#create-confirm .wrap {
+  overflow-wrap: break-word;
+}

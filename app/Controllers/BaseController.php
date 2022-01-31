@@ -36,13 +36,18 @@ class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = [];
+    protected $helpers = ['form'];
 
     /**
      * @var Session
      */
     protected $session;
 
+    /**
+     * ログインユーザーID。ログイン状態なら0以外が入る。
+     * @var int
+     */
+    protected $loginUserId = 0;
     /**
      * Constructor.
      */
@@ -54,8 +59,10 @@ class BaseController extends Controller
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = \Config\Services::session();
-        helper('form');
         $this->session = \Config\Services::session();
+        if ($this->_isLoggedIn()) {
+            $this->loginUserId = (int) $_SESSION['login'];
+        }
     }
 
     public function isPost()
