@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Prompt;
 use App\Models\User;
 
 class Home extends BaseController
@@ -86,7 +87,16 @@ class Home extends BaseController
             $success_message = 'ユーザー名変更しました';
         }
 
-        return view('config', ['validation' => service('validation'), 'screen_name' => $loginUser->screen_name, 'success_message' => $success_message]);
+        /** @var Prompt */
+        $prompt  = model(Prompt::class);
+        $prompts = $prompt->where('user_id', $this->loginUserId)->findAll();
+
+        return view('config', [
+            'validation'      => service('validation'),
+            'screen_name'     => $loginUser->screen_name,
+            'success_message' => $success_message,
+            'prompts'         => $prompts,
+        ]);
     }
 
     public function logout()
