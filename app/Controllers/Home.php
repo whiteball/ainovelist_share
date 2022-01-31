@@ -18,7 +18,7 @@ class Home extends BaseController
 
     public function register()
     {
-        if (isset($_SESSION['login'])) {
+        if ($this->_isLoggedIn()) {
             return redirect('config');
         }
 
@@ -44,6 +44,10 @@ class Home extends BaseController
 
     public function login()
     {
+        if ($this->_isLoggedIn()) {
+            return redirect('/');
+        }
+
         if ($this->isPost() && $this->validate([
             'login_name' => ['label' => 'ログインID', 'rules' => ['required', 'alpha_numeric', 'max_length[255]']],
             'password' => ['label' => 'パスワード', 'rules' => ['required']],
@@ -65,7 +69,7 @@ class Home extends BaseController
 
     public function config()
     {
-        if (! isset($_SESSION['login'])) {
+        if ($this->_isNotLoggedIn()) {
             return redirect('/');
         }
 
@@ -87,7 +91,7 @@ class Home extends BaseController
 
     public function logout()
     {
-        if (! isset($_SESSION['login'])) {
+        if ($this->_isNotLoggedIn()) {
             return redirect('/');
         }
 
@@ -96,6 +100,7 @@ class Home extends BaseController
         }
 
         unset($_SESSION['login']);
+
         return redirect('/');
     }
 }

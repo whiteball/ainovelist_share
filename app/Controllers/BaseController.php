@@ -39,10 +39,10 @@ class BaseController extends Controller
     protected $helpers = [];
 
     /**
-     * 
      * @var Session
      */
-    protected $session = null;
+    protected $session;
+
     /**
      * Constructor.
      */
@@ -61,5 +61,15 @@ class BaseController extends Controller
     public function isPost()
     {
         return $this->request->getMethod() === 'post';
+    }
+
+    protected function _isLoggedIn()
+    {
+        return isset($_SESSION['login']);
+    }
+
+    protected function _isNotLoggedIn()
+    {
+        return ! $this->_isLoggedIn();
     }
 }
