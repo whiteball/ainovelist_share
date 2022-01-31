@@ -1,84 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="ja">
+
 <head>
 	<meta charset="utf-8">
-	<title>404 Page Not Found</title>
-
-	<style>
-		div.logo {
-			height: 200px;
-			width: 155px;
-			display: inline-block;
-			opacity: 0.08;
-			position: absolute;
-			top: 2rem;
-			left: 50%;
-			margin-left: -73px;
-		}
-		body {
-			height: 100%;
-			background: #fafafa;
-			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-			color: #777;
-			font-weight: 300;
-		}
-		h1 {
-			font-weight: lighter;
-			letter-spacing: 0.8;
-			font-size: 3rem;
-			margin-top: 0;
-			margin-bottom: 0;
-			color: #222;
-		}
-		.wrap {
-			max-width: 1024px;
-			margin: 5rem auto;
-			padding: 2rem;
-			background: #fff;
-			text-align: center;
-			border: 1px solid #efefef;
-			border-radius: 0.5rem;
-			position: relative;
-		}
-		pre {
-			white-space: normal;
-			margin-top: 1.5rem;
-		}
-		code {
-			background: #fafafa;
-			border: 1px solid #efefef;
-			padding: 0.5rem 1rem;
-			border-radius: 5px;
-			display: block;
-		}
-		p {
-			margin-top: 1.5rem;
-		}
-		.footer {
-			margin-top: 2rem;
-			border-top: 1px solid #efefef;
-			padding: 1em 2em 0 2em;
-			font-size: 85%;
-			color: #999;
-		}
-		a:active,
-		a:link,
-		a:visited {
-			color: #dd4814;
-		}
-	</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link href="<?= base_url('css/default.css') ?>" rel="stylesheet">
+	<title>AIのべりすと プロンプト共有(仮)</title>
 </head>
+
 <body>
-	<div class="wrap">
+	<div class="container">
+		<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+			<div class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+				<a href="<?= site_url('/') ?>" class="nav-link px-2 link-dark">AIのべりすと プロンプト共有(仮)</a>
+			</div>
+
+			<ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+				<li><a href="<?= site_url('/about') ?>" class="nav-link px-2 link-dark">サイトについて</a></li>
+			</ul>
+
+			<div class="col-md-3 text-end">
+				<?php service('session') ?>
+				<?php if (isset($_SESSION['login'])) : ?>
+					<a type="button" class="btn btn-outline-success me-2 btn-sm" href="<?= site_url('create') ?>">投稿</a>
+					<a type="button" class="btn btn-outline-info me-2 btn-sm" href="<?= site_url('config') ?>">マイページ</a>
+				<?php else : ?>
+					<a type="button" class="btn btn-outline-primary me-2 btn-sm" href="<?= site_url('login') ?>">サインイン</a>
+					<a type="button" class="btn btn-primary btn-sm" href="<?= site_url('register') ?>">登録</a>
+				<?php endif ?>
+			</div>
+		</header>
+	</div>
+	<main class="container">
 		<h1>404 - File Not Found</h1>
 
 		<p>
 			<?php if (! empty($message) && $message !== '(null)') : ?>
 				<?= nl2br(esc($message)) ?>
 			<?php else : ?>
-				Sorry! Cannot seem to find the page you were looking for.
+				指定されたページは存在しません。
 			<?php endif ?>
 		</p>
+	</main>
+
+	<div class="container">
+		<footer class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mt-4 border-top">
+			<div class="col-1"></div>
+			<div class="col-10 col-md-auto mt-2 justify-content-center mt-md-0" style="font-size: 75%;color: gray;">
+				AIのべりすと プロンプト共有(仮)
+			</div>
+			<div class="col-1"></div>
+		</footer>
 	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
+
 </html>
