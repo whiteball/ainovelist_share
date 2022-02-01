@@ -47,6 +47,7 @@ $routes->get('/prompt/(:num)', 'Home::prompt/$1');
 $routes->get('/prompt_download/(:num)', 'Home::prompt/$1/1');
 $routes->get('/tag/(:any)', 'Tag::index/$1');
 $routes->get('/tags', 'Tag::list');
+$routes->get('/user/(:num)', 'User::index/$1');
 
 /*
  * --------------------------------------------------------------------

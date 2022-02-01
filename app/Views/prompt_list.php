@@ -7,7 +7,7 @@
 					<h5 class="card-title" style="word-break: break-all;overflow-wrap: break-word;"><?= esc($prompt->title) ?></h5>
 					<h6 class="card-subtitle mb-2 text-muted"><?= esc(mb_substr($prompt->registered_at, 0, 10)) ?></h6>
 					<p class="card-text" style="word-break: break-all;overflow-wrap: break-word;"><?= str_replace(' ', '&nbsp;', esc(mb_strimwidth(preg_replace('/[\r\n]/u', ' ', trim($prompt->description)), 0, 128, '...'))) ?></p>
-					<a href="<?= site_url('prompt/' . $prompt->id) ?>" class="btn btn-primary">詳細</a>
+					<a href="<?= site_url('prompt/' . $prompt->id) ?>" class="btn btn-secondary">詳細</a>
 					<hr>
 					<h6 class="card-subtitle">タグ:
 						<?php if ($prompt->r18 === '1') : ?>

@@ -26,8 +26,8 @@
 			</div>
 		</div>
 		<div class="mb-3">
-			<h5>著者</h5>
-			<div class="wrap border rounded p-2"><?= esc($author) ?></div>
+			<h5>作者</h5>
+			<div class="wrap border rounded p-2"><a class="btn btn-outline-secondary" href="<?= site_url('user/' . $prompt->user_id)?>"><?= esc($author) ?></a></div>
 		</div>
 		<div class="mb-3">
 			<h5>説明</h5>
