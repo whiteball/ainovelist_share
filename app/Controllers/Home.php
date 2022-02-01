@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Prompt;
+use App\Models\Tag;
 use App\Models\User;
 
 class Home extends BaseController
@@ -18,7 +19,11 @@ class Home extends BaseController
         $prompts = $prompt->orderBy('updated_at', 'desc')->findAll(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1));
         $count   = $prompt->countAll();
 
-        return view('index', ['prompts' => $prompts, 'count' => $count, 'page' => $page, 'last_page' => (int) ceil($count / self::ITEM_PER_PAGE)]);
+        /** @var Tag */
+        $tag = model(Tag::class);
+        $tags = $tag->findByPrompt($prompts);
+
+        return view('index', ['prompts' => $prompts, 'tags' => $tags, 'count' => $count, 'page' => $page, 'last_page' => (int) ceil($count / self::ITEM_PER_PAGE)]);
     }
 
     public function about()
@@ -122,6 +127,10 @@ class Home extends BaseController
         $user     = model(User::class);
         $userData = $user->find($promptData->user_id);
 
+        /** @var Tag */
+        $tag       = model(Tag::class);
+        $tagResult = $tag->findByPrompt($prompt_id);
+
         $promptData->{'char_book'} = json_decode($promptData->character_book, JSON_OBJECT_AS_ARRAY);
         $promptData->{'script'}    = json_decode($promptData->scripts, JSON_OBJECT_AS_ARRAY);
 
@@ -152,7 +161,7 @@ class Home extends BaseController
             return $this->response->download($promptData->title . '.novel', $novel);
         }
 
-        return view('prompt', ['prompt' => $promptData, 'author' => $userData->screen_name]);
+        return view('prompt', ['prompt' => $promptData, 'author' => $userData->screen_name, 'tags' => $tagResult]);
     }
 
     public function logout()

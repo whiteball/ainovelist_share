@@ -22,6 +22,9 @@
 				<?php else : ?>
 					<a class="btn rounded-pill btn-outline-secondary btn-sm tag-link" href="#">全年齢</a>
 				<?php endif ?>
+				<?php foreach ($tags as $tag) : ?>
+					<a class="btn rounded-pill btn-outline-secondary btn-sm tag-link" href="#"><?= esc($tag->tag_name) ?></a>
+				<?php endforeach ?>
 			</div>
 		</div>
 		<div class="mb-3">

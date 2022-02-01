@@ -43,8 +43,14 @@
 	<div class="mb-3 border rounded p-2">
 		<div class="mb-3">
 			<label for="title" class="form-label">タイトル (必須)</label>
-			<input type="text" class="form-control" id="title" name="title" value="<?= set_value('title', $post_data['title'] ?? '') ?>">
+			<input type="text" class="form-control" id="title" name="title" value="<?= set_value('title', $post_data['title'] ?? '') ?>" maxlength="256">
 			<?= $validation->showError('title') ?>
+		</div>
+		<div class="mb-3">
+			<label for="tags" class="form-label">タグ (必須)</label>
+			<input type="text" class="form-control" id="tags" name="tags" value="<?= set_value('tags', isset($post_data['tags']) ? implode(' ', $post_data['tags']) : '') ?>" maxlength="1024">
+			<div style="font-size: 75%;">各タグは半角または全角スペースで区切ってください</div>
+			<?= $validation->showError('tags') ?>
 		</div>
 		<div class="mb-3">
 			<label for="description" class="form-label">説明 (必須)</label>

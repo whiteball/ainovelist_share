@@ -10,6 +10,14 @@
 			<div class="wrap border rounded p-2"><?= esc($post_data['title']) ?></div>
 		</div>
 		<div class="mb-3">
+			<h5>タグ</h5>
+			<div class="wrap border rounded p-2">
+				<?php foreach ($post_data['tags'] as $tag) : ?>
+					<span class="btn rounded-pill btn-outline-secondary btn-sm tag-link"><?= esc($tag) ?></span>
+				<?php endforeach ?>
+			</div>
+		</div>
+		<div class="mb-3">
 			<h5>説明</h5>
 			<div class="wrap border rounded p-2"><?= nl2br(str_replace(' ', '&nbsp;', esc($post_data['description']))) ?></div>
 		</div>

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Prompt;
 use App\Models\Prompt_deleted;
+use App\Models\Tag;
 
 class Create extends BaseController
 {
@@ -17,18 +18,31 @@ class Create extends BaseController
             $post_data = $_SESSION['prompt_data'];
             /** @var Prompt */
             $prompt = model(Prompt::class);
-            if (! $prompt->save([
-                'user_id' => $this->loginUserId,
-                'title' => $post_data['title'],
-                'description' => $post_data['description'],
-                'prompt' => $post_data['prompt'],
-                'memory' => $post_data['memory'],
-                'authors_note' => $post_data['authors_note'],
-                'ng_words' => $post_data['ng_words'],
-                'r18' => (! empty($post_data['r18']) && $post_data['r18'] === '1') ? 1 : 0,
-                'scripts' => json_encode(empty($post_data['script']) ? [] : $post_data['script'], JSON_UNESCAPED_UNICODE),
+            /** @var Tag */
+            $tag = model(Tag::class);
+
+            $db = \Config\Database::connect();
+            $db->transStart();
+            $prompt_id = $prompt->insert([
+                'user_id'        => $this->loginUserId,
+                'title'          => $post_data['title'],
+                'description'    => $post_data['description'],
+                'prompt'         => $post_data['prompt'],
+                'memory'         => $post_data['memory'],
+                'authors_note'   => $post_data['authors_note'],
+                'ng_words'       => $post_data['ng_words'],
+                'r18'            => (! empty($post_data['r18']) && $post_data['r18'] === '1') ? 1 : 0,
+                'scripts'        => json_encode(empty($post_data['script']) ? [] : $post_data['script'], JSON_UNESCAPED_UNICODE),
                 'character_book' => json_encode(empty($post_data['char_book']) ? [] : $post_data['char_book'], JSON_UNESCAPED_UNICODE),
-            ])) {
+            ]);
+
+            foreach ($post_data['tags'] as $tag_name) {
+                $tag->insert(['prompt_id' => $prompt_id, 'tag_name' => $tag_name]);
+            }
+
+            $db->transComplete();
+
+            if (! $db->transStatus()) {
                 return view('create/index', [
                     'validation'    => service('validation'),
                     'post_data'     => $post_data,
@@ -44,6 +58,7 @@ class Create extends BaseController
 
         if ($this->isPost() && $this->validate([
             'title' => ['label' => 'タイトル', 'rules' => ['required', 'max_length[255]']],
+            'tags' => ['label' => 'タグ', 'rules' => ['required', static fn ($value) => ! empty(array_filter(explode(' ', preg_replace('/\s+/u', ' ', $value)), static fn ($val) => $val !== ''))]],
             'description' => ['label' => '説明', 'rules' => ['required', 'max_length[2000]']],
             'prompt' => ['label' => 'プロンプト', 'rules' => ['required', 'max_length[16777215]']],
             'memory' => ['label' => 'メモリ', 'rules' => ['max_length[2000]']],
@@ -85,7 +100,7 @@ class Create extends BaseController
                 return true;
             }]],
         ])) {
-            $post_data = $this->request->getPost(['title', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'r18', 'script', 'char_book']);
+            $post_data = $this->request->getPost(['title', 'tags', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'r18', 'script', 'char_book']);
             if (isset($post_data['char_book'])) {
                 $post_data['char_book'] = array_filter($post_data['char_book'], static fn ($char_book) => ! empty($char_book['tag']));
             }
@@ -93,6 +108,8 @@ class Create extends BaseController
             if (isset($post_data['script'])) {
                 $post_data['script'] = array_filter($post_data['script'], static fn ($script) => ! empty($script['in']));
             }
+
+            $post_data['tags'] = array_unique(array_map(static fn ($val) => mb_substr($val, 0, 128), explode(' ', preg_replace('/\s+/u', ' ', $post_data['tags']))));
 
             $_SESSION['prompt_data'] = $post_data;
             $this->session->markAsTempdata('prompt_data', 3600);
@@ -116,21 +133,52 @@ class Create extends BaseController
             return redirect('config');
         }
 
+        /** @var Tag */
+        $tag       = model(Tag::class);
+        $tags      = [];
+        $tagResult = $tag->findByPrompt($prompt_id);
+        if (! empty($tagResult)) {
+            foreach ($tagResult as $row) {
+                $tags[$row->id] = $row->tag_name;
+            }
+        }
+
+        $data['tags'] = $tags;
+
         if ($this->request->getPost('send') === '1' && isset($_SESSION['prompt_edit_data'])) {
             $post_data = $_SESSION['prompt_edit_data'];
-            if (! $prompt->save([
-                'id' => $prompt_id,
-                'user_id' => $this->loginUserId,
-                'title' => $post_data['title'],
-                'description' => $post_data['description'],
-                'prompt' => $post_data['prompt'],
-                'memory' => $post_data['memory'],
-                'authors_note' => $post_data['authors_note'],
-                'ng_words' => $post_data['ng_words'],
-                'r18' => empty($post_data['r18']) ? 0 : 1,
-                'scripts' => json_encode(empty($post_data['script']) ? [] : $post_data['script'], JSON_UNESCAPED_UNICODE),
+
+            $db = \Config\Database::connect();
+            $db->transStart();
+            $prompt->save([
+                'id'             => $prompt_id,
+                'user_id'        => $this->loginUserId,
+                'title'          => $post_data['title'],
+                'description'    => $post_data['description'],
+                'prompt'         => $post_data['prompt'],
+                'memory'         => $post_data['memory'],
+                'authors_note'   => $post_data['authors_note'],
+                'ng_words'       => $post_data['ng_words'],
+                'r18'            => empty($post_data['r18']) ? 0 : 1,
+                'scripts'        => json_encode(empty($post_data['script']) ? [] : $post_data['script'], JSON_UNESCAPED_UNICODE),
                 'character_book' => json_encode(empty($post_data['char_book']) ? [] : $post_data['char_book'], JSON_UNESCAPED_UNICODE),
-            ])) {
+            ]);
+
+            $diff = array_diff($tags, $post_data['tags']);
+
+            foreach ($diff as $tag_id => $tag_name) {
+                $tag->delete($tag_id);
+            }
+
+            $diff2 = array_diff($post_data['tags'], $tags);
+
+            foreach ($diff2 as $tag_name) {
+                $tag->insert(['prompt_id' => $prompt_id, 'tag_name' => $tag_name]);
+            }
+
+            $db->transComplete();
+
+            if (! $db->transStatus()) {
                 return view('create/edit', [
                     'prompt_id'     => $prompt_id,
                     'validation'    => service('validation'),
@@ -188,7 +236,7 @@ class Create extends BaseController
                 return true;
             }]],
         ])) {
-            $post_data = $this->request->getPost(['title', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'r18', 'script', 'char_book']);
+            $post_data = $this->request->getPost(['title', 'tags', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'r18', 'script', 'char_book']);
             if (isset($post_data['char_book'])) {
                 $post_data['char_book'] = array_filter($post_data['char_book'], static fn ($char_book) => ! empty($char_book['tag']));
             }
@@ -196,6 +244,8 @@ class Create extends BaseController
             if (isset($post_data['script'])) {
                 $post_data['script'] = array_filter($post_data['script'], static fn ($script) => ! empty($script['in']));
             }
+
+            $post_data['tags'] = array_unique(array_map(static fn ($val) => mb_substr($val, 0, 128), explode(' ', preg_replace('/\s+/u', ' ', $post_data['tags']))));
 
             $_SESSION['prompt_edit_data'] = $post_data;
             $this->session->markAsTempdata('prompt_edit_data', 3600);
