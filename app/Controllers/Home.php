@@ -20,7 +20,7 @@ class Home extends BaseController
         $count   = $prompt->countAll();
 
         /** @var Tag */
-        $tag = model(Tag::class);
+        $tag  = model(Tag::class);
         $tags = $tag->findByPrompt($prompts);
 
         return view('index', ['prompts' => $prompts, 'tags' => $tags, 'count' => $count, 'page' => $page, 'last_page' => (int) ceil($count / self::ITEM_PER_PAGE)]);

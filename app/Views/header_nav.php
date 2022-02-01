@@ -5,6 +5,7 @@
 		</div>
 
 		<ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+			<li><a href="<?= site_url('/tags')?>" class="nav-link px-2 link-dark">タグ一覧</a></li>
 			<li><a href="<?= site_url('/about')?>" class="nav-link px-2 link-dark">サイトについて</a></li>
 		</ul>
 
