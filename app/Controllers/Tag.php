@@ -40,16 +40,17 @@ class Tag extends BaseController
             $prompt->whereIn('id', $prompt_ids);
         }
 
-        $count   = $prompt->orderBy('updated_at', 'desc')->countAllResults(false);
-        $prompts = $prompt->findAll(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1));
-
-        if (empty($prompts)) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        $count   = 0;
+        $prompts = [];
+        $tags    = [];
+        if (! empty($prompt_ids)) {
+            $count   = $prompt->orderBy('updated_at', 'desc')->countAllResults(false);
+            $prompts = $prompt->findAll(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1));
+            $tags    = $this->tag->findByPrompt($prompts);
         }
 
-        $tags = $this->tag->findByPrompt($prompts);
-
         return view('tag/index', [
+            'tag_name'      => $tag_name,
             'prompts'       => $prompts,
             'tags'          => $tags,
             'count'         => $count,

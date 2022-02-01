@@ -21,5 +21,10 @@
 			</div>
 		</div>
 	<?php endforeach ?>
+	<?php if (empty($prompts)) : ?>
+		<div class="text-center col-12">
+			該当するプロンプトはありません
+		</div>
+	<?php endif ?>
 </div>
 <?= $this->include('pagination') ?>
