@@ -135,7 +135,7 @@ class Home extends BaseController
         $promptData->{'script'}    = json_decode($promptData->scripts, JSON_OBJECT_AS_ARRAY);
 
         if ($asFile) {
-            $main      = str_replace(' ', '&nbsp;', preg_replace('/[\r\n]/u', '', nl2br($promptData->prompt)));
+            $main      = str_replace(' ', '&nbsp;', preg_replace('/[\r\n]/u', '', nl2br($promptData->prompt, false)));
             $param     = '31<>29<>93<>150<>256<>3<>1024<>NaN<>0<>NaN<>40<>128<>37<>30<>20<>20<>20<>';
             $char_book = '';
             $scripts   = '';
