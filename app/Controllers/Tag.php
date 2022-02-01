@@ -70,6 +70,10 @@ class Tag extends BaseController
     public function search()
     {
         $query = preg_replace('/\s+/u', ' ', $this->request->getGet('q') ?? '');
+        if (empty($query)) {
+            return redirect('/');
+        }
+
         $page = (int) ($this->request->getGet('p') ?? 1);
 
         if (isset($_SESSION['tag_search_cache_query']) && $_SESSION['tag_search_cache_query'] === $query) {
