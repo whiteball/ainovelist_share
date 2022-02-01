@@ -1,4 +1,4 @@
-<?php if ($count === 0) : ?>
+<?php if ($count !== 0) : ?>
 	<nav aria-label="Page navigation">
 		<ul class="pagination justify-content-center">
 			<li class="page-item<?= ($page === 1) ? ' disabled' : '' ?>">
