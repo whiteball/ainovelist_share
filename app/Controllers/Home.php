@@ -19,9 +19,12 @@ class Home extends BaseController
         $prompts = $prompt->orderBy('updated_at', 'desc')->findAll(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1));
         $count   = $prompt->countAll();
 
-        /** @var Tag */
-        $tag  = model(Tag::class);
-        $tags = $tag->findByPrompt($prompts);
+        $tags = [];
+        if (! empty($prompts)) {
+            /** @var Tag */
+            $tag  = model(Tag::class);
+            $tags = $tag->findByPrompt($prompts);
+        }
 
         return view('index', ['prompts' => $prompts, 'tags' => $tags, 'count' => $count, 'page' => $page, 'last_page' => (int) ceil($count / self::ITEM_PER_PAGE)]);
     }
