@@ -43,7 +43,7 @@ class Tag extends BaseController
         $count   = 0;
         $prompts = [];
         $tags    = [];
-        if (! empty($prompt_ids)) {
+        if (! empty($prompt_ids) || $tag_name === 'R-18') {
             $count   = $prompt->orderBy('updated_at', 'desc')->countAllResults(false);
             $prompts = $prompt->findAll(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1));
             $tags    = $this->tag->findByPrompt($prompts);
