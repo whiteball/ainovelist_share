@@ -195,6 +195,7 @@ class Create extends BaseController
 
         if ($this->isPost() && $this->validate([
             'title' => ['label' => 'タイトル', 'rules' => ['required', 'max_length[255]']],
+            'tags' => ['label' => 'タグ', 'rules' => ['required', static fn ($value) => ! empty(array_filter(explode(' ', preg_replace('/\s+/u', ' ', $value)), static fn ($val) => $val !== ''))]],
             'description' => ['label' => '説明', 'rules' => ['required', 'max_length[2000]']],
             'prompt' => ['label' => 'プロンプト', 'rules' => ['required', 'max_length[16777215]']],
             'memory' => ['label' => 'メモリ', 'rules' => ['max_length[2000]']],
