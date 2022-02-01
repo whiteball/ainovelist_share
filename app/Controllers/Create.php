@@ -44,6 +44,7 @@ class Create extends BaseController
 
             if (! $db->transStatus()) {
                 return view('create/index', [
+                    'default_pane'  => '',
                     'validation'    => service('validation'),
                     'post_data'     => $post_data,
                     'error_message' => "データ登録時にエラーが発生しました。\n申し訳ありませんが、再度登録をお願いします。",
@@ -56,16 +57,16 @@ class Create extends BaseController
             return view('create/complete');
         }
 
-        if ($this->isPost() && $this->validate([
-            'title' => ['label' => 'タイトル', 'rules' => ['required', 'max_length[255]']],
-            'tags' => ['label' => 'タグ', 'rules' => ['required', static fn ($value) => ! empty(array_filter(explode(' ', preg_replace('/\s+/u', ' ', $value)), static fn ($val) => $val !== ''))]],
-            'description' => ['label' => '説明', 'rules' => ['required', 'max_length[2000]']],
-            'prompt' => ['label' => 'プロンプト', 'rules' => ['required', 'max_length[16777215]']],
-            'memory' => ['label' => 'メモリ', 'rules' => ['max_length[2000]']],
+        $validation_rule = [
+            'title'        => ['label' => 'タイトル', 'rules' => ['required', 'max_length[255]']],
+            'tags'         => ['label' => 'タグ', 'rules' => ['required', static fn ($value) => ! empty(array_filter(explode(' ', preg_replace('/\s+/u', ' ', $value)), static fn ($val) => $val !== ''))]],
+            'description'  => ['label' => '説明', 'rules' => ['required', 'max_length[2000]']],
+            'prompt'       => ['label' => 'プロンプト', 'rules' => ['required', 'max_length[16777215]']],
+            'memory'       => ['label' => 'メモリ', 'rules' => ['max_length[2000]']],
             'authors_note' => ['label' => '脚注', 'rules' => ['max_length[2000]']],
-            'ng_words' => ['label' => 'NGワード', 'rules' => ['max_length[2000]']],
-            'r18' => ['label' => 'R-18設定', 'rules' => ['permit_empty']],
-            'script.*' => ['label' => 'スクリプト', 'rules' => [function ($item) {
+            'ng_words'     => ['label' => 'NGワード', 'rules' => ['max_length[2000]']],
+            'r18'          => ['label' => 'R-18設定', 'rules' => ['permit_empty']],
+            'script.*'     => ['label' => 'スクリプト', 'rules' => [function ($item) {
                 if (empty($item)) {
                     return true;
                 }
@@ -99,7 +100,89 @@ class Create extends BaseController
 
                 return true;
             }]],
-        ])) {
+        ];
+
+        $default_pane = '';
+        if ($form_type === 'file') {
+            $default_pane = 'file';
+
+            if ($this->isPost() && $this->validate([
+                'novel_file' => ['label' => 'ファイル', 'rules' => ['uploaded[novel_file]', 'max_size[novel_file,10240]']],
+                'tags-file' => ['label' => 'タグ', 'rules' => ['required', static fn ($value) => ! empty(array_filter(explode(' ', preg_replace('/\s+/u', ' ', $value)), static fn ($val) => $val !== ''))]],
+                'description-file' => ['label' => '説明', 'rules' => ['required', 'max_length[2000]']],
+                'r18-file' => ['label' => 'R-18設定', 'rules' => ['permit_empty']],
+            ])) {
+                $post_data = [];
+
+                $post_data['description'] = $this->request->getPost('description-file');
+                $post_data['r18']         = $this->request->getPost('r18-file');
+
+                $file         = $this->request->getFile('novel_file');
+                $novel_format = file_get_contents($file->getTempName());
+                $novel_items  = explode('<|endofsection|>', $novel_format);
+
+                $post_data['prompt']       = str_replace('&nbsp;', ' ', preg_replace('/<\/?(font|span|script)[^>]*>/u', '', preg_replace('/\<br\/?\>/u', "\n", $novel_items[0])));
+                $post_data['memory']       = $novel_items[1];
+                $post_data['authors_note'] = $novel_items[2];
+
+                if (! empty($novel_items[4])) {
+                    $post_data['char_book'] = [];
+                    $is_key                 = true;
+                    $pair                   = [];
+                    $counter                = 0;
+
+                    foreach (explode('<|entry|>', $novel_items[4]) as $key) {
+                        if ($is_key) {
+                            $pair['id']  = $counter;
+                            $pair['tag'] = $key;
+                        } else {
+                            $pair['content']          = $key;
+                            $post_data['char_book'][] = $pair;
+                            $pair                     = [];
+                            $counter++;
+                        }
+
+                        $is_key = ! $is_key;
+                    }
+                }
+
+                $post_data['ng_words'] = $novel_items[5];
+                $post_data['title']    = $novel_items[6];
+
+                if (! empty($novel_items[8])) {
+                    $post_data['script'] = [];
+                    $counter             = 0;
+
+                    foreach (explode('<|entry|>', $novel_items[8]) as $line) {
+                        if (empty($line)) {
+                            continue;
+                        }
+
+                        $script_item = explode('<|sp|>', $line);
+                        $post_data['script'][] = [
+                            'id'   => $counter,
+                            'type' => $script_item[0] ?? '',
+                            'in'   => $script_item[1] ?? '',
+                            'out'  => $script_item[2] ?? '',
+                        ];
+
+                        $counter++;
+                    }
+                }
+
+                unset($validation_rule['tags']);
+                if ($this->validator->reset()->setRules($validation_rule)->run($post_data)) {
+                    $post_data['tags'] = array_unique(array_map(static fn ($val) => mb_substr($val, 0, 128), explode(' ', preg_replace('/\s+/u', ' ', $this->request->getPost('tags-file')))));
+
+                    $_SESSION['prompt_data'] = $post_data;
+                    $this->session->markAsTempdata('prompt_data', 3600);
+
+                    return view('create/confirm', ['post_data' => $post_data]);
+                }
+
+                $file_verify_error = true;
+            }
+        } elseif ($this->isPost() && $this->validate($validation_rule)) {
             $post_data = $this->request->getPost(['title', 'tags', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'r18', 'script', 'char_book']);
             if (isset($post_data['char_book'])) {
                 $post_data['char_book'] = array_filter($post_data['char_book'], static fn ($char_book) => ! empty($char_book['tag']));
@@ -117,7 +200,7 @@ class Create extends BaseController
             return view('create/confirm', ['post_data' => $post_data]);
         }
 
-        return view('create/index', ['validation' => service('validation')]);
+        return view('create/index', ['default_pane' => $default_pane, 'validation' => service('validation'), 'file_verify_error' => $file_verify_error ?? false]);
     }
 
     public function edit($prompt_id)
