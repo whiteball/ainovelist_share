@@ -17,6 +17,10 @@
 			<h5>プロンプト(本文)</h5>
 			<div class="wrap border rounded p-2"><?= nl2br(str_replace(' ', '&nbsp;', esc($post_data['prompt']))) ?></div>
 		</div>
+		<div class="mb-3">
+			<h5>全年齢/R-18設定</h5>
+			<div class="wrap border rounded p-2"><?= (! empty($post_data['r18']) && $post_data['r18'] === '1') ? 'R-18' : '全年齢' ?></div>
+		</div>
 	</div>
 	<?php if (! (empty($post_data['memory']) && empty($post_data['authors_note']) && empty($post_data['ng_words']))) : ?>
 		<div class="mb-3 border rounded p-2">

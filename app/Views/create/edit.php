@@ -3,7 +3,7 @@
 <?= $this->section('content') ?>
 <?= $this->include('header_nav') ?>
 <main class="container">
-	<h1 class="h3 mb-3 fw-normal">プロンプト編集</h1>
+	<h1 class="h3 mb-3 fw-normal">プロンプト投稿 - 編集</h1>
 	<?php if (isset($error_message)) : ?>
 		<div class="alert alert-danger"><?= nl2br(esc($error_message)) ?></div>
 	<?php endif ?>
@@ -55,6 +55,30 @@
 			<label for="prompt" class="form-label">プロンプト(本文) (必須)</label>
 			<textarea class="form-control" id="prompt" name="prompt" rows="6"><?= set_value('prompt', $post_data['prompt'] ?? '') ?></textarea>
 			<?= $validation->showError('prompt') ?>
+		</div>
+		<div class="mb-3">
+			<input class="btn-check" type="checkbox" value="1" id="r18" name="r18" <?= set_checkbox('r18', '1', isset($post_data['r18']) ? ($post_data['r18'] === '1') : false) ?> autocomplete="off">
+			<label class="btn btn-outline-danger" for="r18" id="r18-text">
+				現在は全年齢設定
+			</label>
+			<?= $validation->showError('r18') ?>
+			<script>
+				const toggleR18Button = function () {
+					const check = document.getElementById('r18')
+					const text = document.getElementById('r18-text')
+					if (check.checked) {
+						text.classList.add('btn-outline-danger')
+						text.classList.remove('btn-outline-success')
+						text.innerText = '現在はR-18設定'
+					} else {
+						text.classList.remove('btn-outline-danger')
+						text.classList.add('btn-outline-success')
+						text.innerText = '現在は全年齢設定'
+					}
+				}
+				document.addEventListener('DOMContentLoaded', toggleR18Button)
+				document.getElementById('r18').addEventListener('click', toggleR18Button)
+			</script>
 		</div>
 	</div>
 	<div class="mb-3 border rounded p-2">

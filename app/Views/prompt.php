@@ -15,6 +15,16 @@
 			<div class="wrap border rounded p-2"><?= esc($prompt->title) ?></div>
 		</div>
 		<div class="mb-3">
+			<h5>タグ</h5>
+			<div class="wrap border rounded p-2">
+				<?php if ($prompt->r18 === '1') : ?>
+					<a class="btn rounded-pill btn-danger btn-sm tag-link" href="#">R-18</a>
+				<?php else : ?>
+					<a class="btn rounded-pill btn-outline-secondary btn-sm tag-link" href="#">全年齢</a>
+				<?php endif ?>
+			</div>
+		</div>
+		<div class="mb-3">
 			<h5>著者</h5>
 			<div class="wrap border rounded p-2"><?= esc($author) ?></div>
 		</div>

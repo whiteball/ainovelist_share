@@ -8,3 +8,8 @@
 main#create-confirm .wrap {
   overflow-wrap: break-word;
 }
+
+.tag-link {
+  font-size: 75%;
+  line-height: 75%;
+}

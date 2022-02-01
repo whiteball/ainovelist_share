@@ -25,6 +25,7 @@ class Create extends BaseController
                 'memory' => $post_data['memory'],
                 'authors_note' => $post_data['authors_note'],
                 'ng_words' => $post_data['ng_words'],
+                'r18' => (! empty($post_data['r18']) && $post_data['r18'] === '1') ? 1 : 0,
                 'scripts' => json_encode(empty($post_data['script']) ? [] : $post_data['script'], JSON_UNESCAPED_UNICODE),
                 'character_book' => json_encode(empty($post_data['char_book']) ? [] : $post_data['char_book'], JSON_UNESCAPED_UNICODE),
             ])) {
@@ -48,6 +49,7 @@ class Create extends BaseController
             'memory' => ['label' => 'メモリ', 'rules' => ['max_length[2000]']],
             'authors_note' => ['label' => '脚注', 'rules' => ['max_length[2000]']],
             'ng_words' => ['label' => 'NGワード', 'rules' => ['max_length[2000]']],
+            'r18' => ['label' => 'R-18設定', 'rules' => ['permit_empty']],
             'script.*' => ['label' => 'スクリプト', 'rules' => [function ($item) {
                 if (empty($item)) {
                     return true;
@@ -83,7 +85,7 @@ class Create extends BaseController
                 return true;
             }]],
         ])) {
-            $post_data = $this->request->getPost(['title', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'script', 'char_book']);
+            $post_data = $this->request->getPost(['title', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'r18', 'script', 'char_book']);
             if (isset($post_data['char_book'])) {
                 $post_data['char_book'] = array_filter($post_data['char_book'], static fn ($char_book) => ! empty($char_book['tag']));
             }
@@ -125,6 +127,7 @@ class Create extends BaseController
                 'memory' => $post_data['memory'],
                 'authors_note' => $post_data['authors_note'],
                 'ng_words' => $post_data['ng_words'],
+                'r18' => empty($post_data['r18']) ? 0 : 1,
                 'scripts' => json_encode(empty($post_data['script']) ? [] : $post_data['script'], JSON_UNESCAPED_UNICODE),
                 'character_book' => json_encode(empty($post_data['char_book']) ? [] : $post_data['char_book'], JSON_UNESCAPED_UNICODE),
             ])) {
@@ -149,6 +152,7 @@ class Create extends BaseController
             'memory' => ['label' => 'メモリ', 'rules' => ['max_length[2000]']],
             'authors_note' => ['label' => '脚注', 'rules' => ['max_length[2000]']],
             'ng_words' => ['label' => 'NGワード', 'rules' => ['max_length[2000]']],
+            'r18' => ['label' => 'R-18設定', 'rules' => ['permit_empty']],
             'script.*' => ['label' => 'スクリプト', 'rules' => [function ($item) {
                 if (empty($item)) {
                     return true;
@@ -184,7 +188,7 @@ class Create extends BaseController
                 return true;
             }]],
         ])) {
-            $post_data = $this->request->getPost(['title', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'script', 'char_book']);
+            $post_data = $this->request->getPost(['title', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'r18', 'script', 'char_book']);
             if (isset($post_data['char_book'])) {
                 $post_data['char_book'] = array_filter($post_data['char_book'], static fn ($char_book) => ! empty($char_book['tag']));
             }
