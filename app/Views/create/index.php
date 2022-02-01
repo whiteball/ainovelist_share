@@ -27,23 +27,23 @@
 			<?= csrf_field() ?>
 			<div class="mb-3 border border-top-0 rounded-bottom p-2">
 				<div class="mb-3">
-					<label for="title" class="form-label">タイトル (必須)</label>
+					<label for="title" class="form-label">タイトル <span class="text-danger" style="font-size:80%">(必須)</span></label>
 					<input type="text" class="form-control" id="title" name="title" value="<?= set_value('title', $post_data['title'] ?? '') ?>" maxlength="256">
 					<?= $validation->showError('title') ?>
 				</div>
 				<div class="mb-3">
-					<label for="tags" class="form-label">タグ (必須)</label>
+					<label for="tags" class="form-label">タグ <span class="text-danger" style="font-size:80%">(必須)</span></label>
 					<input type="text" class="form-control" id="tags" name="tags" value="<?= set_value('tags', isset($post_data['tags']) ? implode(' ', $post_data['tags']) : '') ?>" maxlength="1024">
 					<div style="font-size: 75%;">各タグは半角または全角スペースで区切ってください</div>
 					<?= $validation->showError('tags') ?>
 				</div>
 				<div class="mb-3">
-					<label for="description" class="form-label">説明 (必須)</label>
+					<label for="description" class="form-label">説明 <span class="text-danger" style="font-size:80%">(必須)</span></label>
 					<textarea class="form-control" id="description" name="description" rows="4" maxlength="2000"><?= set_value('description', $post_data['description'] ?? '') ?></textarea>
 					<?= $validation->showError('description') ?>
 				</div>
 				<div class="mb-3">
-					<label for="prompt" class="form-label">プロンプト(本文) (必須)</label>
+					<label for="prompt" class="form-label">プロンプト(本文) <span class="text-danger" style="font-size:80%">(必須)</span></label>
 					<textarea class="form-control" id="prompt" name="prompt" rows="6"><?= set_value('prompt', $post_data['prompt'] ?? '') ?></textarea>
 					<?= $validation->showError('prompt') ?>
 				</div>
@@ -215,7 +215,7 @@
 			<?= csrf_field() ?>
 			<div class="mb-3 border border-top-0 rounded-bottom p-2">
 				<div class="mb-3">
-					<label for="novel_file" class="form-label">ファイル(10MBまで) (必須)</label>
+					<label for="novel_file" class="form-label">ファイル(10MBまで) <span class="text-danger" style="font-size:80%">(必須)</span></label>
 					<input type="file" class="form-control" id="novel_file" name="novel_file" accept=".novel">
 					<?= $validation->showError('novel_file') ?>
 					<?php if (! empty($file_verify_error)) : ?>
@@ -230,13 +230,13 @@
 					<?php endif ?>
 				</div>
 				<div class="mb-3">
-					<label for="tags-file" class="form-label">タグ (必須)</label>
+					<label for="tags-file" class="form-label">タグ <span class="text-danger" style="font-size:80%">(必須)</span></label>
 					<input type="text" class="form-control" id="tags-file" name="tags-file" value="<?= set_value('tags-file', isset($post_data['tags-file']) ? implode(' ', $post_data['tags-file']) : '') ?>" maxlength="1024">
 					<div style="font-size: 75%;">各タグは半角または全角スペースで区切ってください</div>
 					<?= $validation->showError('tags-file') ?>
 				</div>
 				<div class="mb-3">
-					<label for="description-file" class="form-label">説明 (必須)</label>
+					<label for="description-file" class="form-label">説明 <span class="text-danger" style="font-size:80%">(必須)</span></label>
 					<textarea class="form-control" id="description-file" name="description-file" rows="4" maxlength="2000"><?= set_value('description-file', $post_data['description-file'] ?? '') ?></textarea>
 					<?= $validation->showError('description-file') ?>
 				</div>
