@@ -44,9 +44,14 @@ class Tag extends BaseController
         $prompts = [];
         $tags    = [];
         if (! empty($prompt_ids) || $tag_name === 'R-18') {
-            $count   = $prompt->orderBy('updated_at', 'desc')->countAllResults(false);
-            $prompts = $prompt->findAll(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1));
-            $tags    = $this->tag->findByPrompt($prompts);
+            $count   = $prompt->orderBy('updated_at', 'desc')->countAllResultsSafe(false);
+            $prompts = $prompt->findAllSafe(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1));
+            if (empty($prompts)) {
+                $count   = 0;
+                $prompts = [];
+            } else {
+                $tags    = $this->tag->findByPrompt($prompts);
+            }
         }
 
         return view('tag/index', [
@@ -106,9 +111,14 @@ class Tag extends BaseController
             $_SESSION['tag_search_cache_query'] = $query;
             $_SESSION['tag_search_cache_ids'] = $prompt_ids;
             $this->session->markAsTempdata(['tag_search_cache_query', 'tag_search_cache_ids'], 120);
-            $count   = $prompt->orderBy('updated_at', 'desc')->countAllResults(false);
-            $prompts = $prompt->findAll(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1));
-            $tags    = $this->tag->findByPrompt($prompts);
+            $count   = $prompt->orderBy('updated_at', 'desc')->countAllResultsSafe(false);
+            $prompts = $prompt->findAllSafe(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1));
+            if (empty($prompts)) {
+                $count   = 0;
+                $prompts = [];
+            } else {
+                $tags    = $this->tag->findByPrompt($prompts);
+            }
         }
 
         return view('tag/search', [

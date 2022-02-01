@@ -63,6 +63,11 @@ class BaseController extends Controller
         if ($this->_isLoggedIn()) {
             $this->loginUserId = (int) $_SESSION['login'];
         }
+
+        $mode = $request->getGet('lmode');
+        if (! empty($mode)) {
+            $_SESSION['list_mode'] = $mode;
+        }
     }
 
     public function isPost()
