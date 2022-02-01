@@ -10,6 +10,8 @@ use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Session\Session;
 use Psr\Log\LoggerInterface;
 
+use App\Models\Action_log;
+
 /**
  * Class BaseController
  *
@@ -48,6 +50,12 @@ class BaseController extends Controller
      * @var int
      */
     protected $loginUserId = 0;
+
+    /**
+     * @var Action_log
+     */
+    protected $action_log;
+
     /**
      * Constructor.
      */
@@ -63,6 +71,8 @@ class BaseController extends Controller
         if ($this->_isLoggedIn()) {
             $this->loginUserId = (int) $_SESSION['login'];
         }
+
+        $this->action_log = model(Action_log::class);
 
         $mode = $request->getGet('lmode');
         if (! empty($mode)) {

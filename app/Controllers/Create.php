@@ -40,6 +40,8 @@ class Create extends BaseController
                 $tag->insert(['prompt_id' => $prompt_id, 'tag_name' => $tag_name]);
             }
 
+            $this->action_log->write($this->loginUserId, 'prompt create ' . $prompt_id . ' tag add [' . implode(' ', $post_data['tags']) . ']');
+
             $db->transComplete();
 
             if (! $db->transStatus()) {
@@ -259,6 +261,8 @@ class Create extends BaseController
                 $tag->insert(['prompt_id' => $prompt_id, 'tag_name' => $tag_name]);
             }
 
+            $this->action_log->write($this->loginUserId, 'prompt edit ' . $prompt_id . ' tag delete [' . implode(' ', $diff) . '] tag add [' . implode(' ', $diff2) . ']');
+
             $db->transComplete();
 
             if (! $db->transStatus()) {
@@ -363,10 +367,25 @@ class Create extends BaseController
         /** @var Prompt_deleted */
         $prompt_deleted = model(Prompt_deleted::class);
 
+        /** @var Tag */
+        $tag = model(Tag::class);
+
+        $tag_ids = [];
+        $tag_names = [];
+        foreach ($tag->where('prompt_id', $prompt_id)->findAll() as $row) {
+            $tag_ids[] = $row->id;
+            $tag_names[] = $row->tag_name;
+        }
+
         $db = \Config\Database::connect();
         $db->transStart();
         $prompt_deleted->save($data);
         $prompt->delete($prompt_id);
+        if (! empty($tag_ids)) {
+            $tag->delete($tag_ids);
+        }
+
+        $this->action_log->write($this->loginUserId, 'prompt delete ' . $prompt_id . ' tag delete [' . implode(' ', $tag_names) . ']');
         $db->transComplete();
 
         if ($db->transStatus()) {

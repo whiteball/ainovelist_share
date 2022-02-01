@@ -48,12 +48,13 @@ class Home extends BaseController
         ])) {
             /** @var User */
             $user = model(User::class);
-            $user->save([
+            $user_id = $user->insert([
                 'login_name'  => $this->request->getPost('login_name'),
                 'screen_name' => $this->request->getPost('screen_name'),
                 'password'    => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
             ]);
 
+            $this->action_log->write($user_id, 'user create');
             return view('register/complete');
         }
 
@@ -78,6 +79,7 @@ class Home extends BaseController
             }
 
             $_SESSION['login'] = $loginUser->id;
+            $this->action_log->write($loginUser->id, 'user login');
 
             return redirect('/');
         }
@@ -99,8 +101,10 @@ class Home extends BaseController
         if ($this->isPost() && $this->validate([
             'screen_name' => ['label' => 'ユーザー名', 'rules' => ['required', 'max_length[100]']],
         ])) {
+            $old_name = $loginUser->screen_name;
             $loginUser->screen_name = $this->request->getPost('screen_name');
             $user->save($loginUser);
+            $this->action_log->write($loginUser->id, 'user change screen_name ' . $old_name . ' to ' . $loginUser->screen_name);
             $success_message = 'ユーザー名変更しました';
         }
 
@@ -177,6 +181,7 @@ class Home extends BaseController
             return redirect('config');
         }
 
+        $this->action_log->write($_SESSION['login'], 'user logout');
         unset($_SESSION['login']);
 
         return redirect('/');
