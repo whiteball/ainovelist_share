@@ -8,7 +8,7 @@
 	<?= form_open() ?>
 	<?= csrf_field() ?>
 	<div class="mb-3">
-		<label for="login-id" class="form-label">ログイン名(半角英数のみ)</label>
+		<label for="login-id" class="form-label">ログインID(半角英数のみ)</label>
 		<input type="text" class="form-control" id="login-id" name="login_name" value="<?= set_value('login_name'); ?>">
 		<?= $validation->showError('login_name')?>
 	</div>
