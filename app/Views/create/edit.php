@@ -165,7 +165,7 @@
 				<?php endif ?>
 				<input type="hidden" id="script[<?= $i ?>][id]" name="script[<?= $i ?>][id]" value="<?= $i ?>" disabled>
 				<div class="row mb-3">
-					<label class="col-md-1 col-form-label" for="script[<?= $i ?>][type]">種類</label>
+					<label class="col-md-1 col-form-label" for="script[<?= $i ?>][type]">種別</label>
 					<div class="col-md-11">
 						<select class="form-control" id="script[<?= $i ?>][type]" name="script[<?= $i ?>][type]" disabled>
 							<option value="script_in" <?= set_select('script[' . $i . '][type]', 'script_in', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_in') : true) ?>>入力文の置換</option>
