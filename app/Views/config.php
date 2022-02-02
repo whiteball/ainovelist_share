@@ -25,7 +25,7 @@
 
 	<hr>
 	<h4>投稿したプロンプト</h4>
-	<div>編集/削除はタイトルをクリック/タップしてください。</div>
+	<div>編集/削除はタイトルをクリック/タップしてください。<br>作品ページへ行くには投稿日をクリック/タップしてください。</div>
 	<table class="table">
 		<thead>
 			<tr>
@@ -41,7 +41,9 @@
 							<a href="<?= site_url('edit/' . $prompt->id) ?>" class="btn btn-outline-success"><?= esc($prompt->title) ?></a>
 						</div>
 					</td>
-					<td class="text-center" style="width: 11rem;"><?= esc($prompt->registered_at) ?></td>
+					<td class="text-center" style="width: 11rem;">
+						<a href="<?= site_url('prompt/' . $prompt->id) ?>" class="link-secondary"><?= esc($prompt->registered_at) ?></a>
+					</td>
 				</tr>
 			<?php endforeach ?>
 		</tbody>
