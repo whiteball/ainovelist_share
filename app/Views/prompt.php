@@ -8,6 +8,9 @@
 		<a class="btn btn-secondary" href="<?= site_url('prompt_download/' . $prompt->id) ?>">
 			novelファイルをダウンロード
 		</a>
+		<a class="btn btn-secondary ms-3" href="https://ai-novel.com/prompt_load.php?uri=<?= urlencode(site_url('prompt_download/' . $prompt->id)) ?>" target="_blank" rel="noopener noreferrer">
+			AIのべりすとで読み込む
+		</a>
 	</div>
 	<div class="mb-3 border rounded p-2">
 		<div class="mb-3">
