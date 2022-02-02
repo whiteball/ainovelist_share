@@ -1,7 +1,7 @@
 <?= $this->extend('template') ?>
 
 <?= $this->section('content') ?>
-<?= $this->include('header_nav') ?>
+<?= $this->include('_parts/header_nav') ?>
 <main class="container">
 	<h1 class="h3 mb-3 fw-normal">プロンプト投稿</h1>
 	<?php if (isset($error_message)) : ?>

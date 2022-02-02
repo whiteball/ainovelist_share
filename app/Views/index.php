@@ -1,10 +1,10 @@
 <?= $this->extend('template') ?>
 
 <?= $this->section('content') ?>
-<?= $this->include('header_nav') ?>
+<?= $this->include('_parts/header_nav') ?>
 <main class="container">
-	<?= $this->include('search_part') ?>
+	<?= $this->include('_parts/search_part') ?>
 	<hr>
-	<?= $this->include('prompt_list') ?>
+	<?= $this->include('_parts/prompt_list') ?>
 </main>
 <?= $this->endSection() ?>

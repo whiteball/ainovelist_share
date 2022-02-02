@@ -1,7 +1,7 @@
 <?= $this->extend('template') ?>
 
 <?= $this->section('content') ?>
-<?= $this->include('header_nav') ?>
+<?= $this->include('_parts/header_nav') ?>
 <main class="container">
 	<h1>タグ一覧</h1>
 	<div class="mt-3">各タグをクリック/タップすると、そのタグがついたプロンプト一覧を表示します。</div>

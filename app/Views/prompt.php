@@ -1,7 +1,7 @@
 <?= $this->extend('template') ?>
 
 <?= $this->section('content') ?>
-<?= $this->include('header_nav') ?>
+<?= $this->include('_parts/header_nav') ?>
 <main class="container" id="create-confirm">
 	<h1 class="h3 mb-3 fw-normal">プロンプト詳細</h1>
 	<div class="mb-3 border rounded p-2">

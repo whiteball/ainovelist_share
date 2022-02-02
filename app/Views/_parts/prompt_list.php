@@ -22,7 +22,7 @@ $current_url = str_replace(index_page(), '', implode('/', $uri->getSegments())) 
 	</li>
 </ul>
 <div class="border border-top-0 rounded-bottom p-2">
-	<?= $this->include('pagination') ?>
+	<?= $this->include('_parts/pagination') ?>
 	<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-3">
 		<?php foreach ($prompts as $prompt) : ?>
 			<div class="col">
@@ -51,5 +51,5 @@ $current_url = str_replace(index_page(), '', implode('/', $uri->getSegments())) 
 			</div>
 		<?php endif ?>
 	</div>
-	<?= $this->include('pagination') ?>
+	<?= $this->include('_parts/pagination') ?>
 </div>

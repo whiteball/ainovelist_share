@@ -1,7 +1,7 @@
 <?= $this->extend('template') ?>
 
 <?= $this->section('content') ?>
-<?= $this->include('header_nav') ?>
+<?= $this->include('_parts/header_nav') ?>
 <main class="container">
 	<h3>このサイトについて</h3>
 	<div>
