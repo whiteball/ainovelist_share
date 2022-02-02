@@ -74,9 +74,27 @@ class BaseController extends Controller
 
         $this->action_log = model(Action_log::class);
 
-        $mode = $request->getGet('lmode');
-        if (! empty($mode)) {
-            $_SESSION['list_mode'] = $mode;
+        // 全年齢でR-18閲覧の確認ダイアログを出さないようにするためにリセット
+        $this->session->unmarkFlashdata('nsfw_mode_confirm');
+        unset($_SESSION['nsfw_mode_confirm']);
+
+        // R-18閲覧の記憶
+        $nsfw_mode = $request->getGet('nmode');
+        if (! empty($nsfw_mode)) {
+            $_SESSION['nsfw_mode'] = $nsfw_mode;
+        }
+
+        // リスト表示モードの記憶
+        $list_mode = $request->getGet('lmode');
+        if (! empty($list_mode)) {
+            if ($list_mode === 's' || (in_array($list_mode, ['a', 'n'], true) && ($_SESSION['nsfw_mode'] ?? 's') !== 's')) {
+                $_SESSION['list_mode'] = $list_mode;
+            } else {
+                // R-18閲覧の確認ダイアログを出す設定
+                $_SESSION['nsfw_mode_confirm'] = true;
+                $this->session->markAsFlashdata('nsfw_mode_confirm');
+            }
+            
         }
     }
 

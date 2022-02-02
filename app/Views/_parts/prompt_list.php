@@ -1,9 +1,43 @@
 <?php
 $mode = $_SESSION['list_mode'] ?? 's';
 $uri = current_url(true);
-$query = preg_replace('/(^|&|\?)p=\d+/u', '', $uri->getQuery());
-$current_url = str_replace(index_page(), '', implode('/', $uri->getSegments())) . '?' .($query ? ($query . '&') : '');
+$query = preg_replace('/(^|&|\?)(p=\d+|[nl]mode=\w)/u', '', $uri->getQuery());
+$query_lmode = preg_replace('/(^|&|\?)(p=\d+|nmode=\w)/u', '', $uri->getQuery());
+$current_url = str_replace(index_page(), '', implode('/', $uri->getSegments())) . '?';
+$current_url_lmode = $current_url . ($query_lmode ? ($query_lmode . '&') : '');
+$current_url .= $query ? ($query . '&') : '';
+$nsfw_mode = $_SESSION['nsfw_mode'] ?? 's';
 ?>
+
+<?php if (isset($_SESSION['nsfw_mode_confirm'])) : ?>
+	<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#nsfw-modal" style="display: none;" id="nsfw-button"></button>
+	<div class="modal" id="nsfw-modal" tabindex="-1" aria-labelledby="nsfw-modal-label" aria-hidden="true">
+		<div class="modal-dialog modal-fullscreen">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="nsfw-modal-label">R-18 (NSFW) 表示確認</h4>
+				</div>
+				<div class="modal-body text-center">
+					<div class="fs-4">このページにはR-18 (NSFW)の内容を含みます。<br>閲覧を続けますか？</div>
+					<hr>
+					<div class="row">
+						<div class="col">
+							<a type="button" class="btn btn-secondary me-3" href="javascript:history.back()">戻る</a>
+							<a class="btn btn-primary ms-3" href="<?= site_url($current_url_lmode . 'nmode=n') ?>">続ける</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const ev = new Event('click')
+			document.getElementById('nsfw-button').dispatchEvent(ev)
+		})
+	</script>
+<?php endif ?>
+
 <ul class="nav nav-tabs" id="myTab" role="tablist">
 	<li class="nav-item" role="presentation">
 		<a class="nav-link<?= $mode === 's' ? ' active' : '' ?>" href="<?= site_url($current_url . 'lmode=s') ?>"<?= $mode === 's' ? ' aria-current="page"' : '' ?>>
