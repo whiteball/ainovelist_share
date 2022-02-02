@@ -28,7 +28,7 @@ $current_url = str_replace(index_page(), '', implode('/', $uri->getSegments())) 
 			<div class="col">
 				<div class="card">
 					<div class="card-body">
-						<h5 class="card-title" style="word-break: break-all;overflow-wrap: break-word;"><a class="link-secondary" href="<?= site_url('prompt/' . $prompt->id) ?>"><?= esc($prompt->title) ?></a></h5>
+						<h5 class="card-title" style="word-break: break-all;overflow-wrap: break-word;"><a class="link-secondary" href="<?= site_url('prompt/' . $prompt->id) ?>"><?= esc(strip_tags($prompt->title)) ?></a></h5>
 						<h6 class="card-subtitle mb-2 text-muted">投稿: <?= esc(mb_substr($prompt->registered_at, 0, 10)) ?></h6>
 						<p class="card-text" style="word-break: break-all;overflow-wrap: break-word;"><?= str_replace(' ', '&nbsp;', esc(mb_strimwidth(preg_replace('/[\r\n]/u', ' ', trim($prompt->description)), 0, 128, '...'))) ?></p>
 						<a href="<?= site_url('prompt/' . $prompt->id) ?>" class="btn btn-secondary">詳細</a>

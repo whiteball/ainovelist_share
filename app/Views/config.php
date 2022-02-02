@@ -38,7 +38,7 @@
 				<tr scope="row">
 					<td style="word-break: break-all;overflow-wrap: break-word;">
 						<div class="d-grid gap-2">
-							<a href="<?= site_url('edit/' . $prompt->id) ?>" class="btn btn-outline-success"><?= esc($prompt->title) ?></a>
+							<a href="<?= site_url('edit/' . $prompt->id) ?>" class="btn btn-outline-success"><?= esc(strip_tags($prompt->title)) ?></a>
 						</div>
 					</td>
 					<td class="text-center" style="width: 11rem;">

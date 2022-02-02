@@ -123,7 +123,7 @@ class Create extends BaseController
                 $novel_format = file_get_contents($file->getTempName());
                 $novel_items  = explode('<|endofsection|>', $novel_format);
 
-                $post_data['prompt']       = str_replace('&nbsp;', ' ', preg_replace('/<\/?(font|span|script)[^>]*>/u', '', preg_replace('/\<br\/?\>/u', "\n", $novel_items[0])));
+                $post_data['prompt']       = str_replace('&nbsp;', ' ', strip_tags(preg_replace('/\<br\/?\>/u', "\n", $novel_items[0])));
                 $post_data['memory']       = $novel_items[1];
                 $post_data['authors_note'] = $novel_items[2];
 

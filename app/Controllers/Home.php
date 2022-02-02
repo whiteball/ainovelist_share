@@ -165,7 +165,7 @@ class Home extends BaseController
 
             $novel = preg_replace('/\r\n|\r/u', "\n", "{$main}<|endofsection|>{$promptData->memory}<|endofsection|>{$promptData->authors_note}<|endofsection|>{$param}<|endofsection|>{$char_book}<|endofsection|>{$promptData->ng_words}<|endofsection|>{$promptData->title}<|endofsection|><|endofsection|>{$scripts}");
 
-            return $this->response->download($promptData->title . '.novel', $novel);
+            return $this->response->download(strip_tags($promptData->title) . '.novel', $novel);
         }
 
         return view('prompt', ['prompt' => $promptData, 'author' => $userData->screen_name, 'tags' => $tagResult]);
