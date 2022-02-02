@@ -15,7 +15,7 @@
 	<div class="mb-3 border rounded p-2">
 		<div class="mb-3">
 			<h5>タイトル</h5>
-			<div class="wrap border rounded p-2"><?= esc($prompt->title) ?></div>
+			<div class="wrap border rounded p-2"><?= esc(strip_tags($prompt->title)) ?></div>
 		</div>
 		<div class="mb-3">
 			<h5>タグ</h5>
@@ -30,7 +30,7 @@
 		</div>
 		<div class="mb-3">
 			<h5>作者</h5>
-			<div class="wrap border rounded p-2"><a class="btn btn-outline-secondary" href="<?= site_url('user/' . $prompt->user_id)?>"><?= esc($author) ?></a></div>
+			<div class="wrap border rounded p-2"><a class="btn btn-outline-secondary" href="<?= site_url('user/' . $prompt->user_id) ?>"><?= esc($author) ?></a></div>
 		</div>
 		<div class="mb-3">
 			<h5>説明</h5>
@@ -41,50 +41,91 @@
 			<div class="wrap border rounded p-2"><?= nl2br(str_replace(' ', '&nbsp;', esc($prompt->prompt))) ?></div>
 		</div>
 	</div>
-	<?php if (! (empty($prompt->memory) && empty($prompt->authors_note) && empty($prompt->ng_words))) : ?>
+	<?php if (!(empty($prompt->memory) && empty($prompt->authors_note) && empty($prompt->ng_words) && empty($prompt->char_book) && empty($prompt->script))) : ?>
 		<div class="mb-3 border rounded p-2">
-			<?php if (! empty($prompt->memory)) : ?>
-				<div class="mb-3">
-					<h5>メモリ</h5>
-					<div class="wrap border rounded p-2"><?= nl2br(str_replace(' ', '&nbsp;', esc($prompt->memory))) ?></div>
-				</div>
-			<?php endif ?>
-			<?php if (! empty($prompt->authors_note)) : ?>
-				<div class="mb-3">
-					<h5>脚注</h5>
-					<div class="wrap border rounded p-2"><?= nl2br(str_replace(' ', '&nbsp;', esc($prompt->authors_note))) ?></div>
-				</div>
-			<?php endif ?>
-			<?php if (! empty($prompt->ng_words)) : ?>
-				<div class="mb-3">
-					<h5>禁止ワード</h5>
-					<div class="wrap border rounded p-2"><?= nl2br(str_replace(' ', '&nbsp;', esc($prompt->ng_words))) ?></div>
-				</div>
-			<?php endif ?>
-		</div>
-	<?php endif ?>
-	<?php if (! empty($prompt->char_book)) : ?>
-		<div class="mb-3 border rounded p-2">
-			<h5>キャラクターブック</h5>
-			<?php foreach ($prompt->char_book as $char_book) : ?>
-				<div>
-					<h6 class="wrap">タグ: <?= esc($char_book['tag']) ?></h6>
-					<div class="wrap border rounded p-2"><?= nl2br(str_replace(' ', '&nbsp;', esc($char_book['content']))) ?></div>
-				</div>
-			<?php endforeach ?>
-		</div>
-	<?php endif ?>
-	<?php if (! empty($prompt->script)) : ?>
-		<div class="mb-3 border rounded p-2">
-			<h5>スクリプト</h5>
-			<?php $type_list = ['script_in' => '入力文の置換', 'script_out' => '出力文の置換', 'script_in_pin' => '最新入力文の確定置換', 'script_in_regex' => '入力文の置換（正規表現）', 'script_out_regex' => '出力文の置換（正規表現）', 'script_in_pin_regex' => '最新入力文の確定置換（正規表現）', 'script_none' => '使用しない'] ?>
-			<?php foreach ($prompt->script as $script) : ?>
-				<div class="border rounded p-2">
-					<div class="border-bottom p-1">種類: <?= esc($type_list[$script['type']]) ?></div>
-					<div class="wrap border-bottom p-1">IN: <?= esc($script['in']) ?></div>
-					<div class="wrap border-bottom p-1">OUT: <?= esc($script['out']) ?></div>
-				</div>
-			<?php endforeach ?>
+			<div class="accordion" id="detail-section">
+				<?php if (!empty($prompt->memory)) : ?>
+					<div class="accordion-item">
+						<h2 class="accordion-header" id="memory-head">
+							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#memory-body" aria-expanded="false" aria-controls="memory-body">
+								メモリ
+							</button>
+						</h2>
+						<div id="memory-body" class="accordion-collapse collapse" aria-labelledby="memory-head">
+							<div class="accordion-body">
+								<?= nl2br(str_replace(' ', '&nbsp;', esc($prompt->memory))) ?>
+							</div>
+						</div>
+					</div>
+				<?php endif ?>
+				<?php if (!empty($prompt->authors_note)) : ?>
+					<div class="accordion-item">
+						<h2 class="accordion-header" id="authors-note-head">
+							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#authors-note-body" aria-expanded="false" aria-controls="authors-note-body">
+								脚注
+							</button>
+						</h2>
+						<div id="authors-note-body" class="accordion-collapse collapse" aria-labelledby="authors-note-head">
+							<div class="accordion-body">
+								<?= nl2br(str_replace(' ', '&nbsp;', esc($prompt->authors_note))) ?>
+							</div>
+						</div>
+					</div>
+				<?php endif ?>
+				<?php if (!empty($prompt->ng_words)) : ?>
+					<div class="accordion-item">
+						<h2 class="accordion-header" id="ng-words-head">
+							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ng-words-body" aria-expanded="false" aria-controls="ng-words-body">
+								禁止ワード
+							</button>
+						</h2>
+						<div id="ng-words-body" class="accordion-collapse collapse" aria-labelledby="ng-words-head">
+							<div class="accordion-body"><?= nl2br(str_replace(' ', '&nbsp;', esc($prompt->ng_words))) ?></div>
+							</div>
+						</div>
+					</div>
+				<?php endif ?>
+				<?php if (!empty($prompt->char_book)) : ?>
+					<div class="accordion-item">
+						<h2 class="accordion-header" id="char-book-head">
+							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#char-book-body" aria-expanded="false" aria-controls="char-book-body">
+								キャラクターブック
+							</button>
+						</h2>
+						<div id="char-book-body" class="accordion-collapse collapse" aria-labelledby="char-book-head">
+							<div class="accordion-body">
+								<?php foreach ($prompt->char_book as $char_book) : ?>
+									<div>
+										<h6 class="wrap">タグ: <?= esc($char_book['tag']) ?></h6>
+										<div class="wrap border rounded p-2"><?= nl2br(str_replace(' ', '&nbsp;', esc($char_book['content']))) ?></div>
+									</div>
+								<?php endforeach ?>
+							</div>
+						</div>
+					</div>
+				<?php endif ?>
+				<?php if (!empty($prompt->script)) : ?>
+					<div class="accordion-item">
+						<h2 class="accordion-header" id="script-head">
+							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#script-body" aria-expanded="false" aria-controls="script-body">
+								スクリプト
+							</button>
+						</h2>
+						<div id="script-body" class="accordion-collapse collapse" aria-labelledby="script-head">
+							<div class="accordion-body">
+								<?php $type_list = ['script_in' => '入力文の置換', 'script_out' => '出力文の置換', 'script_in_pin' => '最新入力文の確定置換', 'script_in_regex' => '入力文の置換（正規表現）', 'script_out_regex' => '出力文の置換（正規表現）', 'script_in_pin_regex' => '最新入力文の確定置換（正規表現）', 'script_none' => '使用しない'] ?>
+								<?php foreach ($prompt->script as $script) : ?>
+									<div class="border rounded p-2">
+										<div class="border-bottom p-1">種類: <?= esc($type_list[$script['type']]) ?></div>
+										<div class="wrap border-bottom p-1">IN: <?= esc($script['in']) ?></div>
+										<div class="wrap border-bottom p-1">OUT: <?= esc($script['out']) ?></div>
+									</div>
+								<?php endforeach ?>
+							</div>
+						</div>
+					</div>
+				<?php endif ?>
+			</div>
 		</div>
 	<?php endif ?>
 
