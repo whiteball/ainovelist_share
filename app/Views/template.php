@@ -15,7 +15,7 @@
 	<div class="container">
 		<footer class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mt-4 border-top">
 			<div class="col-1"></div>
-			<div class="col-10 col-md-auto mt-2 justify-content-center mt-md-0" style="font-size: 75%;color: gray;">
+			<div class="col-10 col-md-auto mt-2 justify-content-center mt-md-0 text-center" style="font-size: 75%;color: gray;">
 				AIのべりすと プロンプト共有(仮)
 			</div>
 			<div class="col-1"></div>
