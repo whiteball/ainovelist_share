@@ -74,7 +74,7 @@ class Tag extends BaseController
 
     public function search()
     {
-        $query = preg_replace('/\s+/u', ' ', $this->request->getGet('q') ?? '');
+        $query = trim(preg_replace('/\s+/u', ' ', $this->request->getGet('q') ?? ''));
         if (empty($query)) {
             return redirect('/');
         }
@@ -122,7 +122,8 @@ class Tag extends BaseController
         }
 
         return view('tag/search', [
-            'tag_name'      => $query,
+            'query'         => $query,
+            'search_mode'   => 'tag',
             'prompts'       => $prompts,
             'tags'          => $tags,
             'count'         => $count,

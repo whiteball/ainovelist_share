@@ -186,4 +186,42 @@ class Home extends BaseController
 
         return redirect('/');
     }
+
+    public function search()
+    {
+        $query = trim(preg_replace('/\s+/u', ' ', $this->request->getGet('q') ?? ''));
+        if (empty($query)) {
+            return redirect('/');
+        }
+
+        $page = (int) ($this->request->getGet('p') ?? 1);
+
+        /** @var Prompt */
+        $prompt = model(Prompt::class);
+        $result = $prompt->captionSearch($query, self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1));
+
+        $count   = $result['count'];
+        $prompts = $result['result'];
+        $tags    = [];
+        if (empty($prompts)) {
+            $count   = 0;
+            $prompts = [];
+        } else {
+            /** @var Tag */
+            $tag  = model(Tag::class);
+            $tags = $tag->findByPrompt($prompts);
+        }
+
+        return view('tag/search', [
+            'query'         => $query,
+            'search_mode'   => 'caption',
+            'prompts'       => $prompts,
+            'tags'          => $tags,
+            'count'         => $count,
+            'page'          => $page,
+            'last_page'     => (int) ceil($count / self::ITEM_PER_PAGE),
+            'page_base_url' => 'search/caption/?q=' . $query,
+        ]);
+
+    }
 }
