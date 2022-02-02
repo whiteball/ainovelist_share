@@ -156,9 +156,9 @@
 									<option value="script_in" <?= set_select('script[' . $i . '][type]', 'script_in', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_in') : true) ?>>入力文の置換</option>
 									<option value="script_out" <?= set_select('script[' . $i . '][type]', 'script_out', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_out') : false) ?>>出力文の置換</option>
 									<option value="script_in_pin" <?= set_select('script[' . $i . '][type]', 'script_in_pin', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_in_pin') : false) ?>>最新入力文の確定置換</option>
-									<option value="script_in_regexp" <?= set_select('script[' . $i . '][type]', 'script_in_regexp', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_in_regexp') : false) ?>>入力文の置換（正規表現）</option>
-									<option value="script_out_regexp" <?= set_select('script[' . $i . '][type]', 'script_out_regexp', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_out_regexp') : false) ?>>出力文の置換（正規表現）</option>
-									<option value="script_in_pin_regexp" <?= set_select('script[' . $i . '][type]', 'script_in_pin_regexp', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_in_pin_regexp') : false) ?>>最新入力文の確定置換（正規表現）</option>
+									<option value="script_in_regex" <?= set_select('script[' . $i . '][type]', 'script_in_regex', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_in_regex') : false) ?>>入力文の置換（正規表現）</option>
+									<option value="script_out_regex" <?= set_select('script[' . $i . '][type]', 'script_out_regex', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_out_regex') : false) ?>>出力文の置換（正規表現）</option>
+									<option value="script_in_pin_regex" <?= set_select('script[' . $i . '][type]', 'script_in_pin_regex', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_in_pin_regex') : false) ?>>最新入力文の確定置換（正規表現）</option>
 									<option value="script_none" <?= set_select('script[' . $i . '][type]', 'script_none', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_none') : false) ?>>使用しない</option>
 								</select>
 								<?= $validation->showError('script[' . $i . '][type]') ?>

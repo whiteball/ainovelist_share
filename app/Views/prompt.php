@@ -77,7 +77,7 @@
 	<?php if (! empty($prompt->script)) : ?>
 		<div class="mb-3 border rounded p-2">
 			<h5>スクリプト</h5>
-			<?php $type_list = ['script_in' => '入力文の置換', 'script_out' => '出力文の置換', 'script_in_pin' => '最新入力文の確定置換', 'script_in_regexp' => '入力文の置換（正規表現）', 'script_out_regexp' => '出力文の置換（正規表現）', 'script_in_pin_regexp' => '最新入力文の確定置換（正規表現）', 'script_none' => '使用しない'] ?>
+			<?php $type_list = ['script_in' => '入力文の置換', 'script_out' => '出力文の置換', 'script_in_pin' => '最新入力文の確定置換', 'script_in_regex' => '入力文の置換（正規表現）', 'script_out_regex' => '出力文の置換（正規表現）', 'script_in_pin_regex' => '最新入力文の確定置換（正規表現）', 'script_none' => '使用しない'] ?>
 			<?php foreach ($prompt->script as $script) : ?>
 				<div class="border rounded p-2">
 					<div class="border-bottom p-1">種類: <?= esc($type_list[$script['type']]) ?></div>
