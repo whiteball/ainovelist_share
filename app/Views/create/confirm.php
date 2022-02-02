@@ -80,7 +80,10 @@
 	<?= form_open() ?>
 	<?= csrf_field() ?>
 	<?= form_hidden('send', 1) ?>
-	<button type="submit" class="btn btn-primary">投稿する</button>
+	<div class="text-center">
+		<a href="<?= site_url($return_url . '?back=1') ?>" class="btn btn-outline-secondary me-5">戻る</a>
+		<button type="submit" class="btn btn-primary">投稿する</button>
+	</div>
 	<?= form_close() ?>
 </main>
 <?= $this->endSection() ?>

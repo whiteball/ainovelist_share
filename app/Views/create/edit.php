@@ -38,7 +38,7 @@
 		</script>
 	</div>
 	<?= form_close() ?>
-	<?= form_open() ?>
+	<?= form_open('edit/' . $prompt_id) ?>
 	<?= csrf_field() ?>
 	<div class="mb-3 border rounded p-2">
 		<div class="mb-3">
@@ -222,7 +222,9 @@
 		</script>
 	</div>
 
-	<button type="submit" class="btn btn-primary">投稿内容確認</button>
+	<div class="text-center">
+		<button type="submit" class="btn btn-primary">編集内容確認</button>
+	</div>
 	<?= form_close() ?>
 </main>
 <?= $this->endSection() ?>

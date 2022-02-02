@@ -23,7 +23,7 @@
 	</ul>
 	<div class="tab-content" id="myTabContent">
 		<div class="tab-pane<?= $default_pane === '' ? ' show active' : '' ?>" id="direct" role="tabpanel" aria-labelledby="direct-tab">
-			<?= form_open() ?>
+			<?= form_open('create') ?>
 			<?= csrf_field() ?>
 			<div class="mb-3 border border-top-0 rounded-bottom p-2">
 				<div class="mb-3">
@@ -207,7 +207,9 @@
 				</script>
 			</div>
 
-			<button type="submit" class="btn btn-primary">投稿内容確認</button>
+			<div class="text-center">
+				<button type="submit" class="btn btn-primary">投稿内容確認</button>
+			</div>
 			<?= form_close() ?>
 		</div>
 		<div class="tab-pane<?= $default_pane === 'file' ? ' show active' : '' ?>" id="file-upload" role="tabpanel" aria-labelledby="file-upload-tab">
@@ -265,7 +267,9 @@
 					</script>
 				</div>
 			</div>
-			<button type="submit" class="btn btn-primary">投稿内容確認</button>
+			<div class="text-center">
+				<button type="submit" class="btn btn-primary">投稿内容確認</button>
+			</div>
 			<?= form_close() ?>
 		</div>
 	</div>

@@ -160,7 +160,7 @@ class Create extends BaseController
                             continue;
                         }
 
-                        $script_item = explode('<|sp|>', $line);
+                        $script_item           = explode('<|sp|>', $line);
                         $post_data['script'][] = [
                             'id'   => $counter,
                             'type' => $script_item[0] ?? '',
@@ -179,7 +179,7 @@ class Create extends BaseController
                     $_SESSION['prompt_data'] = $post_data;
                     $this->session->markAsTempdata('prompt_data', 3600);
 
-                    return view('create/confirm', ['post_data' => $post_data]);
+                    return view('create/confirm', ['post_data' => $post_data, 'return_url' => 'create/file']);
                 }
 
                 $file_verify_error = true;
@@ -199,10 +199,28 @@ class Create extends BaseController
             $_SESSION['prompt_data'] = $post_data;
             $this->session->markAsTempdata('prompt_data', 3600);
 
-            return view('create/confirm', ['post_data' => $post_data]);
+            return view('create/confirm', ['post_data' => $post_data, 'return_url' => 'create']);
         }
 
-        return view('create/index', ['default_pane' => $default_pane, 'validation' => service('validation'), 'file_verify_error' => $file_verify_error ?? false]);
+        $data = null;
+        if ($this->request->getGet('back') === '1') {
+            if ($default_pane === 'file') {
+                $data = [
+                    'tags-file' => $_SESSION['prompt_data']['tags'],
+                    'description-file' => $_SESSION['prompt_data']['description'],
+                    'r18-file' => $_SESSION['prompt_data']['r18'],
+                ];
+            } else {
+                $data = $_SESSION['prompt_data'];
+            }
+        }
+
+        return view('create/index', [
+            'default_pane'      => $default_pane,
+            'validation'        => service('validation'),
+            'file_verify_error' => $file_verify_error ?? false,
+            'post_data'         => $data,
+        ]);
     }
 
     public function edit($prompt_id)
@@ -338,11 +356,13 @@ class Create extends BaseController
             $_SESSION['prompt_edit_data'] = $post_data;
             $this->session->markAsTempdata('prompt_edit_data', 3600);
 
-            return view('create/confirm', ['post_data' => $post_data]);
+            return view('create/confirm', ['post_data' => $post_data, 'return_url' => 'edit/' . $prompt_id]);
         }
 
         if ($this->isPost()) {
             $data = null;
+        } elseif ($this->request->getGet('back') === '1') {
+            $data = $_SESSION['prompt_edit_data'];
         } else {
             $data['script']    = json_decode($data['scripts'], JSON_OBJECT_AS_ARRAY);
             $data['char_book'] = json_decode($data['character_book'], JSON_OBJECT_AS_ARRAY);
