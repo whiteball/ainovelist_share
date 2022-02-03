@@ -6,7 +6,6 @@ $query_lmode = preg_replace('/(^|&|\?)(p=\d+|nmode=\w)/u', '', $uri->getQuery())
 $current_url = str_replace(index_page(), '', implode('/', $uri->getSegments())) . '?';
 $current_url_lmode = $current_url . ($query_lmode ? ($query_lmode . '&') : '');
 $current_url .= $query ? ($query . '&') : '';
-$nsfw_mode = $_SESSION['nsfw_mode'] ?? 's';
 ?>
 
 <?php if (isset($_SESSION['nsfw_mode_confirm'])) : ?>

@@ -128,6 +128,38 @@
 			</div>
 		</div>
 	<?php endif ?>
-
+	<?php if ($prompt->r18 === '1' && ($_SESSION['nsfw_mode'] ?? 's') === 's') : ?>
+		<?php
+		$uri = current_url(true);
+		$query = preg_replace('/(^|&|\?)(p=\d+|[nl]mode=\w)/u', '', $uri->getQuery());
+		$current_url = str_replace(index_page(), '', implode('/', $uri->getSegments())) . '?' . ($query ? ($query . '&') : '');
+		?>
+		<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#nsfw-modal" style="display: none;" id="nsfw-button"></button>
+		<div class="modal" id="nsfw-modal" tabindex="-1" aria-labelledby="nsfw-modal-label" aria-hidden="true">
+			<div class="modal-dialog modal-fullscreen">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="nsfw-modal-label">R-18 (NSFW) 表示確認</h4>
+					</div>
+					<div class="modal-body text-center">
+						<div class="fs-4">このページにはR-18 (NSFW)の内容を含みます。<br>閲覧を続けますか？</div>
+						<hr>
+						<div class="row">
+							<div class="col">
+								<a type="button" class="btn btn-secondary me-3" href="javascript:history.back()">戻る</a>
+								<a class="btn btn-primary ms-3" href="<?= site_url($current_url . '?nmode=n') ?>">続ける</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				const ev = new Event('click')
+				document.getElementById('nsfw-button').dispatchEvent(ev)
+			})
+		</script>
+	<?php endif ?>
 </main>
 <?= $this->endSection() ?>
