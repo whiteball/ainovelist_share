@@ -34,7 +34,7 @@
 				<div class="mb-3">
 					<label for="tags" class="form-label">タグ <span class="text-danger" style="font-size:80%">(必須)</span></label>
 					<input type="text" class="form-control" id="tags" name="tags" value="<?= set_value('tags', isset($post_data['tags']) ? implode(' ', $post_data['tags']) : '') ?>" maxlength="1024">
-					<div style="font-size: 75%;">各タグは半角または全角スペースで区切ってください</div>
+					<div style="font-size: 75%;">各タグは半角または全角スペースで区切ってください。タグの個数には制限はありません。</div>
 					<?= $validation->showError('tags') ?>
 				</div>
 				<div class="mb-3">
@@ -70,6 +70,30 @@
 						document.addEventListener('DOMContentLoaded', toggleR18Button)
 						document.getElementById('r18').addEventListener('click', toggleR18Button)
 					</script>
+					<input class="btn-check" type="checkbox" value="1" id="draft" name="draft" <?= set_checkbox('draft', '1', isset($post_data['draft']) ? ($post_data['draft'] === '1') : false) ?> autocomplete="off">
+					<label class="btn btn-success ms-4" for="draft" id="draft-text">
+						現在は公開設定
+					</label>
+					<?= $validation->showError('draft') ?>
+					<script>
+						const toggleDraftButton = function() {
+							const check = document.getElementById('draft')
+							const text = document.getElementById('draft-text')
+							if (check.checked) {
+								text.classList.add('btn-secondary')
+								text.classList.remove('btn-success')
+								text.innerText = '現在は非公開状設定'
+							} else {
+								text.classList.remove('btn-secondary')
+								text.classList.add('btn-success')
+								text.innerText = '現在は公開設定'
+							}
+						}
+						document.addEventListener('DOMContentLoaded', toggleDraftButton)
+						document.getElementById('draft').addEventListener('click', toggleDraftButton)
+					</script>
+					<div class="mt-2" style="font-size: 75%;">R-18設定にすると、トップページや検索の「全年齢」の一覧には表示されません。</div>
+					<div class="mt-1" style="font-size: 75%;">非公開設定にすると、公開状態に変更するまでトップページや検索の一覧には表示されません。</div>
 				</div>
 			</div>
 			<div class="mb-3 border rounded p-2">
@@ -265,6 +289,30 @@
 						document.addEventListener('DOMContentLoaded', toggleR18Button2)
 						document.getElementById('r18-file').addEventListener('click', toggleR18Button2)
 					</script>
+					<input class="btn-check" type="checkbox" value="1" id="draft-file" name="draft-file" <?= set_checkbox('draft-file', '1', isset($post_data['draft-file']) ? ($post_data['draft-file'] === '1') : false) ?> autocomplete="off">
+					<label class="btn btn-success ms-4" for="draft-file" id="draft-file-text">
+						現在は公開設定
+					</label>
+					<?= $validation->showError('draft-file') ?>
+					<script>
+						const toggleDraftFileButton = function() {
+							const check = document.getElementById('draft-file')
+							const text = document.getElementById('draft-file-text')
+							if (check.checked) {
+								text.classList.add('btn-secondary')
+								text.classList.remove('btn-success')
+								text.innerText = '現在は非公開状設定'
+							} else {
+								text.classList.remove('btn-secondary')
+								text.classList.add('btn-success')
+								text.innerText = '現在は公開設定'
+							}
+						}
+						document.addEventListener('DOMContentLoaded', toggleDraftFileButton)
+						document.getElementById('draft-file').addEventListener('click', toggleDraftFileButton)
+					</script>
+					<div class="mt-2" style="font-size: 75%;">R-18設定にすると、トップページや検索の「全年齢」の一覧には表示されません。</div>
+					<div class="mt-1" style="font-size: 75%;">非公開設定にすると、公開状態に変更するまでトップページや検索の一覧には表示されません。</div>
 				</div>
 			</div>
 			<div class="text-center">

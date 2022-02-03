@@ -32,6 +32,7 @@ class Create extends BaseController
                 'authors_note'   => $post_data['authors_note'],
                 'ng_words'       => $post_data['ng_words'],
                 'r18'            => (! empty($post_data['r18']) && $post_data['r18'] === '1') ? 1 : 0,
+                'draft'          => (! empty($post_data['draft']) && $post_data['draft'] === '1') ? 1 : 0,
                 'scripts'        => json_encode(empty($post_data['script']) ? [] : $post_data['script'], JSON_UNESCAPED_UNICODE),
                 'character_book' => json_encode(empty($post_data['char_book']) ? [] : $post_data['char_book'], JSON_UNESCAPED_UNICODE),
             ]);
@@ -68,6 +69,7 @@ class Create extends BaseController
             'authors_note' => ['label' => '脚注', 'rules' => ['max_length[2000]']],
             'ng_words'     => ['label' => 'NGワード', 'rules' => ['max_length[2000]']],
             'r18'          => ['label' => 'R-18設定', 'rules' => ['permit_empty']],
+            'draft'        => ['label' => '公開設定', 'rules' => ['permit_empty']],
             'script.*'     => ['label' => 'スクリプト', 'rules' => [function ($item) {
                 if (empty($item)) {
                     return true;
@@ -113,11 +115,13 @@ class Create extends BaseController
                 'tags-file' => ['label' => 'タグ', 'rules' => ['required', static fn ($value) => ! empty(array_filter(explode(' ', preg_replace('/\s+/u', ' ', $value)), static fn ($val) => $val !== ''))]],
                 'description-file' => ['label' => '説明', 'rules' => ['required', 'max_length[2000]']],
                 'r18-file' => ['label' => 'R-18設定', 'rules' => ['permit_empty']],
+                'draft-file' => ['label' => '公開設定', 'rules' => ['permit_empty']],
             ])) {
                 $post_data = [];
 
                 $post_data['description'] = $this->request->getPost('description-file');
                 $post_data['r18']         = $this->request->getPost('r18-file');
+                $post_data['draft']         = $this->request->getPost('draft-file');
 
                 $file         = $this->request->getFile('novel_file');
                 $novel_format = file_get_contents($file->getTempName());
@@ -185,7 +189,7 @@ class Create extends BaseController
                 $file_verify_error = true;
             }
         } elseif ($this->isPost() && $this->validate($validation_rule)) {
-            $post_data = $this->request->getPost(['title', 'tags', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'r18', 'script', 'char_book']);
+            $post_data = $this->request->getPost(['title', 'tags', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'script', 'char_book', 'r18', 'draft']);
             if (isset($post_data['char_book'])) {
                 $post_data['char_book'] = array_filter($post_data['char_book'], static fn ($char_book) => ! empty($char_book['tag']));
             }
@@ -209,6 +213,7 @@ class Create extends BaseController
                     'tags-file' => $_SESSION['prompt_data']['tags'],
                     'description-file' => $_SESSION['prompt_data']['description'],
                     'r18-file' => $_SESSION['prompt_data']['r18'],
+                    'draft-file' => $_SESSION['prompt_data']['draft'],
                 ];
             } else {
                 $data = $_SESSION['prompt_data'];
@@ -263,6 +268,7 @@ class Create extends BaseController
                 'authors_note'   => $post_data['authors_note'],
                 'ng_words'       => $post_data['ng_words'],
                 'r18'            => empty($post_data['r18']) ? 0 : 1,
+                'draft'          => empty($post_data['draft']) ? 0 : 1,
                 'scripts'        => json_encode(empty($post_data['script']) ? [] : $post_data['script'], JSON_UNESCAPED_UNICODE),
                 'character_book' => json_encode(empty($post_data['char_book']) ? [] : $post_data['char_book'], JSON_UNESCAPED_UNICODE),
             ]);
@@ -307,6 +313,7 @@ class Create extends BaseController
             'authors_note' => ['label' => '脚注', 'rules' => ['max_length[2000]']],
             'ng_words' => ['label' => 'NGワード', 'rules' => ['max_length[2000]']],
             'r18' => ['label' => 'R-18設定', 'rules' => ['permit_empty']],
+            'draft' => ['label' => '公開設定', 'rules' => ['permit_empty']],
             'script.*' => ['label' => 'スクリプト', 'rules' => [function ($item) {
                 if (empty($item)) {
                     return true;
@@ -342,7 +349,7 @@ class Create extends BaseController
                 return true;
             }]],
         ])) {
-            $post_data = $this->request->getPost(['title', 'tags', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'r18', 'script', 'char_book']);
+            $post_data = $this->request->getPost(['title', 'tags', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'script', 'char_book', 'r18', 'draft']);
             if (isset($post_data['char_book'])) {
                 $post_data['char_book'] = array_filter($post_data['char_book'], static fn ($char_book) => ! empty($char_book['tag']));
             }

@@ -25,7 +25,7 @@
 
 	<hr>
 	<h4>投稿したプロンプト</h4>
-	<div>編集/削除はタイトルをクリック/タップしてください。<br>作品ページへ行くには投稿日をクリック/タップしてください。</div>
+	<div style="font-size: 85%;">編集/削除はタイトルをクリック/タップしてください。<br>作品ページへ行くには投稿日をクリック/タップしてください。<br>非公開設定のプロンプトはタイトルに「【非公開】」と表示しています。</div>
 	<table class="table">
 		<thead>
 			<tr>
@@ -38,7 +38,7 @@
 				<tr scope="row">
 					<td style="word-break: break-all;overflow-wrap: break-word;">
 						<div class="d-grid gap-2">
-							<a href="<?= site_url('edit/' . $prompt->id) ?>" class="btn btn-outline-success"><?= esc(strip_tags($prompt->title)) ?></a>
+							<a href="<?= site_url('edit/' . $prompt->id) ?>" class="btn btn-outline-success"><?= $prompt->draft === '1' ? '【非公開】 ' : '' ?><?= esc(strip_tags($prompt->title)) ?></a>
 						</div>
 					</td>
 					<td class="text-center" style="width: 11rem;">

@@ -124,10 +124,10 @@ class Home extends BaseController
     {
         /** @var Prompt */
         $prompt     = model(Prompt::class);
-        $promptData = $prompt->find($prompt_id);
+        $promptData = $prompt->where('draft', 0)->find($prompt_id);
 
         if (empty($promptData)) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('指定のプロンプトは存在しません。');
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('指定のプロンプトは存在しないか、非公開状態です。');
         }
 
         /** @var User */
