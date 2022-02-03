@@ -97,7 +97,7 @@
 					if (check.checked) {
 						text.classList.add('btn-secondary')
 						text.classList.remove('btn-success')
-						text.innerText = '現在は非公開状設定'
+						text.innerText = '現在は非公開設定'
 					} else {
 						text.classList.remove('btn-secondary')
 						text.classList.add('btn-success')
