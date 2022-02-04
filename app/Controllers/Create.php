@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Prompt;
 use App\Models\Prompt_deleted;
+use App\Models\Prompt_access;
 use App\Models\Tag;
 
 class Create extends BaseController
@@ -20,6 +21,8 @@ class Create extends BaseController
             $prompt = model(Prompt::class);
             /** @var Tag */
             $tag = model(Tag::class);
+            /** @var Prompt_access */
+            $prompt_access = model(Prompt_access::class);
 
             $db = \Config\Database::connect();
             $db->transStart();
@@ -41,6 +44,7 @@ class Create extends BaseController
                 $tag->insert(['prompt_id' => $prompt_id, 'tag_name' => $tag_name]);
             }
 
+            $prompt_access->new($prompt_id);
             $this->action_log->write($this->loginUserId, 'prompt create ' . $prompt_id . ' tag add [' . implode(' ', $post_data['tags']) . ']');
 
             $db->transComplete();

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Prompt;
+use App\Models\Prompt_access;
 use App\Models\Tag;
 use App\Models\User;
 
@@ -159,6 +160,9 @@ class Home extends BaseController
         $tag       = model(Tag::class);
         $tagResult = $tag->findByPrompt($prompt_id);
 
+        /** @var Prompt_access */
+        $prompt_access = model(Prompt_access::class);
+
         $promptData->{'char_book'} = json_decode($promptData->character_book, JSON_OBJECT_AS_ARRAY);
         $promptData->{'script'}    = json_decode($promptData->scripts, JSON_OBJECT_AS_ARRAY);
 
@@ -184,11 +188,18 @@ class Home extends BaseController
                 }
             }
 
+            if ($this->request->header('origin') === 'https://ai-novel.com') {
+                $prompt_access->countUp($prompt_id, Prompt_access::COUNT_TYPE_IMPORT);
+            } else {
+                $prompt_access->countUp($prompt_id, Prompt_access::COUNT_TYPE_DOWNLOAD);
+            }
+
             $novel = preg_replace('/\r\n|\r/u', "\n", "{$main}<|endofsection|>{$promptData->memory}<|endofsection|>{$promptData->authors_note}<|endofsection|>{$param}<|endofsection|>{$char_book}<|endofsection|>{$promptData->ng_words}<|endofsection|>{$promptData->title}<|endofsection|><|endofsection|>{$scripts}");
 
             return $this->response->download(strip_tags($promptData->title) . '.novel', $novel);
         }
 
+        $prompt_access->countUp($prompt_id, Prompt_access::COUNT_TYPE_VIEW);
         return view('prompt', ['prompt' => $promptData, 'author' => $userData->screen_name, 'tags' => $tagResult]);
     }
 
