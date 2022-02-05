@@ -48,8 +48,8 @@
 			<div class="wrap border rounded p-2"><?= nl2br(str_replace(' ', '&nbsp;', esc($prompt->description))) ?></div>
 		</div>
 		<div class="mb-3">
-			<h5>プロンプト(本文)</h5>
-			<div class="wrap border rounded p-2"><?= nl2br(str_replace(' ', '&nbsp;', esc($prompt->prompt))) ?></div>
+			<h5>プロンプト(本文)<button class="btn btn-sm copy-btn" data-target="prompt"><img alt="copy" src="<?= base_url('img/copy.svg') ?>" width="20"></button></h5>
+			<div class="wrap border rounded p-2" id="prompt-text"><?= nl2br(str_replace(' ', '&nbsp;', esc($prompt->prompt))) ?></div>
 		</div>
 	</div>
 	<?php if (!(empty($prompt->memory) && empty($prompt->authors_note) && empty($prompt->ng_words) && empty($prompt->char_book) && empty($prompt->script))) : ?>
@@ -64,7 +64,14 @@
 						</h2>
 						<div id="memory-body" class="accordion-collapse collapse" aria-labelledby="memory-head">
 							<div class="accordion-body">
-								<?= nl2br(str_replace(' ', '&nbsp;', esc($prompt->memory))) ?>
+								<div class="row">
+									<div class="col-12">
+										<div class="position-relative">
+											<button class="btn btn-sm copy-btn position-absolute top-0 end-0" data-target="memory"><img alt="copy" src="<?= base_url('img/copy.svg') ?>" width="20"></button>
+										</div>
+									</div>
+									<div class="col-11" id="memory-text"><?= nl2br(str_replace(' ', '&nbsp;', esc($prompt->memory))) ?></div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -78,7 +85,14 @@
 						</h2>
 						<div id="authors-note-body" class="accordion-collapse collapse" aria-labelledby="authors-note-head">
 							<div class="accordion-body">
-								<?= nl2br(str_replace(' ', '&nbsp;', esc($prompt->authors_note))) ?>
+								<div class="row">
+									<div class="col-12">
+										<div class="position-relative">
+											<button class="btn btn-sm copy-btn position-absolute top-0 end-0" data-target="authors-note"><img alt="copy" src="<?= base_url('img/copy.svg') ?>" width="20"></button>
+										</div>
+									</div>
+									<div class="col-11" id="authors-note-text"><?= nl2br(str_replace(' ', '&nbsp;', esc($prompt->authors_note))) ?></div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -91,7 +105,15 @@
 							</button>
 						</h2>
 						<div id="ng-words-body" class="accordion-collapse collapse" aria-labelledby="ng-words-head">
-							<div class="accordion-body"><?= nl2br(str_replace(' ', '&nbsp;', esc($prompt->ng_words))) ?></div>
+							<div class="accordion-body">
+								<div class="row">
+									<div class="col-12">
+										<div class="position-relative">
+											<button class="btn btn-sm copy-btn position-absolute top-0 end-0" data-target="ng-words"><img alt="copy" src="<?= base_url('img/copy.svg') ?>" width="20"></button>
+										</div>
+									</div>
+									<div class="col-11" id="ng-words-text"><?= nl2br(str_replace(' ', '&nbsp;', esc($prompt->ng_words))) ?></div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -107,8 +129,15 @@
 							<div class="accordion-body">
 								<?php foreach ($prompt->char_book as $char_book) : ?>
 									<div>
-										<h6 class="wrap">タグ: <?= esc($char_book['tag']) ?></h6>
-										<div class="wrap border rounded p-2"><?= nl2br(str_replace(' ', '&nbsp;', esc($char_book['content']))) ?></div>
+										<h6 class="wrap">タグ: <span id="char-tag-<?= esc($char_book['id'], 'attr') ?>-text"><?= esc($char_book['tag']) ?></span><button class="btn btn-sm copy-btn" data-target="char-tag-<?= esc($char_book['id'], 'attr') ?>"><img alt="copy" src="<?= base_url('img/copy.svg') ?>" width="18"></h6>
+										<div class="wrap border rounded p-2 row">
+											<div class="col-12">
+												<div class="position-relative">
+													<button class="btn btn-sm copy-btn position-absolute top-0 end-0" data-target="char-content-<?= esc($char_book['id'], 'attr') ?>"><img alt="copy" src="<?= base_url('img/copy.svg') ?>" width="20"></button>
+												</div>
+											</div>
+											<div class="col-11" id="char-content-<?= esc($char_book['id'], 'attr') ?>-text"><?= nl2br(str_replace(' ', '&nbsp;', esc($char_book['content']))) ?></div>
+										</div>
 									</div>
 								<?php endforeach ?>
 							</div>
@@ -127,9 +156,20 @@
 								<?php $type_list = ['script_in' => '入力文の置換', 'script_out' => '出力文の置換', 'script_in_pin' => '最新入力文の確定置換', 'script_in_regex' => '入力文の置換（正規表現）', 'script_out_regex' => '出力文の置換（正規表現）', 'script_in_pin_regex' => '最新入力文の確定置換（正規表現）', 'script_none' => '使用しない'] ?>
 								<?php foreach ($prompt->script as $script) : ?>
 									<div class="border rounded p-2">
-										<div class="border-bottom p-1">種類: <?= esc($type_list[$script['type']]) ?></div>
-										<div class="wrap border-bottom p-1">IN: <?= esc($script['in']) ?></div>
-										<div class="wrap border-bottom p-1">OUT: <?= esc($script['out']) ?></div>
+										<table class="table">
+											<tr>
+												<th scope="row" width="85">種類
+												<td><?= esc($type_list[$script['type']]) ?></td>
+											</tr>
+											<tr>
+												<th scope="row">IN<button class="btn btn-sm copy-btn" data-target="script-in-<?= esc($script['id'], 'attr') ?>"><img alt="copy" src="<?= base_url('img/copy.svg') ?>" width="16"></th></th>
+												<td id="script-in-<?= esc($script['id'], 'attr') ?>-text"><?= esc($script['in']) ?></td>
+											</tr>
+											<tr>
+												<th scope="row">OUT<button class="btn btn-sm copy-btn" data-target="script-out-<?= esc($script['id'], 'attr') ?>"><img alt="copy" src="<?= base_url('img/copy.svg') ?>" width="16"></th>
+												<td id="script-out-<?= esc($script['id'], 'attr') ?>-text"><?= esc($script['out']) ?></td>
+											</tr>
+										</table>
 									</div>
 								<?php endforeach ?>
 							</div>
@@ -172,5 +212,23 @@
 			})
 		</script>
 	<?php endif ?>
+	<div id="copy-area" style="display: none;"><textarea id="copy-area-text"></textarea></div>
+	<script>
+		for (const elem of document.querySelectorAll('.copy-btn')) {
+			elem.addEventListener('click',function () {
+				const target = this.getAttribute('data-target')
+				if (navigator.clipboard) {
+					navigator.clipboard.writeText(document.getElementById(target + '-text').innerText)
+				} else {
+					const copyArea = document.getElementById('copy-area'), textArea = document.getElementById('copy-area-text')
+					copyArea.style.display = 'block'
+					textArea.innerHtml = document.getElementById(target + '-text').innerHtml
+					textArea.select()
+					document.execCommand('copy')
+					copyArea.style.display = 'none'
+				}
+			})
+		}
+	</script>
 </main>
 <?= $this->endSection() ?>
