@@ -3,9 +3,9 @@
 namespace App\Controllers;
 
 use App\Models\Prompt;
-use App\Models\Prompt_deleted;
 use App\Models\Prompt_access;
 use App\Models\Tag;
+use App\Libraries\Prompt as PromptLib;
 
 class Create extends BaseController
 {
@@ -390,36 +390,13 @@ class Create extends BaseController
 
         /** @var Prompt */
         $prompt = model(Prompt::class);
-        $data   = $prompt->asArray()->find($prompt_id);
-        if (empty($data) || (int) $data['user_id'] !== (int) $this->loginUserId) {
+        $data   = $prompt->find($prompt_id);
+        if (empty($data) || (int) $data->user_id !== (int) $this->loginUserId) {
             return redirect('config');
         }
 
-        /** @var Prompt_deleted */
-        $prompt_deleted = model(Prompt_deleted::class);
-
-        /** @var Tag */
-        $tag = model(Tag::class);
-
-        $tag_ids = [];
-        $tag_names = [];
-        foreach ($tag->where('prompt_id', $prompt_id)->findAll() as $row) {
-            $tag_ids[] = $row->id;
-            $tag_names[] = $row->tag_name;
-        }
-
-        $db = \Config\Database::connect();
-        $db->transStart();
-        $prompt_deleted->save($data);
-        $prompt->delete($prompt_id);
-        if (! empty($tag_ids)) {
-            $tag->delete($tag_ids);
-        }
-
-        $this->action_log->write($this->loginUserId, 'prompt delete ' . $prompt_id . ' tag delete [' . implode(' ', $tag_names) . ']');
-        $db->transComplete();
-
-        if ($db->transStatus()) {
+        $prompt_lib = new PromptLib();
+        if ($prompt_lib->delete($data, $this->loginUserId)) {
             return view('create/complete_delete');
         }
 
