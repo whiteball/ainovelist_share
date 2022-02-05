@@ -5,12 +5,23 @@
 <main class="container" id="create-confirm">
 	<h1 class="h3 mb-3 fw-normal">プロンプト詳細</h1>
 	<div class="mb-3 border rounded p-2">
-		<a class="btn btn-secondary" href="<?= site_url('prompt_download/' . $prompt->id) ?>">
-			novelファイルをダウンロード
-		</a>
-		<a class="btn btn-secondary ms-3" href="https://ai-novel.com/prompt_load.php?uri=<?= urlencode(site_url('prompt_download/' . $prompt->id)) ?>" target="_blank" rel="noopener noreferrer">
-			AIのべりすとで読み込む
-		</a>
+		<div class="row">
+			<div class="col-12 col-md-8">
+				<a class="btn btn-secondary" href="<?= site_url('prompt_download/' . $prompt->id) ?>">
+					novelファイルをダウンロード
+				</a>
+				<a class="btn btn-secondary ms-3" href="https://ai-novel.com/prompt_load.php?uri=<?= urlencode(site_url('prompt_download/' . $prompt->id)) ?>" target="_blank" rel="noopener noreferrer">
+					AIのべりすとで読み込む
+				</a>
+			</div>
+			<div class="col-12 col-md-4 text-md-end" style="font-size: 75%;">
+				<ul class="list-group list-group-horizontal">
+					<li class="list-group-item flex-fill text-secondary" style="border: none;">View: <?= esc($prompt->view) ?></li>
+					<li class="list-group-item flex-fill text-secondary" style="border: none;">Download: <?= esc($prompt->download) ?></li>
+					<li class="list-group-item flex-fill text-secondary" style="border: none;">Import: <?= esc($prompt->import) ?></li>
+				</ul>
+			</div>
+		</div>
 	</div>
 	<div class="mb-3 border rounded p-2">
 		<div class="mb-3">

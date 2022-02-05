@@ -48,7 +48,7 @@ class Home extends BaseController
             'password_confirm' => ['label' => 'パスワード(再入力)', 'rules' => ['required_with[password]', 'matches[password]']],
         ])) {
             /** @var User */
-            $user = model(User::class);
+            $user    = model(User::class);
             $user_id = $user->insert([
                 'login_name'  => $this->request->getPost('login_name'),
                 'screen_name' => $this->request->getPost('screen_name'),
@@ -56,6 +56,7 @@ class Home extends BaseController
             ]);
 
             $this->action_log->write($user_id, 'user create');
+
             return view('register/complete');
         }
 
@@ -98,26 +99,26 @@ class Home extends BaseController
         $user      = model(User::class);
         $loginUser = $user->find($_SESSION['login']);
 
-        $success_message = '';
+        $success_message  = '';
         $success_message2 = '';
-        $error_message2 = '';
+        $error_message2   = '';
         if ($this->isPost()) {
             if ($this->request->getPost('type') === 'change_name' && $this->validate([
                 'screen_name' => ['label' => 'ユーザー名', 'rules' => ['required', 'max_length[100]']],
             ])) {
-                $old_name = $loginUser->screen_name;
+                $old_name               = $loginUser->screen_name;
                 $loginUser->screen_name = $this->request->getPost('screen_name');
                 $user->save($loginUser);
                 $this->action_log->write($loginUser->id, 'user change screen_name ' . $old_name . ' to ' . $loginUser->screen_name);
                 $success_message = 'ユーザー名変更しました';
             }
-            
+
             if ($this->request->getPost('type') === 'change_password' && $this->validate([
                 'current_password' => ['label' => '現在のパスワード', 'rules' => ['required']],
                 'new_password' => ['label' => '新しいパスワード', 'rules' => ['required', 'min_length[12]']],
                 'new_password_confirm' => ['label' => '新しいパスワード(再入力)', 'rules' => ['required_with[new_password]', 'matches[new_password]']],
             ])) {
-                if (password_verify($this->request->getPost('current_password') , $loginUser->password)) {
+                if (password_verify($this->request->getPost('current_password'), $loginUser->password)) {
                     $loginUser->password = password_hash($this->request->getPost('new_password'), PASSWORD_DEFAULT);
                     $user->save($loginUser);
                     $this->action_log->write($loginUser->id, 'user change password');
@@ -144,9 +145,12 @@ class Home extends BaseController
 
     public function prompt($prompt_id, $asFile = false)
     {
+        /** @var Prompt_access */
+        $prompt_access = model(Prompt_access::class);
+
         /** @var Prompt */
         $prompt     = model(Prompt::class);
-        $promptData = $prompt->where('draft', 0)->find($prompt_id);
+        $promptData = $prompt->join($prompt_access->getTable(), 'id = prompt_id')->where('draft', 0)->find($prompt_id);
 
         if (empty($promptData)) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('指定のプロンプトは存在しないか、非公開状態です。');
@@ -159,9 +163,6 @@ class Home extends BaseController
         /** @var Tag */
         $tag       = model(Tag::class);
         $tagResult = $tag->findByPrompt($prompt_id);
-
-        /** @var Prompt_access */
-        $prompt_access = model(Prompt_access::class);
 
         $promptData->{'char_book'} = json_decode($promptData->character_book, JSON_OBJECT_AS_ARRAY);
         $promptData->{'script'}    = json_decode($promptData->scripts, JSON_OBJECT_AS_ARRAY);
@@ -199,7 +200,10 @@ class Home extends BaseController
             return $this->response->download(strip_tags($promptData->title) . '.novel', $novel);
         }
 
-        $prompt_access->countUp($prompt_id, Prompt_access::COUNT_TYPE_VIEW);
+        if ($prompt_access->countUp($prompt_id, Prompt_access::COUNT_TYPE_VIEW)) {
+            $promptData->view++;
+        }
+
         return view('prompt', ['prompt' => $promptData, 'author' => $userData->screen_name, 'tags' => $tagResult]);
     }
 
@@ -254,6 +258,5 @@ class Home extends BaseController
             'last_page'     => (int) ceil($count / self::ITEM_PER_PAGE),
             'page_base_url' => 'search/caption/?q=' . $query,
         ]);
-
     }
 }
