@@ -188,7 +188,7 @@ class Home extends BaseController
                 }
             }
 
-            if ($this->request->header('origin') === 'https://ai-novel.com') {
+            if (trim($this->request->header('origin')) === 'Origin: https://ai-novel.com') {
                 $prompt_access->countUp($prompt_id, Prompt_access::COUNT_TYPE_IMPORT);
             } else {
                 $prompt_access->countUp($prompt_id, Prompt_access::COUNT_TYPE_DOWNLOAD);
