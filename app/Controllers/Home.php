@@ -38,7 +38,7 @@ class Home extends BaseController
     public function register()
     {
         if ($this->_isLoggedIn()) {
-            return redirect('config');
+            return redirect('mypage');
         }
 
         if ($this->isPost() && $this->validate([
@@ -91,56 +91,7 @@ class Home extends BaseController
 
     public function config()
     {
-        if ($this->_isNotLoggedIn()) {
-            return redirect('/');
-        }
-
-        /** @var User */
-        $user      = model(User::class);
-        $loginUser = $user->find($_SESSION['login']);
-
-        $success_message  = '';
-        $success_message2 = '';
-        $error_message2   = '';
-        if ($this->isPost()) {
-            if ($this->request->getPost('type') === 'change_name' && $this->validate([
-                'screen_name' => ['label' => 'ユーザー名', 'rules' => ['required', 'max_length[100]']],
-            ])) {
-                $old_name               = $loginUser->screen_name;
-                $loginUser->screen_name = $this->request->getPost('screen_name');
-                $user->save($loginUser);
-                $this->action_log->write($loginUser->id, 'user change screen_name ' . $old_name . ' to ' . $loginUser->screen_name);
-                $success_message = 'ユーザー名変更しました';
-            }
-
-            if ($this->request->getPost('type') === 'change_password' && $this->validate([
-                'current_password' => ['label' => '現在のパスワード', 'rules' => ['required']],
-                'new_password' => ['label' => '新しいパスワード', 'rules' => ['required', 'min_length[12]']],
-                'new_password_confirm' => ['label' => '新しいパスワード(再入力)', 'rules' => ['required_with[new_password]', 'matches[new_password]']],
-            ])) {
-                if (password_verify($this->request->getPost('current_password'), $loginUser->password)) {
-                    $loginUser->password = password_hash($this->request->getPost('new_password'), PASSWORD_DEFAULT);
-                    $user->save($loginUser);
-                    $this->action_log->write($loginUser->id, 'user change password');
-                    $success_message2 = 'パスワード変更しました';
-                } else {
-                    $error_message2 = '現在のパスワードが違います';
-                }
-            }
-        }
-
-        /** @var Prompt */
-        $prompt  = model(Prompt::class);
-        $prompts = $prompt->where('user_id', $this->loginUserId)->findAll();
-
-        return view('config', [
-            'validation'       => service('validation'),
-            'screen_name'      => $loginUser->screen_name,
-            'success_message'  => $success_message,
-            'success_message2' => $success_message2,
-            'error_message2'   => $error_message2,
-            'prompts'          => $prompts,
-        ]);
+        return redirect('mypage');
     }
 
     public function prompt($prompt_id, $asFile = false)
@@ -214,7 +165,7 @@ class Home extends BaseController
         }
 
         if (! $this->isPost()) {
-            return redirect('config');
+            return redirect('mypage');
         }
 
         $this->action_log->write($_SESSION['login'], 'user logout');

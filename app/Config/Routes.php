@@ -52,6 +52,11 @@ $routes->get('/tags', 'Tag::list');
 $routes->get('/search/tag', 'Tag::search');
 $routes->get('/search/caption', 'Home::search');
 $routes->get('/user/(:num)', 'User::index/$1');
+$routes->get('/mypage', 'Mypage::index');
+$routes->post('/mypage', 'Mypage::index');
+$routes->get('/mypage/list', 'Mypage::list');
+$routes->get('/mypage/delete', 'Mypage::delete');
+$routes->post('/mypage/delete', 'Mypage::delete');
 
 /*
  * --------------------------------------------------------------------

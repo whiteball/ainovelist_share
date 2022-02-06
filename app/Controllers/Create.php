@@ -242,7 +242,7 @@ class Create extends BaseController
         $prompt = model(Prompt::class);
         $data   = $prompt->asArray()->find($prompt_id);
         if (empty($data) || (int) $data['user_id'] !== (int) $this->loginUserId) {
-            return redirect('config');
+            return redirect('mypage');
         }
 
         /** @var Tag */
@@ -392,7 +392,7 @@ class Create extends BaseController
         $prompt = model(Prompt::class);
         $data   = $prompt->find($prompt_id);
         if (empty($data) || (int) $data->user_id !== (int) $this->loginUserId) {
-            return redirect('config');
+            return redirect('mypage');
         }
 
         $prompt_lib = new PromptLib();
