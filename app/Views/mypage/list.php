@@ -41,7 +41,11 @@
 							</div>
 						</td>
 						<td class="text-center" style="width: 11rem;">
-							<a href="<?= site_url('prompt/' . $prompt->id) ?>" class="link-secondary"><?= esc($prompt->registered_at) ?></a>
+							<?php if ($prompt->draft === '1'): ?>
+								<?= esc($prompt->registered_at) ?>
+							<?php else: ?>
+								<a href="<?= site_url('prompt/' . $prompt->id) ?>" class="link-secondary"><?= esc($prompt->registered_at) ?></a>
+							<?php endif ?>
 						</td>
 					</tr>
 				<?php endforeach ?>

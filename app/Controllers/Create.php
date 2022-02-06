@@ -2,10 +2,10 @@
 
 namespace App\Controllers;
 
+use App\Libraries\Prompt as PromptLib;
 use App\Models\Prompt;
 use App\Models\Prompt_access;
 use App\Models\Tag;
-use App\Libraries\Prompt as PromptLib;
 
 class Create extends BaseController
 {
@@ -61,7 +61,7 @@ class Create extends BaseController
             $this->session->unmarkTempdata('prompt_data');
             unset($_SESSION['prompt_data']);
 
-            return view('create/complete', ['prompt_id' => $prompt_id]);
+            return view('create/complete', ['prompt_id' => $prompt_id, 'draft' => (! empty($post_data['draft']) && $post_data['draft'] === '1')]);
         }
 
         $validation_rule = [
@@ -125,7 +125,7 @@ class Create extends BaseController
 
                 $post_data['description'] = $this->request->getPost('description-file');
                 $post_data['r18']         = $this->request->getPost('r18-file');
-                $post_data['draft']         = $this->request->getPost('draft-file');
+                $post_data['draft']       = $this->request->getPost('draft-file');
 
                 $file         = $this->request->getFile('novel_file');
                 $novel_format = file_get_contents($file->getTempName());
@@ -214,10 +214,10 @@ class Create extends BaseController
         if ($this->request->getGet('back') === '1') {
             if ($default_pane === 'file') {
                 $data = [
-                    'tags-file' => $_SESSION['prompt_data']['tags'],
+                    'tags-file'        => $_SESSION['prompt_data']['tags'],
                     'description-file' => $_SESSION['prompt_data']['description'],
-                    'r18-file' => $_SESSION['prompt_data']['r18'],
-                    'draft-file' => $_SESSION['prompt_data']['draft'],
+                    'r18-file'         => $_SESSION['prompt_data']['r18'],
+                    'draft-file'       => $_SESSION['prompt_data']['draft'],
                 ];
             } else {
                 $data = $_SESSION['prompt_data'];
@@ -305,7 +305,7 @@ class Create extends BaseController
             $this->session->unmarkTempdata('prompt_edit_data');
             unset($_SESSION['prompt_edit_data']);
 
-            return view('create/complete_edit', ['prompt_id' => $prompt_id]);
+            return view('create/complete_edit', ['prompt_id' => $prompt_id, 'draft' => ! empty($post_data['draft'])]);
         }
 
         if ($this->isPost() && $this->validate([
