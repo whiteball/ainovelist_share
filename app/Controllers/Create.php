@@ -61,7 +61,7 @@ class Create extends BaseController
             $this->session->unmarkTempdata('prompt_data');
             unset($_SESSION['prompt_data']);
 
-            return view('create/complete');
+            return view('create/complete', ['prompt_id' => $prompt_id]);
         }
 
         $validation_rule = [
@@ -305,7 +305,7 @@ class Create extends BaseController
             $this->session->unmarkTempdata('prompt_edit_data');
             unset($_SESSION['prompt_edit_data']);
 
-            return view('create/complete_edit');
+            return view('create/complete_edit', ['prompt_id' => $prompt_id]);
         }
 
         if ($this->isPost() && $this->validate([
