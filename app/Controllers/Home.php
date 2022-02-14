@@ -210,4 +210,9 @@ class Home extends BaseController
             'page_base_url' => 'search/caption/?q=' . $query,
         ]);
     }
+
+    public function script()
+    {
+        return view('script');
+    }
 }

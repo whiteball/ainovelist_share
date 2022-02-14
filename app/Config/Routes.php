@@ -57,6 +57,7 @@ $routes->post('/mypage', 'Mypage::index');
 $routes->get('/mypage/list', 'Mypage::list');
 $routes->get('/mypage/delete', 'Mypage::delete');
 $routes->post('/mypage/delete', 'Mypage::delete');
+$routes->get('/script', 'Home::script');
 
 /*
  * --------------------------------------------------------------------
