@@ -2,11 +2,13 @@
 <?= $this->section('title') ?> - ログイン<?= $this->endSection() ?>
 
 <?= $this->section('ogp') ?>
+<?php $description = 'ログインページ。' ?>
 <meta property="og:type" content="website" />
 <meta property="og:title" content="ログイン" />
 <meta name="twitter:title" content="ログイン">
-<meta property="og:description" content="ログインページ。" />
-<meta name="twitter:description" content="ログインページ。">
+<meta property="og:description" content="<?= $description ?>" />
+<meta name="twitter:description" content="<?= $description ?>">
+<meta name="description" content="<?= $description ?>" />
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>

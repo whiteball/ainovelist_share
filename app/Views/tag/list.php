@@ -2,11 +2,13 @@
 <?= $this->section('title') ?> - タグ一覧<?= $this->endSection() ?>
 
 <?= $this->section('ogp') ?>
+<?php $description = '現在サイト内に存在する全てのタグの一覧。' ?>
 <meta property="og:type" content="website" />
 <meta property="og:title" content="タグ一覧" />
 <meta name="twitter:title" content="タグ一覧">
-<meta property="og:description" content="現在サイト内に存在する全てのタグの一覧。" />
-<meta name="twitter:description" content="現在サイト内に存在する全てのタグの一覧。">
+<meta property="og:description" content="<?= $description ?>" />
+<meta name="twitter:description" content="<?= $description ?>">
+<meta name="description" content="<?= $description ?>" />
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>

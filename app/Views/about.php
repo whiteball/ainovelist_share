@@ -2,11 +2,13 @@
 <?= $this->section('title') ?> - このサイトについて<?= $this->endSection() ?>
 
 <?= $this->section('ogp') ?>
+<?php $description = 'このサイトについての説明ページ。更新履歴も含む。' ?>
 <meta property="og:type" content="website" />
 <meta property="og:title" content="このサイトについて" />
 <meta name="twitter:title" content="このサイトについて">
-<meta property="og:description" content="このサイトについての説明ページ。更新履歴も含む。" />
-<meta name="twitter:description" content="このサイトについての説明ページ。更新履歴も含む。">
+<meta property="og:description" content="<?= $description ?>" />
+<meta name="twitter:description" content="<?= $description ?>">
+<meta name="description" content="<?= $description ?>" />
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>

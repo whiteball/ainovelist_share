@@ -1,11 +1,13 @@
 <?= $this->extend('template') ?>
 
 <?= $this->section('ogp') ?>
+<?php $description = 'AIのべりすとのプロンプトを投稿・共有するためのサイト。投稿されたプロンプトは直接AIのべりすとに読み込み可能。' ?>
 <meta property="og:type" content="website" />
 <meta property="og:title" content="トップページ" />
 <meta name="twitter:title" content="トップページ">
-<meta property="og:description" content="AIのべりすとのプロンプトを投稿・共有するためのサイト。投稿されたプロンプトは直接AIのべりすとに読み込み可能。" />
-<meta name="twitter:description" content="AIのべりすとのプロンプトを投稿・共有するためのサイト。投稿されたプロンプトは直接AIのべりすとに読み込み可能。">
+<meta property="og:description" content="<?= $description ?>" />
+<meta name="twitter:description" content="<?= $description ?>">
+<meta name="description" content="<?= $description ?>" />
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>

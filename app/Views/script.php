@@ -2,11 +2,13 @@
 <?= $this->section('title') ?> - ユーザースクリプト<?= $this->endSection() ?>
 
 <?= $this->section('ogp') ?>
+<?php $description = 'AIのべりすと用のユーザースクリプトの導入案内。' ?>
 <meta property="og:type" content="website" />
 <meta property="og:title" content="ユーザースクリプト" />
 <meta name="twitter:title" content="ユーザースクリプト">
-<meta property="og:description" content="AIのべりすと用のユーザースクリプトの導入案内。" />
-<meta name="twitter:description" content="AIのべりすと用のユーザースクリプトの導入案内。">
+<meta property="og:description" content="<?= $description ?>" />
+<meta name="twitter:description" content="<?= $description ?>">
+<meta name="description" content="<?= $description ?>" />
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>

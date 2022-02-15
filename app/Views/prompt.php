@@ -2,11 +2,13 @@
 <?= $this->section('title') ?> - <?= esc(strip_tags($prompt->title)) ?><?= $this->endSection() ?>
 
 <?= $this->section('ogp') ?>
+<?php $description = esc(str_replace("\n", '&nbsp;', str_replace(' ', '&nbsp;', $prompt->description)), 'attr') ?>
 <meta property="og:type" content="article" />
 <meta property="og:title" content="<?= esc(strip_tags($prompt->title), 'attr') ?>" />
 <meta name="twitter:title" content="<?= esc(strip_tags($prompt->title), 'attr') ?>">
-<meta property="og:description" content="<?= str_replace("\n", '&nbsp;', str_replace(' ', '&nbsp;', esc($prompt->description, 'attr'))) ?>" />
-<meta name="twitter:description" content="<?= str_replace("\n", '&nbsp;', str_replace(' ', '&nbsp;', esc($prompt->description, 'attr'))) ?>">
+<meta property="og:description" content="<?= $description ?>" />
+<meta name="twitter:description" content="<?= $description ?>">
+<meta name="description" content="<?= $description ?>" />
 <meta property="article:published_time" content="<?= date_format(date_create($prompt->registered_at), DATE_ATOM)?>" />
 <meta property="article:modified_time" content="<?= date_format(date_create($prompt->updated_at), DATE_ATOM)?>" />
 <meta property="article:author" content="<?= esc($author, 'attr') ?>" />

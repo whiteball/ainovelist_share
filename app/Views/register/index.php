@@ -2,11 +2,13 @@
 <?= $this->section('title') ?> - ユーザー登録<?= $this->endSection() ?>
 
 <?= $this->section('ogp') ?>
+<?php $description = 'ユーザー登録ページ。' ?>
 <meta property="og:type" content="website" />
 <meta property="og:title" content="ユーザー登録" />
 <meta name="twitter:title" content="ユーザー登録">
-<meta property="og:description" content="ユーザー登録ページ。" />
-<meta name="twitter:description" content="ユーザー登録ページ。">
+<meta property="og:description" content="<?= $description ?>" />
+<meta name="twitter:description" content="<?= $description ?>">
+<meta name="description" content="<?= $description ?>" />
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
