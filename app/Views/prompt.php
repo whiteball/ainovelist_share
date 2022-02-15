@@ -2,7 +2,7 @@
 <?= $this->section('title') ?> - <?= esc(strip_tags($prompt->title)) ?><?= $this->endSection() ?>
 
 <?= $this->section('ogp') ?>
-<?php $description = esc(str_replace("\n", '&nbsp;', str_replace(' ', '&nbsp;', $prompt->description)), 'attr') ?>
+<?php $description = esc(str_replace("\n", ' ', $prompt->description), 'attr') ?>
 <meta property="og:type" content="article" />
 <meta property="og:title" content="<?= esc(strip_tags($prompt->title), 'attr') ?>" />
 <meta name="twitter:title" content="<?= esc(strip_tags($prompt->title), 'attr') ?>">
