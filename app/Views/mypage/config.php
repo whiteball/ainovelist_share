@@ -1,4 +1,5 @@
 <?= $this->extend('template') ?>
+<?= $this->section('title') ?> - マイページ - 設定<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <?= $this->include('_parts/header_nav') ?>

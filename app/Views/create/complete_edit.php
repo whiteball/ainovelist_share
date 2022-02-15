@@ -1,4 +1,5 @@
 <?= $this->extend('template') ?>
+<?= $this->section('title') ?> - プロンプト投稿 - 編集完了<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <?= $this->include('_parts/header_nav') ?>

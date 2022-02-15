@@ -1,4 +1,13 @@
 <?= $this->extend('template') ?>
+<?= $this->section('title') ?> - ユーザースクリプト<?= $this->endSection() ?>
+
+<?= $this->section('ogp') ?>
+<meta property="og:type" content="website" />
+<meta property="og:title" content="ユーザースクリプト" />
+<meta name="twitter:title" content="ユーザースクリプト">
+<meta property="og:description" content="AIのべりすと用のユーザースクリプトの導入案内。" />
+<meta name="twitter:description" content="AIのべりすと用のユーザースクリプトの導入案内。">
+<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <?= $this->include('_parts/header_nav') ?>

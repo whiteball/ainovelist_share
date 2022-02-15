@@ -1,4 +1,13 @@
 <?= $this->extend('template') ?>
+<?= $this->section('title') ?> - このサイトについて<?= $this->endSection() ?>
+
+<?= $this->section('ogp') ?>
+<meta property="og:type" content="website" />
+<meta property="og:title" content="このサイトについて" />
+<meta name="twitter:title" content="このサイトについて">
+<meta property="og:description" content="このサイトについての説明ページ。更新履歴も含む。" />
+<meta name="twitter:description" content="このサイトについての説明ページ。更新履歴も含む。">
+<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <?= $this->include('_parts/header_nav') ?>

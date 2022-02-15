@@ -1,4 +1,22 @@
 <?= $this->extend('template') ?>
+<?= $this->section('title') ?> - <?= esc(strip_tags($prompt->title)) ?><?= $this->endSection() ?>
+
+<?= $this->section('ogp') ?>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="<?= esc(strip_tags($prompt->title), 'attr') ?>" />
+<meta name="twitter:title" content="<?= esc(strip_tags($prompt->title), 'attr') ?>">
+<meta property="og:description" content="<?= str_replace("\n", '&nbsp;', str_replace(' ', '&nbsp;', esc($prompt->description, 'attr'))) ?>" />
+<meta name="twitter:description" content="<?= str_replace("\n", '&nbsp;', str_replace(' ', '&nbsp;', esc($prompt->description, 'attr'))) ?>">
+<meta property="article:published_time" content="<?= date_format(date_create($prompt->registered_at), DATE_ATOM)?>" />
+<meta property="article:modified_time" content="<?= date_format(date_create($prompt->updated_at), DATE_ATOM)?>" />
+<meta property="article:author" content="<?= esc($author, 'attr') ?>" />
+<?php if ($prompt->r18 === '1') : ?>
+	<meta property="article:tag" content="R-18" />
+<?php endif ?>
+<?php foreach ($tags as $tag) : ?>
+	<meta property="article:tag" content="<?= esc($tag->tag_name, 'attr') ?>" />
+<?php endforeach ?>
+<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <?= $this->include('_parts/header_nav') ?>
@@ -52,10 +70,10 @@
 			<div class="wrap border rounded p-2" id="prompt-text"><?= nl2br(str_replace(' ', '&nbsp;', esc($prompt->prompt))) ?></div>
 		</div>
 	</div>
-	<?php if (!(empty($prompt->memory) && empty($prompt->authors_note) && empty($prompt->ng_words) && empty($prompt->char_book) && empty($prompt->script))) : ?>
+	<?php if (! (empty($prompt->memory) && empty($prompt->authors_note) && empty($prompt->ng_words) && empty($prompt->char_book) && empty($prompt->script))) : ?>
 		<div class="mb-3 border rounded p-2">
 			<div class="accordion" id="detail-section">
-				<?php if (!empty($prompt->memory)) : ?>
+				<?php if (! empty($prompt->memory)) : ?>
 					<div class="accordion-item">
 						<h2 class="accordion-header" id="memory-head">
 							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#memory-body" aria-expanded="false" aria-controls="memory-body">
@@ -76,7 +94,7 @@
 						</div>
 					</div>
 				<?php endif ?>
-				<?php if (!empty($prompt->authors_note)) : ?>
+				<?php if (! empty($prompt->authors_note)) : ?>
 					<div class="accordion-item">
 						<h2 class="accordion-header" id="authors-note-head">
 							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#authors-note-body" aria-expanded="false" aria-controls="authors-note-body">
@@ -97,7 +115,7 @@
 						</div>
 					</div>
 				<?php endif ?>
-				<?php if (!empty($prompt->ng_words)) : ?>
+				<?php if (! empty($prompt->ng_words)) : ?>
 					<div class="accordion-item">
 						<h2 class="accordion-header" id="ng-words-head">
 							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ng-words-body" aria-expanded="false" aria-controls="ng-words-body">
@@ -118,7 +136,7 @@
 						</div>
 					</div>
 				<?php endif ?>
-				<?php if (!empty($prompt->char_book)) : ?>
+				<?php if (! empty($prompt->char_book)) : ?>
 					<div class="accordion-item">
 						<h2 class="accordion-header" id="char-book-head">
 							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#char-book-body" aria-expanded="false" aria-controls="char-book-body">
@@ -144,7 +162,7 @@
 						</div>
 					</div>
 				<?php endif ?>
-				<?php if (!empty($prompt->script)) : ?>
+				<?php if (! empty($prompt->script)) : ?>
 					<div class="accordion-item">
 						<h2 class="accordion-header" id="script-head">
 							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#script-body" aria-expanded="false" aria-controls="script-body">
@@ -181,10 +199,10 @@
 	<?php endif ?>
 	<?php if ($prompt->r18 === '1' && ($_SESSION['nsfw_mode'] ?? 's') === 's') : ?>
 		<?php
-		$uri = current_url(true);
-		$query = preg_replace('/(^|&|\?)(p=\d+|[nl]mode=\w)/u', '', $uri->getQuery());
-		$current_url = str_replace(index_page(), '', implode('/', $uri->getSegments())) . '?' . ($query ? ($query . '&') : '');
-		?>
+        $uri         = current_url(true);
+        $query       = preg_replace('/(^|&|\?)(p=\d+|[nl]mode=\w)/u', '', $uri->getQuery());
+        $current_url = str_replace(index_page(), '', implode('/', $uri->getSegments())) . '?' . ($query ? ($query . '&') : '');
+        ?>
 		<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#nsfw-modal" style="display: none;" id="nsfw-button"></button>
 		<div class="modal" id="nsfw-modal" tabindex="-1" aria-labelledby="nsfw-modal-label" aria-hidden="true">
 			<div class="modal-dialog modal-fullscreen">

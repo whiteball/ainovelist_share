@@ -1,10 +1,11 @@
 <?= $this->extend('template') ?>
+<?= $this->section('title') ?> - マイページ - 退会<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <?= $this->include('_parts/header_nav') ?>
 <main class="container">
 	<h1 class="h3 mb-3 fw-normal">マイページ</h1>
-	
+
 	<ul class="nav nav-tabs" id="myTab" role="tablist">
 		<li class="nav-item" role="presentation">
 			<a class="nav-link" href="<?= site_url('mypage') ?>">

@@ -1,4 +1,13 @@
 <?= $this->extend('template') ?>
+<?= $this->section('title') ?> - ユーザー登録<?= $this->endSection() ?>
+
+<?= $this->section('ogp') ?>
+<meta property="og:type" content="website" />
+<meta property="og:title" content="ユーザー登録" />
+<meta name="twitter:title" content="ユーザー登録">
+<meta property="og:description" content="ユーザー登録ページ。" />
+<meta name="twitter:description" content="ユーザー登録ページ。">
+<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <?= $this->include('_parts/header_nav') ?>

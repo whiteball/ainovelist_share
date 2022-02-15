@@ -1,4 +1,13 @@
 <?= $this->extend('template') ?>
+<?= $this->section('title') ?> - <?= esc($query) ?>の検索結果一覧<?= $this->endSection() ?>
+
+<?= $this->section('ogp') ?>
+<meta property="og:type" content="website" />
+<meta property="og:title" content="<?= esc($query, 'attr') ?>の検索結果一覧" />
+<meta name="twitter:title" content="<?= esc($query, 'attr') ?>の検索結果一覧">
+<meta property="og:description" content="<?= esc($query, 'attr') ?>で検索してヒットした投稿プロンプト一覧。" />
+<meta name="twitter:description" content="<?= esc($query, 'attr') ?>で検索してヒットした投稿プロンプト一覧。">
+<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <?= $this->include('_parts/header_nav') ?>
