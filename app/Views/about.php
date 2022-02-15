@@ -51,6 +51,16 @@
 		</tr>
 		<tr>
 			<th scope="row">
+				2022/02/15
+			</th>
+			<td>
+				<ul>
+					<li>各ページOGPの設定を追加。</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">
 				2022/02/06
 			</th>
 			<td>
