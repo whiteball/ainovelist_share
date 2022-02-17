@@ -1,8 +1,15 @@
 <!doctype html>
 <html lang="ja">
 <?php
+$mode = $_SESSION['list_mode'] ?? 's';
 $uri = current_url(true);
+$path = trim(str_replace('//', '/', str_replace(index_page(), '', $uri->getPath())));
 $query = preg_replace('/(^|&|\?)([nl]mode=\w)/u', '', $uri->getQuery());
+// home, tag, search, user
+if ($mode !== 's' && ($path === '' || $path === '/' || $path === '/search/tag' || $path === '/search/caption' || mb_strpos($path, '/tag') === 0 || mb_strpos($path, '/user') === 0)) {
+	$query = 'lmode=' . $mode . (empty($query) ? '' : '&') . $query;
+}
+
 $current_url = site_url(str_replace(index_page(), '', implode('/', $uri->getSegments())) . ($query ? ('?' . $query) : ''));
 ?>
 <head>
