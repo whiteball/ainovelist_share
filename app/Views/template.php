@@ -1,13 +1,18 @@
 <!doctype html>
 <html lang="ja">
-
+<?php
+$uri = current_url(true);
+$query = preg_replace('/(^|&|\?)([nl]mode=\w)/u', '', $uri->getQuery());
+$current_url = site_url(str_replace(index_page(), '', implode('/', $uri->getSegments())) . ($query ? ('?' . $query) : ''));
+?>
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 	<link href="<?= base_url('css/default.css') ?>" rel="stylesheet">
+	<link rel="canonical" href="<?= $current_url ?>">
 	<title>AIのべりすと プロンプト共有(仮)<?= $this->renderSection('title') ?></title>
-	<meta property="og:url" content="<?= current_url() ?>" />
+	<meta property="og:url" content="<?= $current_url ?>" />
 	<meta property="og:site_name" content="AIのべりすと プロンプト共有" />
 	<meta property="og:image" content="<?= base_url('img/ogp.png') ?>" />
 	<meta property="og:image:type" content="image/png" />
@@ -16,7 +21,7 @@
 	<meta property="og:locale" content="ja_JP" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:image" content="<?= base_url('img/ogp.png') ?>" />
-	<meta name="twitter:url" content="<?= current_url() ?>" />
+	<meta name="twitter:url" content="<?= $current_url ?>" />
 	<?= $this->renderSection('ogp') ?>
 </head>
 
