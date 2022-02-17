@@ -43,6 +43,9 @@
 			</div>
 		</div>
 	</div>
+	<div class="mb-3 text-end">
+		<span class="text-secondary">投稿日:<?= esc($prompt->registered_at) ?><?php if ($prompt->updated_at !== $prompt->registered_at):?>/更新日:<?= esc($prompt->updated_at) ?><?php endif ?></span>
+	</div>
 	<div class="mb-3 border rounded p-2">
 		<div class="mb-3">
 			<h5>タイトル</h5>
