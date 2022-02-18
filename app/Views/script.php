@@ -18,13 +18,15 @@
 	<div>
 		AIのべりすとのサイトで使用できる<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>用のユーザースクリプトを配布しています。<br>
 		<div class="m-2">
-			<a href="https://gist.github.com/whiteball/b2bf1b71e37a07c87bb3948ea6f0f0f8" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>
+			<a href="https://gist.github.com/whiteball/b2bf1b71e37a07c87bb3948ea6f0f0f8" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
+			最終更新日：2022/02/18 バージョン0.2
 		</div>
 		このスクリプトを導入することで次のことが出来るようになります。
 		<ul>
 			<li>編集ページの本文入力欄でテキストを選択しながら「Ctrl＋/」を押すと、選択テキストの上の行に「@/*」を、下の行に「@*/」を挿入する。</li>
 			<li>「@/*」から「@*/」までを選択しながら「Ctrl＋/」を押すと、「@/*」と「@*/」を削除する。</li>
 			<li>AIが生成した文章をリトライをするとき、AIが生成した後に文章を変更していた場合、本当にリトライしてもいいかの確認ダイアログを出す。同じくUndo・Redoするときも、文章を変更している場合に確認ダイアログを出す。</li>
+			<li>本文入力欄を複数文コメントや最新の出力文(色の変わっている部分)の途中で分割されないようにする。(分割の回数が減るため、とても長い単一の複数文コメントがあると、環境によってはブラウザが重くなります。)</li>
 		</ul>
 	</div>
 	<hr>
