@@ -18,7 +18,7 @@ $current_url = site_url(str_replace(index_page(), '', implode('/', $uri->getSegm
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 	<link href="<?= base_url('css/default.css') ?>" rel="stylesheet">
 	<link rel="canonical" href="<?= $current_url ?>">
-	<title>AIのべりすと プロンプト共有(仮)<?= $this->renderSection('title') ?></title>
+	<title>AIのべりすと プロンプト共有<?= $this->renderSection('title') ?></title>
 	<meta property="og:url" content="<?= $current_url ?>" />
 	<meta property="og:site_name" content="AIのべりすと プロンプト共有" />
 	<meta property="og:image" content="<?= base_url('img/ogp.png') ?>" />
@@ -39,7 +39,7 @@ $current_url = site_url(str_replace(index_page(), '', implode('/', $uri->getSegm
 		<footer class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mt-4 border-top">
 			<div class="col-1"></div>
 			<div class="col-10 col-md-auto mt-2 justify-content-center mt-md-0 text-center" style="font-size: 75%;color: gray;">
-				AIのべりすと プロンプト共有(仮)
+				AIのべりすと プロンプト共有
 			</div>
 			<div class="col-1"></div>
 		</footer>

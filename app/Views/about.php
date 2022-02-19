@@ -16,7 +16,6 @@
 <main class="container">
 	<h3>このサイトについて</h3>
 	<div>
-		<div class="lead mt-2 mb-2"><u><strong>現在仮運用中です！</strong></u></div>
 		このサイトは、<a href="https://ai-novel.com/" target="_blank" rel="noopener noreferrer">AIのべりすと</a>で作成したプロンプトを共有するためのサイトです。
 	</div>
 	<hr>
@@ -48,6 +47,16 @@
 			<th scope="col">
 				内容
 			</th>
+		</tr>
+		<tr>
+			<th scope="row">
+				2022/02/19
+			</th>
+			<td>
+				<ul>
+					<li>タイトルから(仮)を外して、正式公開開始。</li>
+				</ul>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row">
