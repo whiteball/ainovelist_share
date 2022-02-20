@@ -26,12 +26,16 @@
 	<h1 class="h3 mb-3 fw-normal">プロンプト詳細</h1>
 	<div class="mb-3 border rounded p-2">
 		<div class="row">
-			<div class="col-12 col-md-8">
+			<div class="col-6 col-md-4">
 				<a class="btn btn-secondary" href="<?= site_url('prompt_download/' . $prompt->id) ?>">
-					novelファイルをダウンロード
+					<span class="d-inline d-sm-none">novelファイルをDL</span>
+					<span class="d-none d-sm-inline">novelファイルをダウンロード</span>
 				</a>
-				<a class="btn btn-secondary ms-3" href="https://ai-novel.com/prompt_load.php?uri=<?= urlencode(site_url('prompt_download/' . $prompt->id)) ?>" target="_blank" rel="noopener noreferrer">
-					AIのべりすとで読み込む
+			</div>
+			<div class="col-6 col-md-4">
+				<a class="btn btn-secondary" href="https://ai-novel.com/prompt_load.php?uri=<?= urlencode(site_url('prompt_download/' . $prompt->id)) ?>" target="_blank" rel="noopener noreferrer">
+					<span class="d-inline d-sm-none">AIのべりすとで読込</span>
+					<span class="d-none d-sm-inline">AIのべりすとで読み込む</span>
 				</a>
 			</div>
 			<div class="col-12 col-md-4 text-md-end" style="font-size: 75%;">
