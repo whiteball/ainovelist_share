@@ -1,2 +1,7 @@
 User-agent: *
-Disallow: 
+Disallow: /prompt_download/
+
+User-agent: *
+Allow: /
+
+Sitemap: https://ai-novelist-share.geo.jp/sitemap.xml
