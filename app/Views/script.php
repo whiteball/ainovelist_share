@@ -19,7 +19,7 @@
 		AIのべりすとのサイトで使用できる<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>用のユーザースクリプトを配布しています。<br>
 		<div class="m-2">
 			<a href="https://gist.github.com/whiteball/b2bf1b71e37a07c87bb3948ea6f0f0f8" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
-			最終更新日：2022/02/21 バージョン0.5
+			最終更新日：2022/02/28 バージョン0.6
 		</div>
 		このスクリプトを導入することで次のことが出来るようになります。
 		<ul>
@@ -31,6 +31,8 @@
 			<li>@endpointにもコメント色分けを適用する。(一番最後にある@endpointから下を色分け。)</li>
 			<li>「Redo」が最新状態でさらに「Redo」を3回押すと、「Undo」と同じようにUndo履歴を挿入する。</li>
 			<li>ページの一番下の「送信テキスト確認」ボタンを押すと、「続きの文を書く」や「リトライ」をしたときにサーバーに送信したテキスト内容を確認出来るエリアを表示する。</li>
+			<li>同じくページの一番下の「出力履歴確認」ボタンを押すと、過去20回分までAIが出力したテキストの履歴を確認出来るエリアを表示する。</li>
+			<li>(「送信テキスト確認」と「出力履歴確認」のテキストエリアは、本文のフォントや文字サイズに従います。)</li>
 		</ul>
 	</div>
 	<hr>
