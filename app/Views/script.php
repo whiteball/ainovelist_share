@@ -19,7 +19,10 @@
 		AIのべりすとのサイトで使用できる<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>用のユーザースクリプトを配布しています。<br>
 		<div class="m-2">
 			<a href="https://gist.github.com/whiteball/b2bf1b71e37a07c87bb3948ea6f0f0f8" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
-			最終更新日：2022/03/14 バージョン0.8
+			最終更新日：2022/03/17 バージョン0.9
+		</div>
+		<div class="m-2">
+			<a href="https://www.nicovideo.jp/watch/sm40158166" target="_blank" rel="noopener noreferrer">導入手順と機能紹介の動画</a>を作成しました。(バージョン0.7時点の情報)
 		</div>
 		このスクリプトを導入することで次のことが出来るようになります。
 		<ul>
@@ -34,6 +37,7 @@
 			<li>同じく、オプションの右端のアイコン(本)を押すと、過去20回分までAIが出力したテキストの履歴を確認出来るエリアを表示する。履歴はファイルとしてダウンロードすることも出来る。</li>
 			<li>上記2つのテキストエリアは、本文のフォントや文字サイズに従う。</li>
 			<li>AIのべりすとが認識できない文字(6.8B/7.3Bモデルに限る)を囲み文字でハイライト表示する。</li>
+			<li>編集ページを開いてからの出力回数などをカウントして情報表示する。</li>
 		</ul>
 	</div>
 	<hr>
