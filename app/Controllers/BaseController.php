@@ -2,15 +2,15 @@
 
 namespace App\Controllers;
 
+use App\Models\Action_log;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Session\Session;
-use Psr\Log\LoggerInterface;
 
-use App\Models\Action_log;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class BaseController
@@ -47,6 +47,7 @@ class BaseController extends Controller
 
     /**
      * ログインユーザーID。ログイン状態なら0以外が入る。
+     *
      * @var int
      */
     protected $loginUserId = 0;
@@ -78,6 +79,12 @@ class BaseController extends Controller
         $this->session->unmarkFlashdata('nsfw_mode_confirm');
         unset($_SESSION['nsfw_mode_confirm']);
 
+        // ソートの記憶
+        $sort_mode = $request->getGet('sort');
+        if (! empty($sort_mode)) {
+            $_SESSION['sort_mode'] = $sort_mode;
+        }
+
         // R-18閲覧の記憶
         $nsfw_mode = $request->getGet('nmode');
         if (! empty($nsfw_mode)) {
@@ -94,7 +101,6 @@ class BaseController extends Controller
                 $_SESSION['nsfw_mode_confirm'] = true;
                 $this->session->markAsFlashdata('nsfw_mode_confirm');
             }
-            
         }
     }
 

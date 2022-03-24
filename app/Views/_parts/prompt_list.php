@@ -1,9 +1,10 @@
 <?php
-$mode = $_SESSION['list_mode'] ?? 's';
-$uri = current_url(true);
-$query = preg_replace('/(^|&|\?)(p=\d+|[nl]mode=\w)/u', '', $uri->getQuery());
-$query_lmode = preg_replace('/(^|&|\?)(p=\d+|nmode=\w)/u', '', $uri->getQuery());
-$current_url = str_replace(index_page(), '', implode('/', $uri->getSegments())) . '?';
+$mode              = $_SESSION['list_mode'] ?? 's';
+$sort              = $_SESSION['sort_mode'] ?? 'c';
+$uri               = current_url(true);
+$query             = preg_replace('/(^|&|\?)(p=\d+|sort=\w|[nl]mode=\w)/u', '', $uri->getQuery());
+$query_lmode       = preg_replace('/(^|&|\?)(p=\d+|sort=\w|nmode=\w)/u', '', $uri->getQuery());
+$current_url       = str_replace(index_page(), '', implode('/', $uri->getSegments())) . '?';
 $current_url_lmode = $current_url . ($query_lmode ? ($query_lmode . '&') : '');
 $current_url .= $query ? ($query . '&') : '';
 ?>
@@ -36,7 +37,14 @@ $current_url .= $query ? ($query . '&') : '';
 		})
 	</script>
 <?php endif ?>
-
+<ul class="nav justify-content-center" id="sort-setting">
+	<li class="nav-item">
+		<a class="nav-link<?= $sort === 'c' ? ' active" aria-current="page' : '" href="' . $current_url . 'sort=c"' ?>">投稿日順</a>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link<?= $sort === 'u' ? ' active" aria-current="page' : '" href="' . $current_url . 'sort=u"' ?>">更新日順</a>
+	</li>
+</ul>
 <ul class="nav nav-tabs" id="myTab" role="tablist">
 	<li class="nav-item" role="presentation">
 		<a class="nav-link<?= $mode === 's' ? ' active' : '' ?>" href="<?= site_url($current_url . 'lmode=s') ?>"<?= $mode === 's' ? ' aria-current="page"' : '' ?>>

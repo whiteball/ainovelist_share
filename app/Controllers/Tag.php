@@ -44,13 +44,13 @@ class Tag extends BaseController
         $prompts = [];
         $tags    = [];
         if (! empty($prompt_ids) || $tag_name === 'R-18') {
-            $count   = $prompt->orderBy('updated_at', 'desc')->countAllResultsSafe(false);
+            $count   = $prompt->countAllResultsSafe(false);
             $prompts = $prompt->findAllSafe(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1));
             if (empty($prompts)) {
                 $count   = 0;
                 $prompts = [];
             } else {
-                $tags    = $this->tag->findByPrompt($prompts);
+                $tags = $this->tag->findByPrompt($prompts);
             }
         }
 
@@ -85,18 +85,19 @@ class Tag extends BaseController
             $prompt_ids = $_SESSION['tag_search_cache_ids'];
         } else {
             $keyword_list = explode(' ', $query);
-            $prompt_ids = [];
+            $prompt_ids   = [];
+
             foreach ($keyword_list as $keyword) {
                 $result = $this->tag->select('prompt_id')->like('tag_name', $keyword)->findAll();
                 if (empty($result)) {
                     $prompt_ids = [];
                     break;
                 }
-    
+
                 $prompt_ids = array_map(static fn ($val) => $val->prompt_id, $result);
                 $this->tag->whereIn('prompt_id', $prompt_ids);
             }
-            
+
             $this->tag->resetQuery();
         }
 
@@ -109,15 +110,15 @@ class Tag extends BaseController
         $tags    = [];
         if (! empty($prompt_ids)) {
             $_SESSION['tag_search_cache_query'] = $query;
-            $_SESSION['tag_search_cache_ids'] = $prompt_ids;
+            $_SESSION['tag_search_cache_ids']   = $prompt_ids;
             $this->session->markAsTempdata(['tag_search_cache_query', 'tag_search_cache_ids'], 120);
-            $count   = $prompt->orderBy('updated_at', 'desc')->countAllResultsSafe(false);
+            $count   = $prompt->countAllResultsSafe(false);
             $prompts = $prompt->findAllSafe(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1));
             if (empty($prompts)) {
                 $count   = 0;
                 $prompts = [];
             } else {
-                $tags    = $this->tag->findByPrompt($prompts);
+                $tags = $this->tag->findByPrompt($prompts);
             }
         }
 
@@ -131,6 +132,5 @@ class Tag extends BaseController
             'last_page'     => (int) ceil($count / self::ITEM_PER_PAGE),
             'page_base_url' => 'search/tag/?q=' . $query,
         ]);
-
     }
 }

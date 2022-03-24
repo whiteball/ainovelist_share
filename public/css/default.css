@@ -13,3 +13,8 @@ main#create-confirm .wrap {
   font-size: 75%;
   line-height: 75%;
 }
+
+#sort-setting .active {
+  font-weight: bolder;
+  text-decoration: underline;
+}

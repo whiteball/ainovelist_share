@@ -17,7 +17,7 @@ class Home extends BaseController
 
         /** @var Prompt */
         $prompt  = model(Prompt::class);
-        $prompts = $prompt->orderBy('updated_at', 'desc')->findAllSafe(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1));
+        $prompts = $prompt->findAllSafe(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1));
         $count   = $prompt->countAllResultsSafe();
 
         $tags = [];

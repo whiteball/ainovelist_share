@@ -35,7 +35,7 @@ class User extends BaseController
 
         /** @var Prompt */
         $prompt  = model(Prompt::class);
-        $count   = $prompt->where('user_id', $user_id)->orderBy('updated_at', 'desc')->countAllResultsSafe(false);
+        $count   = $prompt->where('user_id', $user_id)->countAllResultsSafe(false);
         $prompts = $prompt->findAllSafe(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1));
 
         $tags = [];
