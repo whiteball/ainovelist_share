@@ -2,6 +2,8 @@
 
 <?= $this->section('ogp') ?>
 <?php $description = 'AIのべりすとのプロンプトを投稿・共有するためのサイト。投稿されたプロンプトは直接AIのべりすとに読み込み可能。' ?>
+<meta property="og:image" content="<?= base_url('img/ogp.png') ?>" />
+<meta name="twitter:image" content="<?= base_url('img/ogp.png') ?>" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="AIのべりすとプロンプト共有 トップページ" />
 <meta name="twitter:title" content="AIのべりすとプロンプト共有 トップページ">

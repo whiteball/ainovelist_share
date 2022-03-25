@@ -3,6 +3,8 @@
 
 <?= $this->section('ogp') ?>
 <?php $description = 'このサイトについての説明ページ。更新履歴も含む。' ?>
+<meta property="og:image" content="<?= base_url('img/ogp.png') ?>" />
+<meta name="twitter:image" content="<?= base_url('img/ogp.png') ?>" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="このサイトについて" />
 <meta name="twitter:title" content="このサイトについて">
@@ -33,6 +35,14 @@
 		<li>各プロンプトの個別ページでは、プロンプト内容の確認のほか、そのプロンプトのnovelファイルのダウンロード、AIのべりすとへの直接読み込み(インポート)ができます。また本文、メモリなどの項目を、個別にクリップボードにコピーすることも可能です。必要に応じてご利用ください。</li>
 	</ul>
 	<hr>
+	<h4>使用フォントの権利表示</h4>
+	<div>
+		本サイトではOGP画像のフォントに「源真ゴシック」(<a href="http://jikasei.me/font/genshin/" target="_blank" rel="noopener noreferrer">http://jikasei.me/font/genshin/</a>) を使用しています。<br>
+		Licensed under SIL Open Font License 1.1 (<a href="http://scripts.sil.org/OFL" target="_blank" rel="noopener noreferrer">http://scripts.sil.org/OFL</a>)<br>
+		© 2015 自家製フォント工房, © 2014, 2015 Adobe Systems Incorporated, © 2015 M+<br>
+		FONTS PROJECT
+	</div>
+	<hr>
 	<h4>連絡先</h4>
 	<ul>
 		<li>管理人Twitter: <a href="https://twitter.com/whiteball" rel="noopener noreferrer" target="_blank">@whiteball</a></li>
@@ -47,6 +57,26 @@
 			<th scope="col">
 				内容
 			</th>
+		</tr>
+		<tr>
+			<th scope="row">
+				2022/03/26
+			</th>
+			<td>
+				<ul>
+					<li>プロンプトの個別ページのOGP画像にタイトルが入るようにした。</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">
+				2022/03/24
+			</th>
+			<td>
+				<ul>
+					<li>プロンプトの一覧のソート順を指定出来るようにした。デフォルトは投稿日順。</li>
+				</ul>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row">

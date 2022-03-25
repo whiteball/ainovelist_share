@@ -3,6 +3,8 @@
 
 <?= $this->section('ogp') ?>
 <?php $description = '現在サイト内に存在する全てのタグの一覧。' ?>
+<meta property="og:image" content="<?= base_url('img/ogp.png') ?>" />
+<meta name="twitter:image" content="<?= base_url('img/ogp.png') ?>" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="タグ一覧" />
 <meta name="twitter:title" content="タグ一覧">

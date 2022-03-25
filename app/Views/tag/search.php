@@ -3,6 +3,8 @@
 
 <?= $this->section('ogp') ?>
 <?php $description = esc($query, 'attr') . 'で検索してヒットした投稿プロンプト一覧。' ?>
+<meta property="og:image" content="<?= base_url('img/ogp.png') ?>" />
+<meta name="twitter:image" content="<?= base_url('img/ogp.png') ?>" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="<?= esc($query, 'attr') ?>の検索結果一覧" />
 <meta name="twitter:title" content="<?= esc($query, 'attr') ?>の検索結果一覧">

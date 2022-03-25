@@ -3,6 +3,8 @@
 
 <?= $this->section('ogp') ?>
 <?php $description = esc($tag_name, 'attr') . 'のタグがついた投稿プロンプトの一覧。' ?>
+<meta property="og:image" content="<?= base_url('img/ogp.png') ?>" />
+<meta name="twitter:image" content="<?= base_url('img/ogp.png') ?>" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="<?= esc($tag_name, 'attr') ?>の投稿一覧" />
 <meta name="twitter:title" content="<?= esc($tag_name, 'attr') ?>の投稿一覧">

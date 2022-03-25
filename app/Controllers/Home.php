@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Libraries\Prompt as PromptLib;
 use App\Models\Prompt;
 use App\Models\Prompt_access;
 use App\Models\Tag;
@@ -155,7 +156,9 @@ class Home extends BaseController
             $promptData->view++;
         }
 
-        return view('prompt', ['prompt' => $promptData, 'author' => $userData->screen_name, 'tags' => $tagResult]);
+        $promptLib = new PromptLib();
+
+        return view('prompt', ['prompt' => $promptData, 'author' => $userData->screen_name, 'tags' => $tagResult, 'ogp' => $promptLib->getImageUrl($prompt_id)]);
     }
 
     public function logout()

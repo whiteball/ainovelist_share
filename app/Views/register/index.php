@@ -3,6 +3,8 @@
 
 <?= $this->section('ogp') ?>
 <?php $description = 'ユーザー登録ページ。' ?>
+<meta property="og:image" content="<?= base_url('img/ogp.png') ?>" />
+<meta name="twitter:image" content="<?= base_url('img/ogp.png') ?>" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="ユーザー登録" />
 <meta name="twitter:title" content="ユーザー登録">

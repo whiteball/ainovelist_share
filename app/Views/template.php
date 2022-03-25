@@ -21,13 +21,11 @@ $current_url = site_url(str_replace(index_page(), '', implode('/', $uri->getSegm
 	<title>AIのべりすと プロンプト共有<?= $this->renderSection('title') ?></title>
 	<meta property="og:url" content="<?= $current_url ?>" />
 	<meta property="og:site_name" content="AIのべりすと プロンプト共有" />
-	<meta property="og:image" content="<?= base_url('img/ogp.png') ?>" />
 	<meta property="og:image:type" content="image/png" />
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
 	<meta property="og:locale" content="ja_JP" />
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:image" content="<?= base_url('img/ogp.png') ?>" />
 	<meta name="twitter:url" content="<?= $current_url ?>" />
 	<?= $this->renderSection('ogp') ?>
 </head>

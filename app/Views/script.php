@@ -3,6 +3,8 @@
 
 <?= $this->section('ogp') ?>
 <?php $description = 'AIのべりすと用のユーザースクリプトの導入案内。' ?>
+<meta property="og:image" content="<?= base_url('img/ogp.png') ?>" />
+<meta name="twitter:image" content="<?= base_url('img/ogp.png') ?>" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="ユーザースクリプト" />
 <meta name="twitter:title" content="ユーザースクリプト">

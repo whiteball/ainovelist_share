@@ -3,6 +3,8 @@
 
 <?= $this->section('ogp') ?>
 <?php $description = esc(str_replace("\n", ' ', $prompt->description), 'attr') ?>
+<meta property="og:image" content="<?= esc($ogp, 'attr') ?>" />
+<meta name="twitter:image" content="<?= esc($ogp, 'attr') ?>" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="<?= esc(strip_tags($prompt->title), 'attr') ?>" />
 <meta name="twitter:title" content="<?= esc(strip_tags($prompt->title), 'attr') ?>">
