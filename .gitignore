@@ -128,3 +128,6 @@ nb-configuration.xml
 
 #deployer
 deploy.php
+
+#generated ogp image
+/public/img/ogp_*.png

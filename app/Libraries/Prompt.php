@@ -9,6 +9,7 @@ use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Database\Exceptions\DataException;
 use InvalidArgumentException;
 use ReflectionException;
+use Throwable;
 
 class Prompt
 {
@@ -68,5 +69,80 @@ class Prompt
         $db->transComplete();
 
         return $db->transStatus();
+    }
+
+    public function createImage($id)
+    {
+        /** @var PromptModel */
+        $prompt = model(PromptModel::class);
+        if (null === $id) {
+            $list = $prompt->where('draft', 0)->findAll();
+
+            foreach ($list as $item) {
+                $this->createImage($item);
+            }
+
+            return true;
+        }
+        if (is_object($id)) {
+            $prompt_data = $id;
+            $id          = $prompt_data->id;
+        } elseif ((int) $id > 0) {
+            $prompt_data = $prompt->find($id);
+            if (! $prompt_data) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+        try {
+            $title = strip_tags($prompt_data->title);
+            $font  = realpath(APPPATH . '/ThirdParty/GenShinGothic-Medium.ttf');
+            $base  = realpath(APPPATH . '/ThirdParty/ogp_base.png');
+            $size  = 64;
+
+            $im    = imagecreatefrompng($base);
+            $width = imagesx($im);
+
+            do {
+                $size -= 8;
+                $b_box = imagettfbbox($size, 0, $font, $title);
+            } while ($width < ($b_box[4] - $b_box[0] + 20) && $size > 10);
+
+            $black = imagecolorallocate($im, 0, 0, 0);
+            $x     = (imagesx($im) / 2) - (($b_box[4] - $b_box[0]) / 2);
+            $y     = (imagesy($im) / 2) - (($b_box[5] - $b_box[1]) / 2) + 150;
+            imagettftext($im, $size, 0, $x, $y, $black, $font, $title);
+            $fp = fopen(FCPATH . '/img/ogp_' . $id . '.png', 'wb');
+            imagepng($im, $fp);
+            fclose($fp);
+        } catch (Throwable $th) {
+            log_message('error', __METHOD__ . ': ' . $th->getMessage());
+
+            return false;
+        }
+
+        return true;
+    }
+
+    public function deleteImage($id)
+    {
+        $path = realpath(FCPATH . '/img/ogp_' . $id . '.png');
+        if ($path) {
+            return unlink($path);
+        }
+
+        return false;
+    }
+
+    public function getImageUrl($id)
+    {
+        $path = realpath(FCPATH . '/img/ogp_' . $id . '.png');
+        if ($path) {
+            return base_url('img/ogp_' . $id . '.png');
+        }
+
+        return base_url('img/ogp.png');
     }
 }
