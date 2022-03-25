@@ -61,7 +61,14 @@ class Create extends BaseController
             $this->session->unmarkTempdata('prompt_data');
             unset($_SESSION['prompt_data']);
 
-            return view('create/complete', ['prompt_id' => $prompt_id, 'draft' => (! empty($post_data['draft']) && $post_data['draft'] === '1')]);
+            $draft = (! empty($post_data['draft']) && $post_data['draft'] === '1');
+
+            if (! $draft) {
+                $promptLib = new PromptLib();
+                $promptLib->createImage($prompt_id);
+            }
+
+            return view('create/complete', ['prompt_id' => $prompt_id, 'draft' => $draft]);
         }
 
         $validation_rule = [
@@ -305,7 +312,16 @@ class Create extends BaseController
             $this->session->unmarkTempdata('prompt_edit_data');
             unset($_SESSION['prompt_edit_data']);
 
-            return view('create/complete_edit', ['prompt_id' => $prompt_id, 'draft' => ! empty($post_data['draft'])]);
+            $draft = (! empty($post_data['draft']));
+
+            $promptLib = new PromptLib();
+            if ($draft) {
+                $promptLib->deleteImage($prompt_id);
+            } else {
+                $promptLib->createImage($prompt_id);
+            }
+
+            return view('create/complete_edit', ['prompt_id' => $prompt_id, 'draft' => $draft]);
         }
 
         if ($this->isPost() && $this->validate([
