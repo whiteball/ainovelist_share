@@ -100,13 +100,13 @@ class Prompt
             $title = strip_tags($prompt_data->title);
             $font  = realpath(APPPATH . '/ThirdParty/GenShinGothic-Medium.ttf');
             $base  = realpath(APPPATH . '/ThirdParty/ogp_base.png');
-            $size  = 64;
+            $size  = 60;
 
             $im    = imagecreatefrompng($base);
             $width = imagesx($im);
 
             do {
-                $size -= 8;
+                $size -= 4;
                 $b_box = imagettfbbox($size, 0, $font, $title);
             } while ($width < ($b_box[4] - $b_box[0] + 20) && $size > 10);
 
