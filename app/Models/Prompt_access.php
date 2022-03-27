@@ -7,6 +7,11 @@ use CodeIgniter\Session\Session;
 
 class Prompt_access extends Model
 {
+    public const COUNT_TYPE_VIEW            = 1;
+    public const COUNT_TYPE_DOWNLOAD        = 2;
+    public const COUNT_TYPE_IMPORT          = 3;
+    public const COUNT_TYPE_DOWNLOAD_IMPORT = 4;
+
     protected $table            = 'prompts_access';
     protected $primaryKey       = 'prompt_id';
     protected $useAutoIncrement = false;
@@ -23,43 +28,43 @@ class Prompt_access extends Model
         ]);
     }
 
-	const COUNT_TYPE_VIEW = 1;
-	const COUNT_TYPE_DOWNLOAD = 2;
-	const COUNT_TYPE_IMPORT = 3;
+    public function countUp(int $prompt_id, int $type)
+    {
+        if (empty($prompt_id) || empty($type)) {
+            return false;
+        }
 
-	public function countUp(int $prompt_id, int $type)
-	{
-		if (empty($prompt_id) || empty($type)) {
-			return false;
-		}
+        /** @var Session */
+        $session = service('session');
+        $this->where('prompt_id', $prompt_id);
 
-		/** @var Session */
-		$session = service('session');
-		$this->where('prompt_id', $prompt_id);
-		switch ((int) $type) {
-			case self::COUNT_TYPE_VIEW:
-				$session_key = 'C_V_' . $prompt_id;
-				$this->set('view', '`view` + 1', false);
-				break;
-			case self::COUNT_TYPE_DOWNLOAD:
-				$session_key = 'C_D_' . $prompt_id;
-				$this->set('download', '`download` + 1', false);
-				break;
-			case self::COUNT_TYPE_IMPORT:
-				$session_key = 'C_I_' . $prompt_id;
-				$this->set('import', '`import` + 1', false);
-				break;
-			default:
-				return false;
-		}
+        switch ((int) $type) {
+            case self::COUNT_TYPE_VIEW:
+                $session_key = 'C_V_' . $prompt_id;
+                $this->set('view', '`view` + 1', false);
+                break;
 
-		if ($session->getTempdata($session_key) === 1) {
-			return false;
-		}
-		
+            case self::COUNT_TYPE_DOWNLOAD:
+                $session_key = 'C_D_' . $prompt_id;
+                $this->set('download', '`download` + 1', false);
+                break;
 
-		$_SESSION[$session_key] = 1;
-		$session->markAsTempdata($session_key, 86400); // 1day
-		return $this->update();
-	}
+            case self::COUNT_TYPE_IMPORT:
+                $session_key = 'C_I_' . $prompt_id;
+                $this->set('import', '`import` + 1', false);
+                break;
+
+            default:
+                return false;
+        }
+
+        if ($session->getTempdata($session_key) === 1) {
+            return false;
+        }
+
+        $_SESSION[$session_key] = 1;
+        $session->markAsTempdata($session_key, 86400); // 1day
+
+        return $this->update();
+    }
 }
