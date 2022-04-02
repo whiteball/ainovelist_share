@@ -39,10 +39,10 @@ $current_url .= $query ? ($query . '&') : '';
 <?php endif ?>
 <ul class="nav justify-content-center" id="sort-setting">
 	<li class="nav-item">
-		<a class="nav-link<?= $sort === 'c' ? ' active" aria-current="page' : '" href="' . $current_url . 'sort=c"' ?>">投稿日順</a>
+		<a class="nav-link<?= $sort === 'c' ? ' active" aria-current="page' : '" href="' . site_url($current_url . 'sort=c') . '"' ?>">投稿日順</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link<?= $sort === 'u' ? ' active" aria-current="page' : '" href="' . $current_url . 'sort=u"' ?>">更新日順</a>
+		<a class="nav-link<?= $sort === 'u' ? ' active" aria-current="page' : '" href="' . site_url($current_url . 'sort=u') . '"' ?>">更新日順</a>
 	</li>
 </ul>
 <ul class="nav nav-tabs" id="myTab" role="tablist">

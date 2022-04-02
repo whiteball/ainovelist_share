@@ -18,7 +18,7 @@
 <main class="container">
 	<h3>このサイトについて</h3>
 	<div>
-		このサイトは、<a href="https://ai-novel.com/" target="_blank" rel="noopener noreferrer">AIのべりすと</a>で作成したプロンプトを共有するためのサイトです。
+		このサイトは、<a href="https://ai-novel.com/" target="_blank" rel="noopener noreferrer">AIのべりすと</a>で作成したプロンプトを共有するための非公式ファンサイトです。
 	</div>
 	<hr>
 	<h4>投稿する方へ</h4>
@@ -57,6 +57,16 @@
 			<th scope="col">
 				内容
 			</th>
+		</tr>
+		<tr>
+			<th scope="row">
+				2022/04/02
+			</th>
+			<td>
+				<ul>
+					<li>検索ページなどのソート順のリンク先が間違っていたのを修正。</li>
+				</ul>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row">
