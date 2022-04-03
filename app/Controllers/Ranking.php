@@ -56,8 +56,8 @@ class Ranking extends BaseController
             'ranking'    => $result,
             'tags'       => $tags,
             'date'       => $base_date_str,
-            'start_date' => $date->sub(new DateInterval('P8D'))->format('Y/m/d'),
-            'end_date'   => $date->add(new DateInterval('P7D'))->format('Y/m/d'),
+            'start_date' => $date->sub(new DateInterval('P7D'))->format('Y/m/d'),
+            'end_date'   => $date->add(new DateInterval('P6D'))->format('Y/m/d'),
             'r18'        => $r18,
         ]);
     }
