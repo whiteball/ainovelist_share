@@ -60,6 +60,16 @@
 		</tr>
 		<tr>
 			<th scope="row">
+				2022/04/04
+			</th>
+			<td>
+				<ul>
+					<li>ランキングページを追加。</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">
 				2022/04/02
 			</th>
 			<td>
