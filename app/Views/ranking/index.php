@@ -15,6 +15,34 @@
 
 <?= $this->section('content') ?>
 <?= $this->include('_parts/header_nav') ?>
+<?php if ($r18 && ($_SESSION['nsfw_mode'] ?? 's') === 's') : ?>
+	<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#nsfw-modal" style="display: none;" id="nsfw-button"></button>
+	<div class="modal" id="nsfw-modal" tabindex="-1" aria-labelledby="nsfw-modal-label" aria-hidden="true">
+		<div class="modal-dialog modal-fullscreen">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="nsfw-modal-label">R-18 (NSFW) 表示確認</h4>
+				</div>
+				<div class="modal-body text-center">
+					<div class="fs-4">このページにはR-18 (NSFW)の内容を含みます。<br>閲覧を続けますか？</div>
+					<hr>
+					<div class="row">
+						<div class="col">
+							<a type="button" class="btn btn-secondary me-3" href="<?= site_url('ranking' . (empty($date) ? '' : '/' . $date))?>">戻る</a>
+							<a class="btn btn-primary ms-3" href="<?= site_url('ranking_r18' . (empty($date) ? '' : '/' . $date) . '?nmode=n') ?>">続ける</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const ev = new Event('click')
+			document.getElementById('nsfw-button').dispatchEvent(ev)
+		})
+	</script>
+<?php endif ?>
 <main class="container">
 	<h3><?= esc($start_date) ?>～<?= esc($end_date) ?>のランキング<?= $r18 ? '(R-18)' : '' ?></h3>
 	<hr>
