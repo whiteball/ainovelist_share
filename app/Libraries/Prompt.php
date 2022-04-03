@@ -111,7 +111,7 @@ class Prompt
             } while ($width < ($b_box[4] - $b_box[0] + 20) && $size > 10);
 
             $black = imagecolorallocate($im, 0, 0, 0);
-            $x     = (imagesx($im) / 2) - (($b_box[4] - $b_box[0]) / 2);
+            $x     = (imagesx($im) / 2) - (($b_box[4] - $b_box[0]) / 2) - $b_box[0];
             $y     = (imagesy($im) / 2) - (($b_box[5] - $b_box[1]) / 2) + 150;
             imagettftext($im, $size, 0, $x, $y, $black, $font, $title);
             $fp = fopen(FCPATH . '/img/ogp_' . $id . '.png', 'wb');
