@@ -24,12 +24,12 @@
 
 	<ul class="nav nav-tabs" id="myTab" role="tablist">
 		<li class="nav-item" role="presentation">
-			<a class="nav-link<?= ! $r18 ? ' active' : '' ?>" href="<?= site_url('ranking/' . $date) ?>"<?= ! $r18 ? ' aria-current="page"' : '' ?>>
+			<a class="nav-link<?= ! $r18 ? ' active' : '' ?>" href="<?= site_url('ranking' . (empty($date) ? '' : '/' . $date)) ?>"<?= ! $r18 ? ' aria-current="page"' : '' ?>>
 				全年齢
 			</a>
 		</li>
 		<li class="nav-item" role="presentation">
-			<a class="nav-link<?= $r18 ? ' active' : '' ?>" href="<?= site_url('ranking_r18/' . $date) ?>"<?= $r18 ? ' aria-current="page"' : '' ?>>
+			<a class="nav-link<?= $r18 ? ' active' : '' ?>" href="<?= site_url('ranking_r18' . (empty($date) ? '' : '/' . $date)) ?>"<?= $r18 ? ' aria-current="page"' : '' ?>>
 				R-18
 			</a>
 		</li>
@@ -58,6 +58,13 @@
 				</div>
 			</div>
 		<?php endforeach ?>
+		<?php if (empty($ranking)): ?>
+			<div class="row">
+				<div class="col text-center">
+					対象のランキングは存在しません。
+				</div>
+			</div>
+		<?php endif ?>
 	</div>
 </main>
 <?= $this->endSection() ?>

@@ -11,14 +11,23 @@ use DateTime;
 
 class Ranking extends BaseController
 {
-    public function index($date_str, $r18)
+    public function index($r18, $date_str = '')
     {
+        /** @var RankingModel */
+        $ranking = model(RankingModel::class);
+
+        $base_date_str = $date_str;
+        if ($date_str === '') {
+            $latest = $ranking->select('date')->orderBy('date', 'desc')->findAll(1);
+            if (! empty($latest)) {
+                $date_str = $latest[0]->date;
+            }
+        }
+
         if (! preg_match('/\d{4}-\d{2}-\d{2}/', $date_str)) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
-        /** @var RankingModel */
-        $ranking = model(RankingModel::class);
         /** @var Prompt */
         $prompt = model(Prompt::class);
 
@@ -32,20 +41,21 @@ class Ranking extends BaseController
             ->orderBy('rank')
             ->findAll();
 
-        if (! $result || count($result) === 0) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        if (count($result) === 0) {
+            $tags = [];
+        } else {
+            /** @var Prompt */
+            $tag = model(Tag::class);
+
+            $tags = $tag->findByPrompt($result);
         }
 
-        /** @var Prompt */
-        $tag = model(Tag::class);
-
-        $tags = $tag->findByPrompt($result);
         $date = new DateTime($date_str);
 
         return view('ranking/index', [
             'ranking'    => $result,
             'tags'       => $tags,
-            'date'       => $date_str,
+            'date'       => $base_date_str,
             'start_date' => $date->sub(new DateInterval('P8D'))->format('Y/m/d'),
             'end_date'   => $date->add(new DateInterval('P7D'))->format('Y/m/d'),
             'r18'        => $r18,
