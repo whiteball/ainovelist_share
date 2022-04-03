@@ -18,3 +18,8 @@ main#create-confirm .wrap {
   font-weight: bolder;
   text-decoration: underline;
 }
+
+.ranking.rank {
+  font-size: 120%;
+  margin-right: 20px;
+}
