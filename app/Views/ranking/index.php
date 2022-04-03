@@ -69,8 +69,8 @@
 					<div class="card">
 						<div class="card-body">
 							<h5 class="card-title" style="word-break: break-all;overflow-wrap: break-word;"><span class="ranking rank rank-<?= $prompt->rank ?>"><?= $prompt->rank ?>位</span><a class="link-secondary" href="<?= site_url('prompt/' . $prompt->prompt_id) ?>"><?= esc(strip_tags($prompt->title)) ?></a></h5>
-							<h6 class="card-subtitle mb-2 text-muted row"><div class="col-6">投稿日:<?= esc($prompt->registered_at) ?><?php if ($prompt->updated_at !== $prompt->registered_at):?>/更新日:<?= esc($prompt->updated_at) ?><?php endif ?></div><div class="col-6 text-end">期間中[View: <?= esc($prompt->view) ?>/Download: <?= esc($prompt->download) ?>/Import: <?= esc($prompt->import) ?>]</div></h6>
-							<p class="card-text" style="word-break: break-all;overflow-wrap: break-word;"><?= str_replace(' ', '&nbsp;', esc(mb_strimwidth(preg_replace('/[\r\n]/u', ' ', trim($prompt->description)), 0, 512, '...'))) ?></p>
+							<h6 class="card-subtitle mb-2 text-muted row"><div class="col-12 col-md-6">投稿日:<?= esc($prompt->registered_at) ?><?php if ($prompt->updated_at !== $prompt->registered_at):?>/更新日:<?= esc($prompt->updated_at) ?><?php endif ?></div><div class="col-12 col-md-6 text-md-end">期間中[View: <?= esc($prompt->view) ?>/Download: <?= esc($prompt->download) ?>/Import: <?= esc($prompt->import) ?>]</div></h6>
+							<p class="card-text" style="word-break: break-all;overflow-wrap: break-word;"><?= nl2br(str_replace(' ', '&nbsp;', esc(mb_strimwidth(trim($prompt->description), 0, 512, '...')))) ?></p>
 							<a href="<?= site_url('prompt/' . $prompt->prompt_id) ?>" class="btn btn-secondary">詳細</a>
 							<hr>
 							<h6 class="card-subtitle">タグ:
