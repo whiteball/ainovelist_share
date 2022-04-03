@@ -73,6 +73,6 @@ class Prompt_access_snapshot extends Model
                 break;
         }
 
-        return $this->db->query('SELECT `cur`.prompt_id, (cur.view - snap.view) AS view, (cur.download - snap.download) AS download, (cur.import - snap.import) AS import, (cur.import - snap.import + cur.download - snap.download) AS download_import FROM ' . $access_table . ' AS cur LEFT JOIN ' . $this->db->escapeIdentifiers($this->table) . ' AS snap ON `cur`.prompt_id = `snap`.prompt_id HAVING ' . $where . ' ORDER BY ' . $order_col . ' `cur`.`prompt_id` DESC;')->getResult();
+        return $this->db->query('SELECT `cur`.prompt_id, (cur.view - IFNULL(snap.view, 0)) AS view, (cur.download - IFNULL(snap.download, 0)) AS download, (cur.import - IFNULL(snap.import, 0)) AS import, (cur.import - IFNULL(snap.import, 0) + cur.download - IFNULL(snap.download, 0)) AS download_import FROM ' . $access_table . ' AS cur LEFT JOIN ' . $this->db->escapeIdentifiers($this->table) . ' AS snap ON `cur`.prompt_id = `snap`.prompt_id HAVING ' . $where . ' ORDER BY ' . $order_col . ' `cur`.`prompt_id` DESC;')->getResult();
     }
 }
