@@ -11,7 +11,7 @@ use DateTime;
 
 class Ranking extends BaseController
 {
-    public function index($date_str)
+    public function index($date_str, $r18)
     {
         if (! preg_match('/\d{4}-\d{2}-\d{2}/', $date_str)) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
@@ -22,10 +22,13 @@ class Ranking extends BaseController
         /** @var Prompt */
         $prompt = model(Prompt::class);
 
+        $r18 = (int) $r18 === 1;
+
         $result = $ranking->join($prompt->getTable(), $prompt->getTable() . '.id = ' . $ranking->getTable() . '.prompt_id')
             ->where('date', $date_str)
             ->where('type', Prompt_access::COUNT_TYPE_DOWNLOAD_IMPORT)
             ->where('rank <=', 10)
+            ->where($ranking->getTable() . '.r18', $r18 ? 1 : 0)
             ->orderBy('rank')
             ->findAll();
 
@@ -42,8 +45,10 @@ class Ranking extends BaseController
         return view('ranking/index', [
             'ranking'    => $result,
             'tags'       => $tags,
+            'date'       => $date_str,
             'start_date' => $date->sub(new DateInterval('P8D'))->format('Y/m/d'),
             'end_date'   => $date->add(new DateInterval('P7D'))->format('Y/m/d'),
+            'r18'        => $r18,
         ]);
     }
 }
