@@ -42,6 +42,11 @@ class GeneratePopularList extends BaseCommand
         $counter_r18 = 1;
 
         foreach ($result as $row) {
+            if (! isset($prompts[$row->prompt_id]) || $prompts[$row->prompt_id]->draft === '1') {
+                // 削除された項目や書きかけ状態は結果に含めない
+                continue;
+            }
+
             $is_r18 = (int) $prompts[$row->prompt_id]->r18 === 1;
             $ranking->replace([
                 'date'      => $date,
