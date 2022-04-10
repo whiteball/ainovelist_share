@@ -68,7 +68,13 @@ class Prompt
         $action_log->write($by, 'prompt delete ' . $data->id . ' tag delete [' . implode(' ', $tag_names) . ']');
         $db->transComplete();
 
-        return $db->transStatus();
+        if ($db->transStatus()) {
+            $this->deleteImage($data->id);
+
+            return true;
+        }
+
+        return false;
     }
 
     public function createImage($id)
