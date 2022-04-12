@@ -42,6 +42,8 @@ $routes->post('/config', 'Home::config');
 $routes->post('/logout', 'Home::logout');
 $routes->get('/create/(:any)', 'Create::index/$1');
 $routes->post('/create/(:any)', 'Create::index/$1');
+$routes->get('/edit/(:num)/(:any)', 'Create::edit/$1/$2');
+$routes->post('/edit/(:num)/(:any)', 'Create::edit/$1/$2');
 $routes->get('/edit/(:num)', 'Create::edit/$1');
 $routes->post('/edit/(:num)', 'Create::edit/$1');
 $routes->post('/delete/(:num)', 'Create::delete/$1');
