@@ -239,7 +239,7 @@
 									<li>
 										<div class="form-check-inline">
 											<input class="form-check-input" type="radio" name="reply-to" value="<?= $comment->id ?>" id="comment-radio-<?= $comment->id ?>" <?= isset($clearCommentInput) ? '' : set_checkbox('reply-to', $comment->id) ?>>
-											<label for="comment-radio-<?= $comment->id ?>" id="comment-<?= $comment->id ?>"><?= esc($comment->comment) ?> / <?php if ($comment->registered_by === '0') : ?><?= esc($comment->user_name) ?><?php else : ?><a href="<?= site_url('user/' . $comment->registered_by) ?>"><?= esc($comment->user_name) ?></a><?php endif ?> (<?= $comment->registered_at ?>)</label>
+											<label for="comment-radio-<?= $comment->id ?>" id="comment-<?= $comment->id ?>"><?= esc($comment->comment) ?> / <?php if ($comment->registered_by === '0') : ?><?= esc($comment->user_name) ?><?php else : ?><a href="<?= site_url('user/' . $comment->registered_by) ?>"><?= esc($comment->user_name) ?></a><?php endif ?> <span class="comment-date">(<?= $comment->registered_at ?>)</span></label>
 										</div>
 										<?php if ((int) $comment->registered_by === $loginUserId || ($comment->registered_by !== '0' && (int) $prompt->user_id === $loginUserId)) : ?>
 											<button type="button" class="btn btn-outline-danger btn-sm comment-delete" date-id="<?= $comment->id ?>">×</button>
@@ -250,7 +250,7 @@
 													<li>
 														<div class="form-check-inline">
 															<input class="form-check-input" type="radio" name="reply-to" value="<?= $child->id ?>" id="comment-radio-<?= $child->id ?>" <?= isset($clearCommentInput) ? '' : set_checkbox('reply-to', (string) $child->id) ?>>
-															<label for="comment-radio-<?= $child->id ?>" id="comment-<?= $child->id ?>"><?= esc($child->comment) ?> / <?php if ($child->registered_by === '0') : ?><?= esc($child->user_name) ?><?php else : ?><a href="<?= site_url('user/' . $child->registered_by) ?>"><?= esc($child->user_name) ?></a><?php endif ?> (<?= $child->registered_at ?>)</label>
+															<label for="comment-radio-<?= $child->id ?>" id="comment-<?= $child->id ?>"><?= esc($child->comment) ?> / <?php if ($child->registered_by === '0') : ?><?= esc($child->user_name) ?><?php else : ?><a href="<?= site_url('user/' . $child->registered_by) ?>"><?= esc($child->user_name) ?></a><?php endif ?> <span class="comment-date">(<?= $child->registered_at ?>)</span></label>
 														</div>
 														<?php if ((int) $child->registered_by === $loginUserId || ($child->registered_by !== '0' && (int) $prompt->user_id === $loginUserId)) : ?>
 															<button type="button" class="btn btn-outline-danger btn-sm comment-delete" date-id="<?= $child->id ?>">×</button>
@@ -259,7 +259,7 @@
 															<ul style="list-style: circle;">
 																<?php foreach ($child->children as $grand_child) : ?>
 																	<li>
-																		<span id="comment-<?= $grand_child->id ?>"><?= esc($grand_child->comment) ?> / <?php if ($grand_child->registered_by === '0') : ?><?= esc($grand_child->user_name) ?><?php else : ?><a href="<?= site_url('user/' . $grand_child->registered_by) ?>"><?= esc($grand_child->user_name) ?></a><?php endif ?> (<?= $grand_child->registered_at ?>)</span>
+																		<span id="comment-<?= $grand_child->id ?>"><?= esc($grand_child->comment) ?> / <?php if ($grand_child->registered_by === '0') : ?><?= esc($grand_child->user_name) ?><?php else : ?><a href="<?= site_url('user/' . $grand_child->registered_by) ?>"><?= esc($grand_child->user_name) ?></a><?php endif ?> <span class="comment-date">(<?= $grand_child->registered_at ?>)</span></span>
 																		<?php if ((int) $grand_child->registered_by === $loginUserId || ($grand_child->registered_by !== '0' && (int) $prompt->user_id === $loginUserId)) : ?>
 																			<button type="button" class="btn btn-outline-danger btn-sm comment-delete" date-id="<?= $grand_child->id ?>">×</button>
 																		<?php endif ?>

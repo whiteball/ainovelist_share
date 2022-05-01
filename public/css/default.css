@@ -27,3 +27,7 @@ main#create-confirm .wrap {
 .comment-delete {
   padding: 0 0.4rem;
 }
+
+.comment-date {
+  font-size: smaller;
+}
