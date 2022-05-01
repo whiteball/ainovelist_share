@@ -135,6 +135,10 @@ class Comment
      */
     public function delete($comment_id, $by)
     {
+        if (empty($comment_id) || empty($by)) {
+            return false;
+        }
+
         /** @var CommentDeleted */
         $commentDeleted = model(CommentDeleted::class);
         /** @var Prompt */
