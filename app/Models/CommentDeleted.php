@@ -8,7 +8,7 @@ class CommentDeleted extends Model
 {
     protected $table            = 'comments_deleted';
     protected $primaryKey       = 'id';
-    protected $useAutoIncrement = true;
+    protected $useAutoIncrement = false;
     protected $returnType       = 'object';
     protected $allowedFields    = [
         'id',

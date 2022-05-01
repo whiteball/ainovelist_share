@@ -152,7 +152,7 @@ class Comment
         $db->transStart();
 
         $comment->deleted_by = $by;
-        $commentDeleted->save($comment);
+        $commentDeleted->insert($comment);
         if ((int) $comment->registered_by === (int) $by) {
             $message = '###このコメントは投稿者によって削除されました###';
         } else {
