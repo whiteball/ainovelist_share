@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Libraries\Prompt as PromptLib;
+use App\Libraries\Comment;
 use App\Models\Prompt;
 use App\Models\User;
 use App\Models\User_deleted;
@@ -70,6 +71,32 @@ class Mypage extends BaseController
 
         return view('mypage/list', [
             'prompts' => $prompts,
+        ]);
+    }
+
+    public function comment_posted()
+    {
+        if ($this->_isNotLoggedIn()) {
+            return redirect('/');
+        }
+
+        $comment = new Comment();
+
+        return view('mypage/comment_posted', [
+            'comments' => $comment->get_posted($this->loginUserId)
+        ]);
+    }
+
+    public function comment_received()
+    {
+        if ($this->_isNotLoggedIn()) {
+            return redirect('/');
+        }
+
+        $comment = new Comment();
+
+        return view('mypage/comment_received', [
+            'comments' => $comment->get_received($this->loginUserId)
         ]);
     }
 

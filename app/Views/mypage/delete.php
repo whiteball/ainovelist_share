@@ -18,6 +18,11 @@
 			</a>
 		</li>
 		<li class="nav-item" role="presentation">
+			<a class="nav-link" href="<?= site_url('mypage/comment_posted') ?>">
+				コメント
+			</a>
+		</li>
+		<li class="nav-item" role="presentation">
 			<a class="nav-link active" href="<?= site_url('mypage/delete') ?>" aria-current="page">
 				退会
 			</a>

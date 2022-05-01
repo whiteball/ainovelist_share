@@ -41,6 +41,7 @@ class CreateCommentTable extends Migration
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addKey('prompt_id');
+        $this->forge->addKey('registered_by');
         $this->forge->createTable('comments');
 
         $this->forge->addField([
@@ -85,6 +86,7 @@ class CreateCommentTable extends Migration
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addKey('prompt_id');
+        $this->forge->addKey('registered_by');
         $this->forge->createTable('comments_deleted');
 
         $this->forge->addColumn('prompts', 'comment TINYINT DEFAULT 0 NOT NULL AFTER draft');

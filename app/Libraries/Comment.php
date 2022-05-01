@@ -7,9 +7,9 @@ use App\Models\Comment as CommentModel;
 use App\Models\CommentDeleted;
 use App\Models\Prompt;
 use App\Models\User;
-use InvalidArgumentException;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Database\Exceptions\DataException;
+use InvalidArgumentException;
 use ReflectionException;
 
 class Comment
@@ -32,15 +32,17 @@ class Comment
 
     /**
      * コメントを追加する。
-     * 
-     * @param int $prompt_id プロンプトID
-     * @param string $comment コメント文
-     * @param int $by コメント投稿者のユーザーID
-     * @param int $reply_to リプライ先のコメントID
-     * @return bool 
-     * @throws InvalidArgumentException 
-     * @throws DatabaseException 
-     * @throws ReflectionException 
+     *
+     * @param int    $prompt_id プロンプトID
+     * @param string $comment   コメント文
+     * @param int    $by        コメント投稿者のユーザーID
+     * @param int    $reply_to  リプライ先のコメントID
+     *
+     * @throws DatabaseException
+     * @throws InvalidArgumentException
+     * @throws ReflectionException
+     *
+     * @return bool
      */
     public function add($prompt_id, $comment, $by, $reply_to = 0)
     {
@@ -75,10 +77,12 @@ class Comment
 
     /**
      * コメントツリーを取得する。
-     * 
+     *
      * @param int $prompt_id プロンプトID
-     * @return object[] 
-     * @throws DataException 
+     *
+     * @throws DataException
+     *
+     * @return object[]
      */
     public function get($prompt_id)
     {
@@ -118,14 +122,16 @@ class Comment
     /**
      * コメントを削除する。
      * コメントの投稿者かコメントが属するプロンプトの投稿者でないと削除出来ない。
-     * 
+     *
      * @param int $comment_id コメントID
-     * @param int $by 削除を実行するユーザーID
-     * @return bool 
-     * @throws DataException 
-     * @throws InvalidArgumentException 
-     * @throws DatabaseException 
-     * @throws ReflectionException 
+     * @param int $by         削除を実行するユーザーID
+     *
+     * @throws DatabaseException
+     * @throws DataException
+     * @throws InvalidArgumentException
+     * @throws ReflectionException
+     *
+     * @return bool
      */
     public function delete($comment_id, $by)
     {
@@ -164,5 +170,62 @@ class Comment
         $db->transComplete();
 
         return $db->transStatus();
+    }
+
+    /**
+     * 投稿したコメント一覧を取得する。
+     *
+     * @param int $user_id ユーザーID
+     *
+     * @throws DataException
+     * @throws InvalidArgumentException
+     *
+     * @return object[]
+     */
+    public function get_posted($user_id)
+    {
+        /** @var Prompt */
+        $prompt = model(Prompt::class);
+
+        $comment_table = $this->comment->getTable();
+        $prompt_table  = $prompt->getTable();
+
+        $db = \Config\Database::connect();
+
+        return $this->comment->select($comment_table . '.*')
+            ->select($prompt_table . '.title AS prompt_title')
+            ->select($prompt_table . '.draft')
+            ->select('IF(`' . $prompt_table . '`.`user_id` = ' . $db->escape($user_id) . ',1,0) AS own_prompt', false)
+            ->join($prompt_table, $prompt_table . '.id = ' . $comment_table . '.prompt_id', 'left')
+            ->where('registered_by', $user_id)
+            ->orderBy($comment_table . '.id', 'desc')
+            ->findAll();
+    }
+
+    /**
+     * 受け取ったコメント一覧を取得する。
+     *
+     * @param int $user_id ユーザーID
+     *
+     * @throws DataException
+     *
+     * @return object[]
+     */
+    public function get_received($user_id)
+    {
+        /** @var Prompt */
+        $prompt = model(Prompt::class);
+
+        $comment_table = $this->comment->getTable();
+        $prompt_table  = $prompt->getTable();
+
+        return $this->comment->select($comment_table . '.*')
+            ->select($prompt_table . '.title AS prompt_title')
+            ->select($prompt_table . '.draft')
+            ->join($prompt_table, $prompt_table . '.id = ' . $comment_table . '.prompt_id', 'left')
+            ->where('user_id', $user_id)
+            ->where('registered_by !=', 0)
+            ->orderBy($comment_table . '.id', 'desc')
+            ->findAll();
     }
 }
