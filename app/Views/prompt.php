@@ -25,6 +25,16 @@
 <?= $this->section('content') ?>
 <?= $this->include('_parts/header_nav') ?>
 <main class="container" id="create-confirm">
+	<?php if (!empty($successMessage)) : ?>
+		<div class="alert alert-success" role="alert">
+			<?= esc($successMessage) ?>
+		</div>
+	<?php endif ?>
+	<?php if (!empty($errorMessage)) : ?>
+		<div class="alert alert-warning" role="alert">
+			<?= esc($errorMessage) ?>
+		</div>
+	<?php endif ?>
 	<h1 class="h3 mb-3 fw-normal">プロンプト詳細</h1>
 	<div class="mb-3 border rounded p-2">
 		<div class="row">
@@ -207,6 +217,98 @@
 				<?php endif ?>
 			</div>
 		</div>
+	<?php endif ?>
+	<?php if ($prompt->comment === '1') : ?>
+		<div class="accordion" id="comment-section">
+			<div class="accordion-item">
+				<h2 class="accordion-header" id="comment-head">
+					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#comment-body" aria-expanded="<?= empty($openComment) ? 'false' : 'true' ?>" aria-controls="comment-body">
+						コメント
+					</button>
+				</h2>
+				<div id="comment-body" class="accordion-collapse collapse<?= empty($openComment) ? '' : ' show' ?>" aria-labelledby="comment-head">
+					<div class="accordion-body">
+						<?= form_open('prompt/' . $prompt->id) ?>
+						<?= csrf_field() ?>
+						<?= form_hidden('type', 'comment') ?>
+						<?php if (empty($comments)) : ?>
+							<div>コメントはありません。</div>
+						<?php else : ?>
+							<ul class="list-unstyled">
+								<?php foreach ($comments as $comment) : ?>
+									<li>
+										<div class="form-check-inline">
+											<input class="form-check-input" type="radio" name="reply-to" value="<?= $comment->id ?>" id="comment-radio-<?= $comment->id ?>" <?= isset($clearCommentInput) ? '' : set_checkbox('reply-to', $comment->id) ?>>
+											<label for="comment-radio-<?= $comment->id ?>" id="comment-<?= $comment->id ?>"><?= esc($comment->comment) ?> / <?php if ($comment->registered_by === '0') : ?><?= esc($comment->user_name) ?><?php else : ?><a href="<?= site_url('user/' . $comment->registered_by) ?>"><?= esc($comment->user_name) ?></a><?php endif ?> (<?= $comment->registered_at ?>)</label>
+										</div>
+										<?php if ((int) $comment->registered_by === $loginUserId || ($comment->registered_by !== '0' && (int) $prompt->user_id === $loginUserId)) : ?>
+											<button type="button" class="btn btn-outline-danger btn-sm comment-delete" date-id="<?= $comment->id ?>">×</button>
+										<?php endif ?>
+										<?php if (!empty($comment->children)) : ?>
+											<ul style="list-style: none;">
+												<?php foreach ($comment->children as $child) : ?>
+													<li>
+														<div class="form-check-inline">
+															<input class="form-check-input" type="radio" name="reply-to" value="<?= $child->id ?>" id="comment-radio-<?= $child->id ?>" <?= isset($clearCommentInput) ? '' : set_checkbox('reply-to', (string) $child->id) ?>>
+															<label for="comment-radio-<?= $child->id ?>" id="comment-<?= $child->id ?>"><?= esc($child->comment) ?> / <?php if ($child->registered_by === '0') : ?><?= esc($child->user_name) ?><?php else : ?><a href="<?= site_url('user/' . $child->registered_by) ?>"><?= esc($child->user_name) ?></a><?php endif ?> (<?= $child->registered_at ?>)</label>
+														</div>
+														<?php if ((int) $child->registered_by === $loginUserId || ($child->registered_by !== '0' && (int) $prompt->user_id === $loginUserId)) : ?>
+															<button type="button" class="btn btn-outline-danger btn-sm comment-delete" date-id="<?= $child->id ?>">×</button>
+														<?php endif ?>
+														<?php if (!empty($child->children)) : ?>
+															<ul style="list-style: circle;">
+																<?php foreach ($child->children as $grand_child) : ?>
+																	<li>
+																		<span id="comment-<?= $grand_child->id ?>"><?= esc($grand_child->comment) ?> / <?php if ($grand_child->registered_by === '0') : ?><?= esc($grand_child->user_name) ?><?php else : ?><a href="<?= site_url('user/' . $grand_child->registered_by) ?>"><?= esc($grand_child->user_name) ?></a><?php endif ?> (<?= $grand_child->registered_at ?>)</span>
+																		<?php if ((int) $grand_child->registered_by === $loginUserId || ($grand_child->registered_by !== '0' && (int) $prompt->user_id === $loginUserId)) : ?>
+																			<button type="button" class="btn btn-outline-danger btn-sm comment-delete" date-id="<?= $grand_child->id ?>">×</button>
+																		<?php endif ?>
+																	</li>
+																<?php endforeach ?>
+															</ul>
+														<?php endif ?>
+													</li>
+												<?php endforeach ?>
+											</ul>
+										<?php endif ?>
+									</li>
+								<?php endforeach ?>
+							</ul>
+						<?php endif ?>
+						<div class="input-group mt-2">
+							<div class="input-group-text">
+								<input class="form-check-input mt-0" type="radio" value="0" aria-label="コメントリプライ先は無し" name="reply-to" <?= isset($clearCommentInput) ? ' checked="checked"' : set_checkbox('reply-to', "0", true) ?>>
+							</div>
+							<input type="text" class="form-control" aria-label="コメント入力欄" maxlength="2048" id="comment" name="comment" value="<?= isset($clearCommentInput) ? '' : set_value('comment', '') ?>" required>
+							<button class="btn btn-outline-secondary" type="submit" id="comment-button">送信</button>
+						</div>
+						<?= $validation->showError('reply-to') ?>
+						<?= $validation->showError('comment') ?>
+						<?= form_close() ?>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div style="display: none;">
+			<?= form_open('prompt/' . $prompt->id, ['id' => 'comment-delete-form']) ?>
+			<?= csrf_field() ?>
+			<?= form_hidden('type', 'comment-delete') ?>
+			<input type="hidden" name="comment_id" id="comment-delete-id" value="0">
+			<?= form_close() ?>
+		</div>
+		<script>
+			for (const btn of document.querySelectorAll('.comment-delete')){
+				btn.addEventListener('click', function () {
+					const id = this.getAttribute('date-id')
+					const elem = document.getElementById('comment-' + id)
+					if (window.confirm('以下のコメントを削除します。\n\n' + elem.textContent)) {
+						document.getElementById('comment-delete-id').setAttribute('value', id)
+						document.getElementById('comment-delete-form').submit()
+						return
+					}
+			})
+			}
+		</script>
 	<?php endif ?>
 	<?php if ($prompt->r18 === '1' && ($_SESSION['nsfw_mode'] ?? 's') === 's') : ?>
 		<?php

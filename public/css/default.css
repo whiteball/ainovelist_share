@@ -23,3 +23,7 @@ main#create-confirm .wrap {
   font-size: 120%;
   margin-right: 20px;
 }
+
+.comment-delete {
+  padding: 0 0.4rem;
+}

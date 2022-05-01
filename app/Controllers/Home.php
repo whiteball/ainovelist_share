@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Libraries\Prompt as PromptLib;
+use App\Libraries\Comment;
 use App\Models\Prompt;
 use App\Models\Prompt_access;
 use App\Models\Tag;
@@ -157,8 +158,58 @@ class Home extends BaseController
         }
 
         $promptLib = new PromptLib();
+        $viewData = [
+            'prompt' => $promptData,
+            'author' => $userData->screen_name,
+            'tags' => $tagResult,
+            'ogp' => $promptLib->getImageUrl($prompt_id),
+            'loginUserId' => $this->loginUserId,
+            'validation' => service('validation'),
+        ];
 
-        return view('prompt', ['prompt' => $promptData, 'author' => $userData->screen_name, 'tags' => $tagResult, 'ogp' => $promptLib->getImageUrl($prompt_id)]);
+        // コメント処理
+        if ($promptData->comment !== '0') {
+            $comment = new Comment();
+            if ($this->request->getPost('type') === 'comment') {
+                if ($this->validate([
+                    'reply-to' => ['label' => 'リプライ先', 'rules' => ['required', 'numeric']],
+                    'comment' => ['label' => 'コメント', 'rules' => ['required', 'max_length[2048]']],
+                ])) {
+                    $postData = $this->request->getPost();
+                    if ($comment->add($prompt_id, $postData['comment'], $this->loginUserId, $postData['reply-to'])) {
+                        $viewData['successMessage']    = 'コメントを投稿しました';
+                        $viewData['clearCommentInput'] = true;
+                    } else {
+                        $viewData['errorMessage'] = 'コメント投稿に失敗しました';
+                    }
+                } else {
+                    $viewData['errorMessage'] = 'コメント投稿に失敗しました';
+                }
+
+                $viewData['openComment'] = true;
+            } elseif ($this->request->getPost('type') === 'comment-delete') {
+                if ($this->validate([
+                    'comment_id' => ['label' => 'コメントID', 'rules' => ['required']],
+                ])) {
+                    $postData = $this->request->getPost();
+                    if ($comment->delete($postData['comment_id'], $this->loginUserId)) {
+                        $viewData['successMessage'] = 'コメントを削除しました';
+                    } else {
+                        $viewData['errorMessage'] = 'コメント削除に失敗しました';
+                    }
+                } else {
+                    $viewData['errorMessage'] = 'コメント削除に失敗しました';
+                }
+
+                $viewData['clearCommentInput'] = true;
+                $viewData['openComment']       = true;
+            }
+
+            // コメント取得
+            $viewData['comments'] = $comment->get($prompt_id);
+        }
+
+        return view('prompt', $viewData);
     }
 
     public function logout()

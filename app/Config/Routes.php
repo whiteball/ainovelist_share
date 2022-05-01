@@ -48,6 +48,7 @@ $routes->get('/edit/(:num)', 'Create::edit/$1');
 $routes->post('/edit/(:num)', 'Create::edit/$1');
 $routes->post('/delete/(:num)', 'Create::delete/$1');
 $routes->get('/prompt/(:num)', 'Home::prompt/$1');
+$routes->post('/prompt/(:num)', 'Home::prompt/$1');
 $routes->get('/prompt_download/(:num)', 'Home::prompt/$1/1');
 $routes->get('/tag/(:any)', 'Tag::index/$1');
 $routes->get('/tags', 'Tag::list');
