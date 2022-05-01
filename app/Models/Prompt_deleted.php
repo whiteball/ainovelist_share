@@ -10,5 +10,5 @@ class Prompt_deleted extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = false;
     protected $returnType       = 'object';
-    protected $allowedFields    = ['id', 'user_id', 'title', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'scripts', 'character_book', 'r18', 'draft', 'registered_at', 'updated_at', 'deleted_at'];
+    protected $allowedFields    = ['id', 'user_id', 'title', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'scripts', 'character_book', 'r18', 'draft', 'comment', 'registered_at', 'updated_at', 'deleted_at'];
 }

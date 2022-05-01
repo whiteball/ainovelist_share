@@ -122,8 +122,31 @@
 					document.addEventListener('DOMContentLoaded', toggleDraftButton)
 					document.getElementById('draft').addEventListener('click', toggleDraftButton)
 				</script>
+				<input class="btn-check" type="checkbox" value="1" id="comment" name="comment" <?= (isset($post_data['comment']) && ($post_data['comment'] === '1')) ? 'checked="checked' : (set_checkbox('comment', '1', isset($post_data['comment']) ? ($post_data['comment'] === '1') : false)) ?> autocomplete="off">
+				<label class="btn btn-outline-secondary ms-4" for="comment" id="comment-text">
+					現在はコメント不許可設定
+				</label>
+				<?= $validation->showError('comment') ?>
+				<script>
+					const toggleCommentButton = function() {
+						const check = document.getElementById('comment')
+						const text = document.getElementById('comment-text')
+						if (check.checked) {
+							text.classList.add('btn-success')
+							text.classList.remove('btn-outline-secondary')
+							text.innerText = '現在はコメント許可設定'
+						} else {
+							text.classList.remove('btn-success')
+							text.classList.add('btn-outline-secondary')
+							text.innerText = '現在はコメント不許可設定'
+						}
+					}
+					document.addEventListener('DOMContentLoaded', toggleCommentButton)
+					document.getElementById('comment').addEventListener('click', toggleCommentButton)
+				</script>
 				<div class="mt-2" style="font-size: 75%;">R-18設定にすると、トップページや検索の「全年齢」の一覧には表示されません。</div>
 				<div class="mt-1" style="font-size: 75%;">非公開設定にすると、公開状態に変更するまでトップページや検索の一覧には表示されません。</div>
+				<div class="mt-1" style="font-size: 75%;">コメント許可設定にすると、プロンプト個別ページにコメント欄が表示されます。</div>
 			</div>
 		</div>
 		<div class="mb-3 border rounded p-2">
@@ -341,8 +364,31 @@
 						document.addEventListener('DOMContentLoaded', toggleDraftFileButton)
 						document.getElementById('draft-file').addEventListener('click', toggleDraftFileButton)
 					</script>
+					<input class="btn-check" type="checkbox" value="1" id="comment-file" name="comment-file" <?= (isset($post_data['comment-file']) && ($post_data['comment-file'] === '1')) ? 'checked="checked' : (set_checkbox('comment-file', '1', isset($post_data['comment-file']) ? ($post_data['comment-file'] === '1') : false)) ?> autocomplete="off">
+					<label class="btn btn-outline-secondary ms-4" for="comment-file" id="comment-file-text">
+						現在はコメント不許可設定
+					</label>
+					<?= $validation->showError('comment-file') ?>
+					<script>
+						const toggleCommentFileButton = function() {
+							const check = document.getElementById('comment-file')
+							const text = document.getElementById('comment-file-text')
+							if (check.checked) {
+								text.classList.add('btn-success')
+								text.classList.remove('btn-outline-secondary')
+								text.innerText = '現在はコメント許可設定'
+							} else {
+								text.classList.remove('btn-success')
+								text.classList.add('btn-outline-secondary')
+								text.innerText = '現在はコメント不許可設定'
+							}
+						}
+						document.addEventListener('DOMContentLoaded', toggleCommentFileButton)
+						document.getElementById('comment-file').addEventListener('click', toggleCommentFileButton)
+					</script>
 					<div class="mt-2" style="font-size: 75%;">R-18設定にすると、トップページや検索の「全年齢」の一覧には表示されません。</div>
 					<div class="mt-1" style="font-size: 75%;">非公開設定にすると、公開状態に変更するまでトップページや検索の一覧には表示されません。</div>
+					<div class="mt-1" style="font-size: 75%;">コメント許可設定にすると、プロンプト個別ページにコメント欄が表示されます。</div>
 				</div>
 			</div>
 			<div class="text-center">

@@ -34,6 +34,10 @@
 			<h5>公開/非公開設定</h5>
 			<div class="wrap border rounded p-2"><?= (! empty($post_data['draft']) && $post_data['draft'] === '1') ? '非公開' : '公開' ?></div>
 		</div>
+		<div class="mb-3">
+			<h5>コメント許可/不許可設定</h5>
+			<div class="wrap border rounded p-2"><?= (! empty($post_data['comment']) && $post_data['comment'] === '1') ? '許可' : '不許可' ?></div>
+		</div>
 	</div>
 	<?php if (! (empty($post_data['memory']) && empty($post_data['authors_note']) && empty($post_data['ng_words']))) : ?>
 		<div class="mb-3 border rounded p-2">
