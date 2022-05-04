@@ -25,12 +25,12 @@
 <?= $this->section('content') ?>
 <?= $this->include('_parts/header_nav') ?>
 <main class="container" id="create-confirm">
-	<?php if (!empty($successMessage)) : ?>
+	<?php if (! empty($successMessage)) : ?>
 		<div class="alert alert-success" role="alert">
 			<?= esc($successMessage) ?>
 		</div>
 	<?php endif ?>
-	<?php if (!empty($errorMessage)) : ?>
+	<?php if (! empty($errorMessage)) : ?>
 		<div class="alert alert-warning" role="alert">
 			<?= esc($errorMessage) ?>
 		</div>
@@ -192,7 +192,7 @@
 						</h2>
 						<div id="script-body" class="accordion-collapse collapse" aria-labelledby="script-head">
 							<div class="accordion-body">
-								<?php $type_list = ['script_in' => '入力文の置換', 'script_out' => '出力文の置換', 'script_in_pin' => '最新入力文の確定置換', 'script_in_regex' => '入力文の置換（正規表現）', 'script_out_regex' => '出力文の置換（正規表現）', 'script_in_pin_regex' => '最新入力文の確定置換（正規表現）', 'script_none' => '使用しない'] ?>
+								<?php $type_list = ['script_in' => '入力文の置換', 'script_out' => '出力文の置換', 'script_in_pin' => '最新入力文の確定置換', 'script_rephrase' => '単語の言い換え', 'script_in_regex' => '入力文の置換（正規表現）', 'script_out_regex' => '出力文の置換（正規表現）', 'script_in_pin_regex' => '最新入力文の確定置換（正規表現）', 'script_rephrase_regex' => '単語の言い換え（正規表現）', 'script_none' => '使用しない'] ?>
 								<?php foreach ($prompt->script as $script) : ?>
 									<div class="border rounded p-2">
 										<table class="table">
@@ -228,7 +228,7 @@
 				</h2>
 				<div id="comment-body" class="accordion-collapse collapse<?= empty($openComment) ? '' : ' show' ?>" aria-labelledby="comment-head">
 					<div class="accordion-body">
-						<?php if (!empty($loginUserId)) : ?>
+						<?php if (! empty($loginUserId)) : ?>
 							<?= form_open('prompt/' . $prompt->id) ?>
 							<?= csrf_field() ?>
 							<?= form_hidden('type', 'comment') ?>
@@ -240,33 +240,33 @@
 								<?php foreach ($comments as $comment) : ?>
 									<li>
 										<div class="form-check-inline">
-											<?php if (!empty($loginUserId)) : ?>
+											<?php if (! empty($loginUserId)) : ?>
 												<input class="form-check-input" type="radio" name="reply-to" value="<?= $comment->id ?>" id="comment-radio-<?= $comment->id ?>" <?= isset($clearCommentInput) ? '' : set_checkbox('reply-to', $comment->id) ?>>
 											<?php endif ?>
 											<label for="comment-radio-<?= $comment->id ?>" id="comment-<?= $comment->id ?>"><?= esc($comment->comment) ?> / <?php if ($comment->registered_by === '0') : ?><?= esc($comment->user_name) ?><?php else : ?><a href="<?= site_url('user/' . $comment->registered_by) ?>"><?= esc($comment->user_name) ?></a><?php endif ?> <span class="comment-date">(<?= $comment->registered_at ?>)</span></label>
 										</div>
-										<?php if (!empty($loginUserId) && ((int) $comment->registered_by === $loginUserId || ($comment->registered_by !== '0' && (int) $prompt->user_id === $loginUserId))) : ?>
+										<?php if (! empty($loginUserId) && ((int) $comment->registered_by === $loginUserId || ($comment->registered_by !== '0' && (int) $prompt->user_id === $loginUserId))) : ?>
 											<button type="button" class="btn btn-outline-danger btn-sm comment-delete" date-id="<?= $comment->id ?>">×</button>
 										<?php endif ?>
-										<?php if (!empty($comment->children)) : ?>
+										<?php if (! empty($comment->children)) : ?>
 											<ul <?= empty($loginUserId) ? 'style="list-style: circle;"' : 'style="list-style: none;"' ?>>
 												<?php foreach ($comment->children as $child) : ?>
 													<li>
 														<div class="form-check-inline">
-															<?php if (!empty($loginUserId)) : ?>
+															<?php if (! empty($loginUserId)) : ?>
 																<input class="form-check-input" type="radio" name="reply-to" value="<?= $child->id ?>" id="comment-radio-<?= $child->id ?>" <?= isset($clearCommentInput) ? '' : set_checkbox('reply-to', (string) $child->id) ?>>
 															<?php endif ?>
 															<label for="comment-radio-<?= $child->id ?>" id="comment-<?= $child->id ?>"><?= esc($child->comment) ?> / <?php if ($child->registered_by === '0') : ?><?= esc($child->user_name) ?><?php else : ?><a href="<?= site_url('user/' . $child->registered_by) ?>"><?= esc($child->user_name) ?></a><?php endif ?> <span class="comment-date">(<?= $child->registered_at ?>)</span></label>
 														</div>
-														<?php if (!empty($loginUserId) && ((int) $child->registered_by === $loginUserId || ($child->registered_by !== '0' && (int) $prompt->user_id === $loginUserId))) : ?>
+														<?php if (! empty($loginUserId) && ((int) $child->registered_by === $loginUserId || ($child->registered_by !== '0' && (int) $prompt->user_id === $loginUserId))) : ?>
 															<button type="button" class="btn btn-outline-danger btn-sm comment-delete" date-id="<?= $child->id ?>">×</button>
 														<?php endif ?>
-														<?php if (!empty($child->children)) : ?>
+														<?php if (! empty($child->children)) : ?>
 															<ul style="list-style: circle;">
 																<?php foreach ($child->children as $grand_child) : ?>
 																	<li>
 																		<span id="comment-<?= $grand_child->id ?>"><?= esc($grand_child->comment) ?> / <?php if ($grand_child->registered_by === '0') : ?><?= esc($grand_child->user_name) ?><?php else : ?><a href="<?= site_url('user/' . $grand_child->registered_by) ?>"><?= esc($grand_child->user_name) ?></a><?php endif ?> <span class="comment-date">(<?= $grand_child->registered_at ?>)</span></span>
-																		<?php if (!empty($loginUserId) && ((int) $grand_child->registered_by === $loginUserId || ($grand_child->registered_by !== '0' && (int) $prompt->user_id === $loginUserId))) : ?>
+																		<?php if (! empty($loginUserId) && ((int) $grand_child->registered_by === $loginUserId || ($grand_child->registered_by !== '0' && (int) $prompt->user_id === $loginUserId))) : ?>
 																			<button type="button" class="btn btn-outline-danger btn-sm comment-delete" date-id="<?= $grand_child->id ?>">×</button>
 																		<?php endif ?>
 																	</li>
@@ -281,10 +281,10 @@
 								<?php endforeach ?>
 							</ul>
 						<?php endif ?>
-						<?php if (!empty($loginUserId)) : ?>
+						<?php if (! empty($loginUserId)) : ?>
 							<div class="input-group mt-2">
 								<div class="input-group-text">
-									<input class="form-check-input mt-0" type="radio" value="0" aria-label="コメントリプライ先は無し" name="reply-to" <?= isset($clearCommentInput) ? ' checked="checked"' : set_checkbox('reply-to', "0", true) ?>>
+									<input class="form-check-input mt-0" type="radio" value="0" aria-label="コメントリプライ先は無し" name="reply-to" <?= isset($clearCommentInput) ? ' checked="checked"' : set_checkbox('reply-to', '0', true) ?>>
 								</div>
 								<input type="text" class="form-control" aria-label="コメント入力欄" maxlength="2048" id="comment" name="comment" value="<?= isset($clearCommentInput) ? '' : set_value('comment', '') ?>" required>
 								<button class="btn btn-outline-secondary" type="submit" id="comment-button">送信</button>
