@@ -193,7 +193,7 @@ class Create extends BaseController
 
                 unset($validation_rule['tags']);
                 if ($this->validator->reset()->setRules($validation_rule)->run($post_data)) {
-                    $post_data['tags'] = array_unique(array_map(static fn ($val) => mb_substr($val, 0, 128), explode(' ', preg_replace('/\s+/u', ' ', $this->request->getPost('tags-file')))));
+                    $post_data['tags'] = array_filter(array_unique(array_map(static fn ($val) => mb_substr($val, 0, 128), explode(' ', preg_replace('/\s+/u', ' ', $this->request->getPost('tags-file'))))), static fn ($value) => $value !== '');
 
                     $_SESSION['prompt_data'] = $post_data;
                     $this->session->markAsTempdata('prompt_data', 3600);
@@ -213,7 +213,7 @@ class Create extends BaseController
                 $post_data['script'] = array_filter($post_data['script'], static fn ($script) => ! empty($script['in']));
             }
 
-            $post_data['tags'] = array_unique(array_map(static fn ($val) => mb_substr($val, 0, 128), explode(' ', preg_replace('/\s+/u', ' ', $post_data['tags']))));
+            $post_data['tags'] = array_filter(array_unique(array_map(static fn ($val) => mb_substr($val, 0, 128), explode(' ', preg_replace('/\s+/u', ' ', $post_data['tags'])))), static fn ($value) => $value !== '');
 
             $_SESSION['prompt_data'] = $post_data;
             $this->session->markAsTempdata('prompt_data', 3600);
@@ -459,7 +459,7 @@ class Create extends BaseController
 
                 unset($validation_rule['tags']);
                 if ($this->validator->reset()->setRules($validation_rule)->run($post_data)) {
-                    $post_data['tags'] = array_unique(array_map(static fn ($val) => mb_substr($val, 0, 128), explode(' ', preg_replace('/\s+/u', ' ', $this->request->getPost('tags-file')))));
+                    $post_data['tags'] = array_filter(array_unique(array_map(static fn ($val) => mb_substr($val, 0, 128), explode(' ', preg_replace('/\s+/u', ' ', $this->request->getPost('tags-file'))))), static fn ($value) => $value !== '');
 
                     $_SESSION['prompt_edit_data'] = $post_data;
                     $this->session->markAsTempdata('prompt_data', 3600);
@@ -479,7 +479,7 @@ class Create extends BaseController
                 $post_data['script'] = array_filter($post_data['script'], static fn ($script) => ! empty($script['in']));
             }
 
-            $post_data['tags'] = array_unique(array_map(static fn ($val) => mb_substr($val, 0, 128), explode(' ', preg_replace('/\s+/u', ' ', $post_data['tags']))));
+            $post_data['tags'] = array_filter(array_unique(array_map(static fn ($val) => mb_substr($val, 0, 128), explode(' ', preg_replace('/\s+/u', ' ', $post_data['tags'])))), static fn ($value) => $value !== '');
 
             $_SESSION['prompt_edit_data'] = $post_data;
             $this->session->markAsTempdata('prompt_edit_data', 3600);
