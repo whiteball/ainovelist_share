@@ -67,9 +67,18 @@ class Tag extends BaseController
 
     public function list()
     {
-        $tag_count = $this->tag->select('tag_name')->selectCount('*', 'count')->groupBy('tag_name')->orderBy('tag_name', 'asc')->findAll();
+        $this->tag->select('tag_name')->selectCount('*', 'count')->groupBy('tag_name');
+        if ($this->request->getGet('s') === 'c') {
+            $this->tag->orderBy('count', 'desc');
+            $sort = 'c';
+        } else {
+            $this->tag->orderBy('tag_name', 'asc');
+            $sort = 'd';
+        }
 
-        return view('tag/list', ['tag_count' => $tag_count]);
+        $tag_count = $this->tag->findAll();
+
+        return view('tag/list', ['tag_count' => $tag_count, 'sort' => $sort]);
     }
 
     public function search()
