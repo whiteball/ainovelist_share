@@ -61,4 +61,19 @@ class Ranking extends BaseController
             'r18'        => $r18,
         ]);
     }
+
+    public function history($r18)
+    {
+        /** @var RankingModel */
+        $ranking = model(RankingModel::class);
+
+        $r18 = (int) $r18 === 1;
+
+        $date_list = $ranking->select('date')->distinct()->where('r18', $r18 ? 1 : 0)->orderBy('date', 'desc')->findAll();
+
+        return view('ranking/history', [
+            'date_list' => $date_list,
+            'r18'       => $r18,
+        ]);
+    }
 }

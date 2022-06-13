@@ -10,5 +10,5 @@ class Ranking extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = false;
     protected $returnType       = 'object';
-    protected $allowedFields    = ['date', 'rank', 'type', 'prompt_id', 'view', 'download', 'import'];
+    protected $allowedFields    = ['date', 'rank', 'type', 'r18', 'prompt_id', 'view', 'download', 'import'];
 }

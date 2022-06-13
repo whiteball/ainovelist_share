@@ -47,7 +47,8 @@
 	<h3><?= esc($start_date) ?>～<?= esc($end_date) ?>のランキング<?= $r18 ? '(R-18)' : '' ?></h3>
 	<hr>
 	<div class="mb-4">
-		<?= esc($start_date) ?>から<?= esc($end_date) ?>までの期間内の行われたnovelファイルのダウンロード/AIのべりすとへ読み込みの合計数のランキング<?= $r18 ? '(R-18)' : '' ?>です。
+		<?= esc($start_date) ?>から<?= esc($end_date) ?>までの期間内の行われたnovelファイルのダウンロード/AIのべりすとへ読み込みの合計数のランキング<?= $r18 ? '(R-18)' : '' ?>です。<br>
+		<a href="<?= site_url('ranking' . ($r18 ? '_r18' : '') . '/history')?>">過去のランキングはこちら</a>
 	</div>
 
 	<ul class="nav nav-tabs" id="myTab" role="tablist">
