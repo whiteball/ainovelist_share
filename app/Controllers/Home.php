@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Libraries\Prompt as PromptLib;
 use App\Libraries\Comment;
+use App\Libraries\Prompt as PromptLib;
 use App\Models\Prompt;
 use App\Models\Prompt_access;
 use App\Models\Tag;
@@ -158,13 +158,13 @@ class Home extends BaseController
         }
 
         $promptLib = new PromptLib();
-        $viewData = [
-            'prompt' => $promptData,
-            'author' => $userData->screen_name,
-            'tags' => $tagResult,
-            'ogp' => $promptLib->getImageUrl($prompt_id),
+        $viewData  = [
+            'prompt'      => $promptData,
+            'author'      => $userData->screen_name,
+            'tags'        => $tagResult,
+            'ogp'         => $promptLib->getImageUrl($prompt_id),
             'loginUserId' => $this->loginUserId,
-            'validation' => service('validation'),
+            'validation'  => service('validation'),
         ];
 
         // コメント処理
