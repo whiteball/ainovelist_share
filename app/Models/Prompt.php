@@ -102,6 +102,8 @@ class Prompt extends Model
      * @throws DatabaseException
      *
      * @return void|(int|array)[]
+     *
+     * @todo サーバー仕様が変わったので検索方法を仮にLIKE検索にしている。FULLTEXTインデックスを使った検索を使えるようにする。
      */
     public function captionSearch(string $query, int $limit, int $offset, string $mode = 'and')
     {
@@ -115,7 +117,16 @@ class Prompt extends Model
             return;
         }
 
-        $search_text = $operator . implode(' ' . $operator, $keywords);
+        // $search_text = $operator . implode(' ' . $operator, $keywords);
+        $conditions = [];
+
+        foreach ($keywords as $keyword) {
+            $word         = $this->db->escapeLikeString($keyword);
+            $conditions[] = "(title LIKE '%{$word}%' OR description LIKE '%{$word}%')";
+        }
+
+        $search_text = implode(' AND ', $conditions);
+
         // 全年齢
         $where = ' AND `r18` = 0';
 
@@ -132,8 +143,9 @@ class Prompt extends Model
         }
 
         $where .= ' AND `draft` = 0';
-        $table_name   = $this->db->protectIdentifiers($this->table);
-        $count_result = $this->db->query("SELECT count(*) AS `count` FROM {$table_name} WHERE MATCH (`title`, `description`) AGAINST (? IN BOOLEAN MODE){$where};", [$search_text]);
+        $table_name = $this->db->protectIdentifiers($this->table);
+        // $count_result = $this->db->query("SELECT count(*) AS `count` FROM {$table_name} WHERE MATCH (`title`, `description`) AGAINST (? IN BOOLEAN MODE){$where};", [$search_text]);
+        $count_result = $this->db->query("SELECT count(*) AS `count` FROM {$table_name} WHERE ({$search_text}){$where};");
         if (! $count_result || $count_result->getNumRows() === 0) {
             return ['count' => 0, 'result' => []];
         }
@@ -143,8 +155,9 @@ class Prompt extends Model
             return ['count' => 0, 'result' => []];
         }
 
-        $sort          = $this->_getSortCol();
-        $search_result = $this->db->query("SELECT {$table_name}.* FROM {$table_name} WHERE MATCH (`title`, `description`) AGAINST (? IN BOOLEAN MODE){$where} ORDER BY `{$sort}` desc LIMIT ? OFFSET ?;", [$search_text, $limit, $offset]);
+        $sort = $this->_getSortCol();
+        // $search_result = $this->db->query("SELECT {$table_name}.* FROM {$table_name} WHERE MATCH (`title`, `description`) AGAINST (? IN BOOLEAN MODE){$where} ORDER BY `{$sort}` desc LIMIT ? OFFSET ?;", [$search_text, $limit, $offset]);
+        $search_result = $this->db->query("SELECT {$table_name}.* FROM {$table_name} WHERE ({$search_text}){$where} ORDER BY `{$sort}` desc LIMIT ? OFFSET ?;", [$limit, $offset]);
         if (! $search_result || $search_result->getNumRows() === 0) {
             return ['count' => $count, 'result' => []];
         }
