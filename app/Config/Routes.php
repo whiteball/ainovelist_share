@@ -69,6 +69,7 @@ $routes->get('/ranking/(:any)', 'Ranking::index/0/$1');
 $routes->get('/ranking_r18/(:any)', 'Ranking::index/1/$1');
 $routes->get('/mypage/comment_posted', 'Mypage::comment_posted');
 $routes->get('/mypage/comment_received', 'Mypage::comment_received');
+$routes->get('/api/get_tokens/(:num)/(:any)', 'Api::get_tokens/$1/$2');
 
 /*
  * --------------------------------------------------------------------
