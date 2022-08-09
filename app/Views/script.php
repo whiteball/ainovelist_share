@@ -21,7 +21,7 @@
 		AIのべりすとのサイトで使用できる<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>用のユーザースクリプトを配布しています。<br>
 		<div class="m-2">
 			<a href="https://gist.github.com/whiteball/b2bf1b71e37a07c87bb3948ea6f0f0f8" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
-			最終更新日：2022/06/07 バージョン0.13
+			最終更新日：2022/08/09 バージョン0.16
 		</div>
 		<div class="m-2">
 			<a href="https://www.nicovideo.jp/watch/sm40158166" target="_blank" rel="noopener noreferrer">導入手順と機能紹介の動画</a>を作成しました。(バージョン0.7時点の情報)
@@ -81,6 +81,7 @@
 							<li>「Redo」が最新状態でさらに「Redo」を3回押すと、「Undo」と同じようにUndo履歴を挿入する。</li>
 							<li>AIのべりすとが認識できない文字(とりんさま6.8B/7.3Bモデル、でりだ7Bモデル、やみおとめ20Bモデル)を囲み文字でハイライト表示する。</li>
 							<li>環境設定の一番下に「オプションアイコンを横スクロール可能にする」の設定を追加する。</li>
+							<li>禁止ワードの下に、対象の文字を含むトークンを検索できるフォームを追加する。(※この機能は検索文字列をこのサーバーに送信します。サーバーへ検索文字列を送りたくない場合は、この機能を使わないでください。)</li>
 							<li>AI出力後にメモリまたは脚注のテキストを置換するスクリプトのオプションを追加する。
 								<dl>
 									<dt>使い方</dt>
