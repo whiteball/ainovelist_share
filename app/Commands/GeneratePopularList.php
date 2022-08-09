@@ -5,6 +5,7 @@ namespace App\Commands;
 use App\Models\Prompt;
 use App\Models\Prompt_access;
 use App\Models\Prompt_access_snapshot;
+use App\Models\Prompt_ignored;
 use App\Models\Ranking;
 use CodeIgniter\CLI\BaseCommand;
 
@@ -23,6 +24,8 @@ class GeneratePopularList extends BaseCommand
         $prompt = model(Prompt::class);
         /** @var Prompt_access_snapshot */
         $access = model(Prompt_access_snapshot::class);
+        /** @var Prompt_ignored */
+        $prompt_ignored = model(Prompt_ignored::class);
         /** @var Ranking */
         $ranking = model(Ranking::class);
 
@@ -31,7 +34,7 @@ class GeneratePopularList extends BaseCommand
 
         $prompts = [];
 
-        foreach ($prompt->whereIn('id', array_map(static fn ($item) => $item->prompt_id, $result))->findAll() as $item) {
+        foreach ($prompt->whereIn('id', array_map(static fn ($item) => $item->prompt_id, $result))->join($prompt_ignored->getTable(), 'id = prompt_id', 'LEFT')->findAll() as $item) {
             $prompts[$item->id] = $item;
         }
 
@@ -47,10 +50,22 @@ class GeneratePopularList extends BaseCommand
                 continue;
             }
 
+            $rank   = 0;
             $is_r18 = (int) $prompts[$row->prompt_id]->r18 === 1;
+            // 無視テーブルに含まれていないものだけ順位を付ける
+            if (empty($prompts[$row->prompt_id]->prompt_id)) {
+                if ($is_r18) {
+                    $rank = $counter_r18;
+                    $counter_r18++;
+                } else {
+                    $rank = $counter;
+                    $counter++;
+                }
+            }
+
             $ranking->replace([
                 'date'      => $date,
-                'rank'      => $is_r18 ? $counter_r18 : $counter,
+                'rank'      => $rank,
                 'type'      => $type,
                 'r18'       => $prompts[$row->prompt_id]->r18,
                 'prompt_id' => $row->prompt_id,
@@ -58,11 +73,6 @@ class GeneratePopularList extends BaseCommand
                 'download'  => $row->download,
                 'import'    => $row->import,
             ]);
-            if ($is_r18) {
-                $counter_r18++;
-            } else {
-                $counter++;
-            }
         }
 
         $db->transComplete();

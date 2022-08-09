@@ -73,6 +73,16 @@
 		</tr>
 		<tr>
 			<th scope="row">
+				2022/08/09
+			</th>
+			<td>
+				<ul>
+					<li><a href="<?= site_url('prompt/237')?>">公式トップからリンクされたプロンプト</a>をランキングに含めないようにした。</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">
 				2022/07/25
 			</th>
 			<td>

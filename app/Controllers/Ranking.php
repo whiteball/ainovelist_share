@@ -36,6 +36,7 @@ class Ranking extends BaseController
         $result = $ranking->join($prompt->getTable(), $prompt->getTable() . '.id = ' . $ranking->getTable() . '.prompt_id')
             ->where('date', $date_str)
             ->where('type', Prompt_access::COUNT_TYPE_DOWNLOAD_IMPORT)
+            ->where('rank >=', 1)
             ->where('rank <=', 10)
             ->where($ranking->getTable() . '.r18', $r18 ? 1 : 0)
             ->orderBy('rank')
