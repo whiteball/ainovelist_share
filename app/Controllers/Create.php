@@ -88,7 +88,7 @@ class Create extends BaseController
                     return true;
                 }
 
-                if (! in_array($item['type'], ['script_in', 'script_out', 'script_in_pin', 'script_rephrase', 'script_in_regex', 'script_out_regex', 'script_in_pin_regex', 'script_rephrase_regex', 'script_none'], true)) {
+                if (! in_array($item['type'], ['script_in', 'script_out', 'script_in_pin', 'script_in_pin_all', 'script_rephrase', 'script_in_regex', 'script_out_regex', 'script_in_pin_regex', 'script_in_pin_all_regex', 'script_rephrase_regex', 'script_none'], true)) {
                     $this->validator->setError('script[' . $item['id'] . '][type]', 'スクリプトの種別の指定が不正です。');
                 }
 
