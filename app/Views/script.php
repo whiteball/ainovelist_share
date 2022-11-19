@@ -22,6 +22,8 @@
 		<h4>配布スクリプト一覧</h4>
 		<ul>
 			<li><a href="#ai_novelist_utility">AIのべりすとユーティリティ</a></li>
+			<li><a href="#ai_novelist_inserting_images_for_reading">リーディングモードに画像挿入</a></li>
+			<li><a href="#ai_novelist_voicevox">出力をVOICEVOX読み上げ</a></li>
 			<li><a href="#ai_novelist_trinart_download">TrinArtで生成画像とパラメータをまとめてダウンロード</a></li>
 			<li><a href="#ai_novelist_trinart_download_for_gallery">TrinArtのギャラリー個別ページで画像とパラメータをまとめてダウンロード</a></li>
 			<li><a href="#ai_novelist_trinart_lumina_info">TrinArtでページを開いてからのルミナ消費を表示する</a></li>
@@ -31,7 +33,7 @@
 		<div>
 			<div class="m-2">
 				<a href="https://gist.github.com/whiteball/b2bf1b71e37a07c87bb3948ea6f0f0f8" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
-				最終更新日：2022/09/19 バージョン0.17.3
+				最終更新日：2022/11/02 バージョン0.18.3
 			</div>
 			<div class="m-2">
 				<a href="https://www.nicovideo.jp/watch/sm40158166" target="_blank" rel="noopener noreferrer">導入手順と機能紹介の動画</a>を作成しました。(バージョン0.7時点の情報)
@@ -87,6 +89,14 @@
 							</ul>
 						</li>
 						<li>
+							画像の挿入機能
+							<ul>
+								<li>特定の文字列が行頭にあるときに、指定した画像を本文欄に挿入する。アイコントーク風SSのような見た目を再現可能。</li>
+								<li>設定は環境設定の一番下から行う。この設定はブラウザに保存されないが、zipファイルとして設定のエクスポート/インポートが可能。</li>
+								<li><a href="https://twitter.com/whiteball/status/1587032534281777152" target="_blank" rel="noopener noreferrer">リリース時のツイート</a></li>
+							</ul>
+						</li>
+						<li>
 							その他機能の追加
 							<ul>
 								<li>「Redo」が最新状態でさらに「Redo」を3回押すと、「Undo」と同じようにUndo履歴を挿入する。</li>
@@ -127,7 +137,7 @@
 			<h5>導入手順</h5>
 			<ol>
 				<li>ブラウザに<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>をインストールする。</li>
-				<li>AIのべりすと用ユーザースクリプトの<a href="https://gist.github.com/whiteball/b2bf1b71e37a07c87bb3948ea6f0f0f8" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
+				<li>「AIのべりすとユーティリティ」の<a href="https://gist.github.com/whiteball/b2bf1b71e37a07c87bb3948ea6f0f0f8" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
 				<li>ダウンロードページの右の方にある「Raw」リンクをクリックする。(<a href="https://gist.github.com/whiteball/b2bf1b71e37a07c87bb3948ea6f0f0f8/raw/ai_novelist_utility.user.js" target="_blank" rel="noopener noreferrer">直リンク</a>)</li>
 				<li>Tampermonkeyのインストール確認ページが開くので、インストールボタンを押す。
 				</li>
@@ -141,23 +151,92 @@
 			</ul>
 		</div>
 		<hr>
+		<h4 id="ai_novelist_inserting_images_for_reading">リーディングモードに画像挿入</h4>
+		<div>
+			<div class="m-2">
+				<a href="https://gist.github.com/whiteball/4e5075cbdecdf8e521acf8ba51c61478" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
+				最終更新日：2022/11/05 バージョン0.1.0
+			</div>
+			このスクリプトを導入することで次の機能を追加します。
+			<ul>
+				<li>リーディングモード(作品リストのリーディングボタンで表示されるページ)に画像を挿入する設定を追加。リッチテキストとしてのコピーも可能。</li>
+				<li>設定zipファイルは、AIのべりすとユーティリティのものと互換。</li>
+			</ul>
+			<h5>導入手順</h5>
+			<ol>
+				<li>ブラウザに<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>をインストールする。</li>
+				<li>「リーディングモードに画像挿入」の<a href="https://gist.github.com/whiteball/4e5075cbdecdf8e521acf8ba51c61478" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
+				<li>ダウンロードページの右の方にある「Raw」リンクをクリックする。(<a href="https://gist.github.com/whiteball/4e5075cbdecdf8e521acf8ba51c61478/raw/ai_novelist_inserting_images_for_reading.user.js" target="_blank" rel="noopener noreferrer">直リンク</a>)</li>
+				<li>Tampermonkeyのインストール確認ページが開くので、インストールボタンを押す。</li>
+			</ol>
+			<h5>注意</h5>
+			<ul>
+				<li>リッチテキストコピーはスマホでの動作が未確認です。</li>
+				<li>AIのべりすとのサイトの構成が変わると、ユーザースクリプトは動作しなくなる可能性があります。</li>
+				<li>Chrome/Firefoxにて動作確認していますが、万が一テキストや画像が消えてしまうなどの現象が発生しても、作者は責任を負いかねます。</li>
+			</ul>
+		</div>
+		<hr>
+		<h4 id="ai_novelist_voicevox">出力をVOICEVOX読み上げ</h4>
+		<div>
+			<div class="m-2">
+				<a href="https://gist.github.com/whiteball/f5d700c831a45252b046d2cb1f599a7f" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
+				最終更新日：2022/11/19 バージョン0.1.4
+			</div>
+			このスクリプトを導入することで次の機能を追加します。
+			<ul>
+				<li>別途インストールした<a href="https://voicevox.hiroshiba.jp/" target="_blank" rel="noopener noreferrer">VOICEVOX</a>を起動しておくと、AIのべりすとの出力文をブラウザ上で音声再生する。</li>
+				<li>本文欄のテキストを選択して「Ctrl+Alt+v」を押すことで、選択テキストを音声再生する。</li>
+				<li>設定を行うことで、読み上げに含めないパターンの指定や、出力文を読み上げる際にその直前の句読点やかぎ括弧までの文章も含めることが可能。</li>
+				<li>スクリプトに設定を行うことで、特定の部分だけ設定のボイスとは異なるボイスで読み上げることが可能。
+					<dl>
+						<dt>使い方</dt>
+						<dd>種別を「使用しない」に設定し、「(?:VOICEVOX:ID){0}」をINの先頭に書く。「ID」の部分は使用したいボイスに合わせて、数字、または、頭に「p」がついた数字を記入する。(ボイス選択のメニューから確認可能)<br>それに続けて、INにはボイスを変更させたい部分にマッチする正規表現を書く。<br>OUTには読み上げさせたいテキストを書く。</dd>
+						<dt>例</dt>
+						<dd>IN: (?:VOICEVOX:3){0}ずんだもん「([^」]+?)」。<br>OUT: $1<br>という設定で、読み上げ対象のテキストが『めたん「セリフ1」 ずんだもん「セリフ2」 めたん「セリフ3」』なら、『めたん「セリフ1」』を設定欄での指定のボイス、『セリフ2』をスクリプトで指定のID:3のボイス、 『めたん「セリフ3」』を設定欄での指定のボイスで読み上げる。<br>『ずんだもん』の部分は正規表現の置換で消されるため、読み上げには含まれなくなる。</dd>
+					</dl>
+				</li>
+				<li>設定欄はオプションの左から4番目のアイコン(デスクランプ)の一番下。</li>
+			</ul>
+			<h5>導入手順</h5>
+			<ol>
+				<li>ブラウザに<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>をインストールする。</li>
+				<li>「出力をVOICEVOX読み上げ」の<a href="https://gist.github.com/whiteball/f5d700c831a45252b046d2cb1f599a7f" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
+				<li>ダウンロードページの右の方にある「Raw」リンクをクリックする。(<a href="https://gist.github.com/whiteball/f5d700c831a45252b046d2cb1f599a7f/raw/ai_novelist_voicevox.user.js" target="_blank" rel="noopener noreferrer">直リンク</a>)</li>
+				<li>Tampermonkeyのインストール確認ページが開くので、インストールボタンを押す。</li>
+			</ol>
+			<h5>VOICEVOX導入手順</h5>
+			<ol>
+				<li><a href="https://voicevox.hiroshiba.jp/" target="_blank" rel="noopener noreferrer">VOICEVOX公式サイト</a>からインストーラをダウンロードしてインストールする。CPU版/GPU版どちらでも可。</li>
+				<li>インストールしたVOICEVOXを起動する。もしくはVOICEVOXインストールディレクトリで「run.exe」を実行する。「run.exe」はコマンドライン引数「--host」で待ち受けホスト名を、「--port」で待ち受けポートを指定できる。VOICEVOXを起動した場合も含め、デフォルトは「localhost:50021」。</li>
+				<li>ブラウザで「http://localhost:50021」(ホスト/ポートを変更した場合はそのアドレス)にアクセスし、「VOICEVOX ENGINE」のページが表示されれば導入完了。</li>
+			</ol>
+			<h5>注意</h5>
+			<ul>
+				<li>ボイス一覧にはプリセットも含まれますが、VOICEVOXのアプリ上から設定できるプリセットではありません。VOICEVOXをインストールしたディレクトリにある<a href="https://github.com/VOICEVOX/voicevox_engine#%E3%83%97%E3%83%AA%E3%82%BB%E3%83%83%E3%83%88%E6%A9%9F%E8%83%BD%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6" target="_blank" rel="noopener noreferrer">presets.yaml</a>で設定した内容が一覧に現れます。プリセットを使う場合は、このファイルを直接編集して追加してください。</li>
+				<li>AIのべりすとのサイトの構成が変わると、ユーザースクリプトは動作しなくなる可能性があります。</li>
+				<li>Chrome/Firefoxにて動作確認していますが、万が一テキストが消えてしまうなどの現象が発生しても、作者は責任を負いかねます。</li>
+			</ul>
+		</div>
+		<hr>
 		<h4 id="ai_novelist_trinart_download">TrinArtで生成画像とパラメータをまとめてダウンロード</h4>
 		<div>
 			<div class="m-2">
 				<a href="https://gist.github.com/whiteball/03c4953d7f547187d979267f5ef36c59" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
-				最終更新日：2022/09/19 バージョン0.2.1
+				最終更新日：2022/09/25 バージョン0.3.1
 			</div>
 			このスクリプトを導入することで次の機能を追加します。
 			<ul>
-				<li>TrinArtの画像生成ページの下部に、画像を生成した時にその画像をjpgとして、またパラメータをtxtとしていっぺんにダウンロードするボタンを表示する。(スマホの場合は個別のダウンロードボタンを表示)</li>
-				<li>ダウンロードボタンの下に、ファイル名を指定する入力欄を追加。デフォルト値はプロンプトのスペースなどを_に置換したものを使う。</li>
-				<li>UndoやRedoをした場合は、その時に表示している画像をダウンロードする。パラメータも生成当時のものをダウンロードする。</li>
+				<li><del>TrinArtの画像生成ページの下部に、画像を生成した時にその画像をjpgとして、またパラメータをtxtとしていっぺんにダウンロードするボタンを表示する。(スマホの場合は個別のダウンロードボタンを表示)</del></li>
+				<li><del>ダウンロードボタンの下に、ファイル名を指定する入力欄を追加。デフォルト値はプロンプトのスペースなどを_に置換したものを使う。</del></li>
+				<li><del>UndoやRedoをした場合は、その時に表示している画像をダウンロードする。パラメータも生成当時のものをダウンロードする。</del></li>
+				<li>上記機能はTrinArt本体に取り込まれました。現在以下の機能を提供しています。</li>
 				<li>コンテンツフィルタの設定の下に、自動保存オプションを追加。これがチェックされている場合は、画像の生成完了と同時にダウンロードを開始する。この設定はページをリロードするとオフになる。</li>
 			</ul>
 			<h5>導入手順</h5>
 			<ol>
 				<li>ブラウザに<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>をインストールする。</li>
-				<li>AIのべりすと用ユーザースクリプトの<a href="https://gist.github.com/whiteball/03c4953d7f547187d979267f5ef36c59" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
+				<li>「TrinArtで生成画像とパラメータをまとめてダウンロード」の<a href="https://gist.github.com/whiteball/03c4953d7f547187d979267f5ef36c59" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
 				<li>ダウンロードページの右の方にある「Raw」リンクをクリックする。(<a href="https://gist.github.com/whiteball/03c4953d7f547187d979267f5ef36c59/raw/ai_novelist_trinart_download_button.user.js" target="_blank" rel="noopener noreferrer">直リンク</a>)</li>
 				<li>Tampermonkeyのインストール確認ページが開くので、インストールボタンを押す。
 				</li>
@@ -184,7 +263,7 @@
 			<h5>導入手順</h5>
 			<ol>
 				<li>ブラウザに<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>をインストールする。</li>
-				<li>AIのべりすと用ユーザースクリプトの<a href="https://gist.github.com/whiteball/3676fd7a3f58e947a864d2c8ef312024" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
+				<li>「TrinArtのギャラリー個別ページで画像とパラメータをまとめてダウンロード」の<a href="https://gist.github.com/whiteball/3676fd7a3f58e947a864d2c8ef312024" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
 				<li>ダウンロードページの右の方にある「Raw」リンクをクリックする。(<a href="https://gist.github.com/whiteball/3676fd7a3f58e947a864d2c8ef312024/raw/ai_novelist_trinart_download_button_for_gallery.user.js" target="_blank" rel="noopener noreferrer">直リンク</a>)</li>
 				<li>Tampermonkeyのインストール確認ページが開くので、インストールボタンを押す。
 				</li>
@@ -200,17 +279,18 @@
 		<div>
 			<div class="m-2">
 				<a href="https://gist.github.com/whiteball/a2a3af48b3132c00231bf1d77673dddb" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
-				最終更新日：2022/09/19 バージョン0.1
+				最終更新日：2022/09/24 バージョン0.1.1
 			</div>
 			このスクリプトを導入することで次の機能を追加します。
 			<ul>
 				<li>TrinArtの画像生成ページの下部に、現在のパラメータで消費するルミナ、現在の残りルミナ、ページを開いたときの残りルミナ、ページを開いてから消費したルミナを表示する。</li>
 				<li>※あくまでも取得できる範囲の情報からルミナを表示しているため、実際のルミナ消費と確実に一致しているかは保証しかねます。</li>
+				<li>※ルミナの割引価格表示には非対応です。</li>
 			</ul>
 			<h5>導入手順</h5>
 			<ol>
 				<li>ブラウザに<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>をインストールする。</li>
-				<li>AIのべりすと用ユーザースクリプトの<a href="https://gist.github.com/whiteball/a2a3af48b3132c00231bf1d77673dddb" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
+				<li>「TrinArtでページを開いてからのルミナ消費を表示する」の<a href="https://gist.github.com/whiteball/a2a3af48b3132c00231bf1d77673dddb" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
 				<li>ダウンロードページの右の方にある「Raw」リンクをクリックする。(<a href="https://gist.github.com/whiteball/a2a3af48b3132c00231bf1d77673dddb/raw/ai_novelist_trinart_lumina_info.user.js" target="_blank" rel="noopener noreferrer">直リンク</a>)</li>
 				<li>Tampermonkeyのインストール確認ページが開くので、インストールボタンを押す。
 				</li>
