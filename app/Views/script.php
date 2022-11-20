@@ -24,7 +24,7 @@
 			<li><a href="#ai_novelist_utility">AIのべりすとユーティリティ</a></li>
 			<li><a href="#ai_novelist_inserting_images_for_reading">リーディングモードに画像挿入</a></li>
 			<li><a href="#ai_novelist_voicevox">出力をVOICEVOX読み上げ</a></li>
-			<li><a href="#ai_novelist_any_font">出力をVOICEVOX読み上げ</a></li>
+			<li><a href="#ai_novelist_any_font">任意フォント指定</a></li>
 			<li><a href="#ai_novelist_trinart_download">TrinArtで生成画像とパラメータをまとめてダウンロード</a></li>
 			<li><a href="#ai_novelist_trinart_download_for_gallery">TrinArtのギャラリー個別ページで画像とパラメータをまとめてダウンロード</a></li>
 			<li><a href="#ai_novelist_trinart_lumina_info">TrinArtでページを開いてからのルミナ消費を表示する</a></li>
