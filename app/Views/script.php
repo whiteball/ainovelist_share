@@ -25,6 +25,7 @@
 			<li><a href="#ai_novelist_inserting_images_for_reading">リーディングモードに画像挿入</a></li>
 			<li><a href="#ai_novelist_voicevox">出力をVOICEVOX読み上げ</a></li>
 			<li><a href="#ai_novelist_any_font">任意フォント指定</a></li>
+			<li><a href="#ai_novelist_range2button">スライダーをボタンに置き換え</a></li>
 			<li><a href="#ai_novelist_trinart_download">TrinArtで生成画像とパラメータをまとめてダウンロード</a></li>
 			<li><a href="#ai_novelist_trinart_download_for_gallery">TrinArtのギャラリー個別ページで画像とパラメータをまとめてダウンロード</a></li>
 			<li><a href="#ai_novelist_trinart_lumina_info">TrinArtでページを開いてからのルミナ消費を表示する</a></li>
@@ -49,7 +50,7 @@
 							<ul>
 								<li>編集ページの本文入力欄でテキストを選択しながら「Ctrl＋/」を押すと、選択テキストの上の行に「@/*」を、下の行に「@*/」を挿入する。</li>
 								<li>「@/*」から「@*/」までを選択しながら「Ctrl＋/」を押すと、「@/*」と「@*/」を削除する。</li>
-								<li>テキストを選択中に「Ctrl+数字」を押すと、設定に従って選択中のテキストを辞書サイトで検索したページを新しいタブで表示する。設定は環境設定の下の方から可能。デフォルトでは「Ctrl+1」に「Weblio辞書」、「Ctrl+2」に「Weblio類語」、「Ctrl+3」に「goo辞書」となっている。</li>
+								<li>テキストを選択中に「Ctrl+数字」を押すと、設定に従って選択中のテキストを辞書サイトで検索したページを新しいタブで表示する。左から4番目のアイコン(デスクランプ)の環境設定の下の「ユーザースクリプト設定」から可能。デフォルトでは「Ctrl+1」に「Weblio辞書」、「Ctrl+2」に「Weblio類語」、「Ctrl+3」に「goo辞書」となっている。</li>
 							</ul>
 						</li>
 						<li>
@@ -74,7 +75,7 @@
 							<ul>
 								<li>「続きの文を書く」「リトライ」「Undo」「Redo」したときに@endpointの前にスクロールするようにする。</li>
 								<li>Undo履歴を@endpoint直前に挿入するようにする。</li>
-								<li>環境設定の一番下に「@endpointがあっても挿入位置を常に一番下にする」の設定を追加する。</li>
+								<li>左から4番目のアイコン(デスクランプ)の環境設定の下の「ユーザースクリプト設定」に、「@endpointがあっても挿入位置を常に一番下にする」の設定を追加する。</li>
 							</ul>
 						</li>
 						<li>
@@ -93,7 +94,7 @@
 							画像の挿入機能
 							<ul>
 								<li>特定の文字列が行頭にあるときに、指定した画像を本文欄に挿入する。アイコントーク風SSのような見た目を再現可能。</li>
-								<li>設定は環境設定の一番下から行う。この設定はブラウザに保存されないが、zipファイルとして設定のエクスポート/インポートが可能。</li>
+								<li>設定は左から4番目のアイコン(デスクランプ)の環境設定の下の「ユーザースクリプト設定」から行う。この設定はブラウザに保存されないが、zipファイルとして設定のエクスポート/インポートが可能。</li>
 								<li><a href="https://twitter.com/whiteball/status/1587032534281777152" target="_blank" rel="noopener noreferrer">リリース時のツイート</a></li>
 							</ul>
 						</li>
@@ -102,8 +103,8 @@
 							<ul>
 								<li>「Redo」が最新状態でさらに「Redo」を3回押すと、「Undo」と同じようにUndo履歴を挿入する。</li>
 								<li>AIのべりすとが認識できない文字(とりんさま6.8B/7.3Bモデル、でりだ7Bモデル、やみおとめ20Bモデル)を囲み文字でハイライト表示する。</li>
-								<li>環境設定の一番下に「オプションアイコンを横スクロール可能にする」の設定を追加する。</li>
-								<li>禁止ワードの下に、対象の文字を含むトークンを検索できるフォームを追加する。(※この機能は検索文字列をこのサーバーに送信します。サーバーへ検索文字列を送りたくない場合は、この機能を使わないでください。)</li>
+								<li>左から4番目のアイコン(デスクランプ)の環境設定の下の「ユーザースクリプト設定」に、「オプションアイコンを横スクロール可能にする」の設定を追加する。</li>
+								<li>禁止ワードの下に、対象の文字を含むトークンを検索できるフォームを追加する。検索結果は禁止ワードの形式、または@biasの形式で表示する。(※この機能は検索文字列をこのサーバーに送信します。サーバーへ検索文字列を送りたくない場合は、この機能を使わないでください。)</li>
 								<li>AI出力後にメモリまたは脚注のテキストを置換するスクリプトのオプションを追加する。
 									<dl>
 										<dt>使い方</dt>
@@ -235,6 +236,31 @@
 				<li>ブラウザに<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>をインストールする。</li>
 				<li>「任意フォント指定」の<a href="https://gist.github.com/whiteball/cf068c67041d5538914182d4e00d03ea" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
 				<li>ダウンロードページの右の方にある「Raw」リンクをクリックする。(<a href="https://gist.github.com/whiteball/cf068c67041d5538914182d4e00d03ea/raw/ai_novelist_any_font.user.js" target="_blank" rel="noopener noreferrer">直リンク</a>)</li>
+				<li>Tampermonkeyのインストール確認ページが開くので、インストールボタンを押す。</li>
+			</ol>
+			<h5>注意</h5>
+			<ul>
+				<li>AIのべりすとのサイトの構成が変わると、ユーザースクリプトは動作しなくなる可能性があります。</li>
+				<li>Chrome/Firefoxにて動作確認していますが、万が一テキストが消えてしまうなどの現象が発生しても、作者は責任を負いかねます。</li>
+			</ul>
+		</div>
+		<hr>
+		<h4 id="ai_novelist_range2button">スライダーをボタンに置き換え</h4>
+		<div>
+			<div class="m-2">
+				<a href="https://gist.github.com/whiteball/fb39e820addeaa8468762f5f29878868" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
+				最終更新日：2022/11/23 バージョン0.1.2
+			</div>
+			このスクリプトを導入することで次の機能を追加します。
+			<ul>
+				<li>詳細オプションでのパラメータを調整するスライダーを、増減ボタンに置き換える設定を追加する。</li>
+				<li>「環境設定＞その他」の「文字数などの情報を表示」の下のラジオボタンで、「スライダー」「スライダー＆ボタン」「ボタン」を切り替えることができる。デフォルトは「スライダー」。</li>
+			</ul>
+			<h5>導入手順</h5>
+			<ol>
+				<li>ブラウザに<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>をインストールする。</li>
+				<li>「スライダーをボタンに置き換え」の<a href="https://gist.github.com/whiteball/fb39e820addeaa8468762f5f29878868" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
+				<li>ダウンロードページの右の方にある「Raw」リンクをクリックする。(<a href="https://gist.github.com/whiteball/fb39e820addeaa8468762f5f29878868/raw/ai_novelist_range2button.user.js" target="_blank" rel="noopener noreferrer">直リンク</a>)</li>
 				<li>Tampermonkeyのインストール確認ページが開くので、インストールボタンを押す。</li>
 			</ol>
 			<h5>注意</h5>
