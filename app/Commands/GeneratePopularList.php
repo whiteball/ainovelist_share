@@ -43,6 +43,7 @@ class GeneratePopularList extends BaseCommand
         $date        = date_format(date_create(), 'Y-m-d');
         $counter     = 1;
         $counter_r18 = 1;
+        $rank_ignore = -1;
 
         foreach ($result as $row) {
             if (! isset($prompts[$row->prompt_id]) || $prompts[$row->prompt_id]->draft === '1') {
@@ -50,7 +51,7 @@ class GeneratePopularList extends BaseCommand
                 continue;
             }
 
-            $rank   = 0;
+            $rank   = $rank_ignore;
             $is_r18 = (int) $prompts[$row->prompt_id]->r18 === 1;
             // 無視テーブルに含まれていないものだけ順位を付ける
             if (empty($prompts[$row->prompt_id]->prompt_id)) {
@@ -61,6 +62,8 @@ class GeneratePopularList extends BaseCommand
                     $rank = $counter;
                     $counter++;
                 }
+            } else {
+                $rank_ignore--;
             }
 
             $ranking->replace([
