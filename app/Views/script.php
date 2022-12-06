@@ -183,7 +183,7 @@
 		<div>
 			<div class="m-2">
 				<a href="https://gist.github.com/whiteball/f5d700c831a45252b046d2cb1f599a7f" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
-				最終更新日：2022/11/19 バージョン0.1.4
+				最終更新日：2022/12/04 バージョン0.1.5
 			</div>
 			このスクリプトを導入することで次の機能を追加します。
 			<ul>

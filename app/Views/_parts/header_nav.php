@@ -9,6 +9,7 @@
 			<li class="d-none d-lg-inline"><a href="<?= site_url('/tags')?>" class="nav-link px-2 link-dark">タグ一覧</a></li>
 			<li class="d-none d-lg-inline"><a href="<?= site_url('/ranking')?>" class="nav-link px-2 link-dark">ランキング</a></li>
 			<li class="d-none d-lg-inline"><a href="<?= site_url('/script')?>" class="nav-link px-2 link-dark">ユーザースクリプト</a></li>
+			<li class="d-none d-lg-inline"><a href="<?= site_url('/tool')?>" class="nav-link px-2 link-dark">ツール</a></li>
 			<li class="nav-item dropdown d-inline d-lg-none">
 				<a class="nav-link dropdown-toggle px-2 link-dark" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 					ナビゲーション
@@ -17,6 +18,7 @@
 					<li><a href="<?= site_url('/tags')?>" class="dropdown-item link-dark">タグ一覧</a></li>
 					<li><a href="<?= site_url('/ranking')?>" class="dropdown-item link-dark">ランキング</a></li>
 					<li><a href="<?= site_url('/script')?>" class="dropdown-item link-dark">ユーザースクリプト</a></li>
+					<li><a href="<?= site_url('/tool')?>" class="dropdown-item link-dark">ツール</a></li>
 				</ul>
 			</li>
 		</ul>

@@ -73,6 +73,16 @@
 		</tr>
 		<tr>
 			<th scope="row">
+				2022/12/06
+			</th>
+			<td>
+				<ul>
+					<li><a href="<?= site_url('tool') ?>">ツールページ</a>を作成し、ヘッダーのメニューにリンクを追加。現在のツールは<a href="<?= site_url('tool/token_count') ?>">トークンカウント</a>と<a href="<?= site_url('tool/token_search') ?>">トークン検索</a>。検索はUserScriptに搭載しているものとほぼ同じ。</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">
 				2022/11/23
 			</th>
 			<td>
