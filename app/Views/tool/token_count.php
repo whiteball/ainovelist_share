@@ -48,7 +48,7 @@
 				document.getElementById('output-area').innerHTML = ''
 				const text = document.getElementById('text').value,
 					type = document.getElementById('search-form').type.value
-				fetch('<?= site_url('api/token_count') ?>/' + (type ? type : 0) + '?q=' + encodeURIComponent(text))
+				fetch('<?= site_url('api/count_tokens') ?>/' + (type ? type : 0) + '?q=' + encodeURIComponent(text))
 					.then(res => res.json())
 					.then(json => {
 						let html = `<table class="table table-striped mb-3">

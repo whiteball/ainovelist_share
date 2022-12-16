@@ -40,7 +40,7 @@ class Api extends Controller
         return $this->respond(['result' => $payload], 200);
     }
 
-    public function token_count($mode)
+    public function count_tokens($mode)
     {
         $payload = [];
         $string  = $this->request->getGet('q');
