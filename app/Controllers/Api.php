@@ -22,6 +22,14 @@ class Api extends Controller
             }
         }
 
+        $match_type = $this->request->getGet('m');
+        $side       = 'both';
+        if ($match_type === 'b') {
+            $side = 'after';
+        } elseif ($match_type === 'e') {
+            $side = 'before';
+        }
+
         /** @var Trinsama_token|Yamiotome_token */
         $tokens = (int) $mode === 1 ? model(Yamiotome_token::class) : model(Trinsama_token::class);
         // escapeLikeString()がダブルクオート等をエスケープするが、like()でもエスケープされるので二重エスケープになってしまう。
@@ -29,7 +37,7 @@ class Api extends Controller
         $string = str_replace('\\\\', '\\', str_replace("\\'", "'", str_replace('\\"', '"', $tokens->db->escapeLikeString(mb_convert_kana($string, 'asKV')))));
 
         $result = $tokens->select('token')
-            ->like('token', $string)
+            ->like('token', $string, $side)
             ->orderBy('id')
             ->get();
 

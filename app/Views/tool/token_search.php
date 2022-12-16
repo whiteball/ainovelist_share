@@ -21,7 +21,7 @@
 		これはAIのべりすとのトークンを検索して表示するツールです。<br>
 		表示形式には単純なリスト、禁止ワードにそのままコピーして使える形式、@addbiasコマンドとしてそのままコピーして使える形式の3種類を選択できます。<br>
 		検索対象となるトークンは、AIのべりすとWikiのトークン一覧を参考にしています。<br>
-		トークンの過不足がないよう注意していますが、もしトークンの不備により何らかの不都合が生じても、作者は責任を負いかねますのでご注意ください。<br>
+		トークンの過不足がないよう注意していますが、もし検索結果の不備により何らかの不都合が生じても、作者は責任を負いかねますのでご注意ください。<br>
 		全角の記号は半角にしてから検索してください。
 	</div>
 	<form id="search-form" class="mt-3 mb-3">
@@ -29,11 +29,26 @@
 			<label class="form-label">入力</label>
 			<input id="text" class="form-control">
 		</div>
-		<div class="form-check form-check-inline">
-			<input id="type-0" type="radio" name="type" value="0" class="form-check-input" checked><label for="type-0" class="form-check-label">とりんさま/でりだ</label>
+		<div>
+			検索オプション：
+			<div class="form-check form-check-inline">
+				<input id="match-0" type="radio" name="match" value="p" class="form-check-input" checked><label for="match-0" class="form-check-label">～を含む</label>
+			</div>
+			<div class="form-check form-check-inline mb-3">
+				<input id="match-1" type="radio" name="match" value="b" class="form-check-input"><label for="match-1" class="form-check-label">～から始まる</label>
+			</div>
+			<div class="form-check form-check-inline mb-3">
+				<input id="match-2" type="radio" name="match" value="e" class="form-check-input"><label for="match-1" class="form-check-label">～で終わる</label>
+			</div>
 		</div>
-		<div class="form-check form-check-inline mb-3">
-			<input id="type-1" type="radio" name="type" value="1" class="form-check-input"><label for="type-1" class="form-check-label">やみおとめ</label>
+		<div>
+			対象モデル：
+			<div class="form-check form-check-inline">
+				<input id="type-0" type="radio" name="type" value="0" class="form-check-input" checked><label for="type-0" class="form-check-label">とりんさま/でりだ</label>
+			</div>
+			<div class="form-check form-check-inline mb-3">
+				<input id="type-1" type="radio" name="type" value="1" class="form-check-input"><label for="type-1" class="form-check-label">やみおとめ</label>
+			</div>
 		</div>
 		<div>
 			<button id="submit" class="btn btn-primary" type="button">送信</button>
@@ -81,8 +96,9 @@
 			document.getElementById('submit').addEventListener('click', function() {
 				document.getElementById('output_area').innerHTML = ''
 				const text = document.getElementById('text').value,
-					type = document.getElementById('search-form').type.value
-				fetch('<?= site_url('api/get_tokens') ?>/' + (type ? type : 0) + '?q=' + encodeURIComponent(text))
+					type = document.getElementById('search-form').type.value,
+					match = document.getElementById('search-form').match.value
+				fetch('<?= site_url('api/get_tokens') ?>/' + (type ? type : 0) + '?m=' + (match ? match : 0) + '&q=' + encodeURIComponent(text))
 					.then(res => res.json())
 					.then(json => {
 						const bias_value = document.getElementById('bias_value').value
