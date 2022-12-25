@@ -151,14 +151,14 @@
 							<label class="col-md-1 col-form-label" for="char_book[<?= $i ?>][tag]">タグ</label>
 							<div class="col-md-11">
 								<input type="text" class="form-control" id="char_book[<?= $i ?>][tag]" name="char_book[<?= $i ?>][tag]" value="<?= set_value('char_book[' . $i . '][tag]', $post_data['char_book'][$i]['tag'] ?? '') ?>" maxlength="500" disabled>
-								<?= $validation->showError('char_book[' . $i . '][tag]') ?>
+								<?= $validation->showError('char_book.' . $i . '.tag') ?>
 							</div>
 						</div>
 						<div class="row mb-3">
 							<label class="col-md-1 col-form-label" for="char_book[<?= $i ?>][content]">説明</label>
 							<div class="col-md-11">
 								<textarea class="form-control" id="char_book[<?= $i ?>][content]" name="char_book[<?= $i ?>][content]" rows="4" maxlength="1000" disabled><?= set_value('char_book[' . $i . '][content]', $post_data['char_book'][$i]['content'] ?? '') ?></textarea>
-								<?= $validation->showError('char_book[' . $i . '][content]') ?>
+								<?= $validation->showError('char_book.' . $i . '.content') ?>
 							</div>
 						</div>
 					</div>
@@ -213,21 +213,21 @@
 									<option value="script_rephrase_regex" <?= set_select('script[' . $i . '][type]', 'script_rephrase_regex', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_rephrase_regex') : false) ?>>単語の言い換え（正規表現）</option>
 									<option value="script_none" <?= set_select('script[' . $i . '][type]', 'script_none', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_none') : false) ?>>使用しない</option>
 								</select>
-								<?= $validation->showError('script[' . $i . '][type]') ?>
+								<?= $validation->showError('script.' . $i . '.type') ?>
 							</div>
 						</div>
 						<div class="row mb-3">
 							<label class="col-md-1 col-form-label" for="script[<?= $i ?>][in]">IN</label>
 							<div class="col-md-11">
 								<input type="text" class="form-control" id="script[<?= $i ?>][in]" name="script[<?= $i ?>][in]" value="<?= set_value('script[' . $i . '][in]', $post_data['script'][$i]['in'] ?? '') ?>" disabled>
-								<?= $validation->showError('script[' . $i . '][in]') ?>
+								<?= $validation->showError('script.' . $i . '.in') ?>
 							</div>
 						</div>
 						<div class="row mb-3">
 							<label class="col-md-1 col-form-label" for="script[<?= $i ?>][out]">OUT</label>
 							<div class="col-md-11">
 								<input type="text" class="form-control" id="script[<?= $i ?>][out]" name="script[<?= $i ?>][out]" value="<?= set_value('script[' . $i . '][out]', $post_data['script'][$i]['out'] ?? '') ?>" disabled>
-								<?= $validation->showError('script[' . $i . '][out]') ?>
+								<?= $validation->showError('script.' . $i . '.out') ?>
 							</div>
 						</div>
 					</div>

@@ -83,40 +83,11 @@ class Create extends BaseController
             'r18'          => ['label' => 'R-18設定', 'rules' => ['permit_empty']],
             'draft'        => ['label' => '公開設定', 'rules' => ['permit_empty']],
             'comment'      => ['label' => 'コメント設定', 'rules' => ['permit_empty']],
-            'script.*'     => ['label' => 'スクリプト', 'rules' => [function ($item) {
-                if (empty($item)) {
-                    return true;
-                }
-
-                if (! in_array($item['type'], ['script_in', 'script_out', 'script_in_pin', 'script_in_pin_all', 'script_rephrase', 'script_in_regex', 'script_out_regex', 'script_in_pin_regex', 'script_in_pin_all_regex', 'script_rephrase_regex', 'script_none'], true)) {
-                    $this->validator->setError('script[' . $item['id'] . '][type]', 'スクリプトの種別の指定が不正です。');
-                }
-
-                if (mb_strlen($item['in']) > 1000) {
-                    $this->validator->setError('script[' . $item['id'] . '][in]', 'INは1000文字までしか入力できません。');
-                }
-
-                if (mb_strlen($item['out']) > 1000) {
-                    $this->validator->setError('script[' . $item['id'] . '][out]', 'OUTは1000文字までしか入力できません。');
-                }
-
-                return true;
-            }]],
-            'char_book.*' => ['label' => 'キャラクターブック', 'rules' => [function ($item) {
-                if (empty($item)) {
-                    return true;
-                }
-
-                if (mb_strlen($item['tag']) > 1000) {
-                    $this->validator->setError('char_book[' . $item['id'] . '][tag]', 'タグは500文字までしか入力できません。');
-                }
-
-                if (mb_strlen($item['content']) > 1000) {
-                    $this->validator->setError('char_book[' . $item['id'] . '][content]', '説明は1000文字までしか入力できません。');
-                }
-
-                return true;
-            }]],
+            'script.*.type' => ['label' => 'スクリプト', 'rules' => ['in_list[script_in,script_out,script_in_pin,script_in_pin_all,script_rephrase,script_in_regex,script_out_regex,script_in_pin_regex,script_in_pin_all_regex,script_rephrase_regex,script_none]']],
+            'script.*.in' => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
+            'script.*.out' => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
+            'char_book.*.tag' => ['label' => 'スクリプト', 'rules' => ['max_length[500]']],
+            'char_book.*.content' => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
         ];
 
         $default_pane = '';
@@ -349,40 +320,11 @@ class Create extends BaseController
             'r18'          => ['label' => 'R-18設定', 'rules' => ['permit_empty']],
             'draft'        => ['label' => '公開設定', 'rules' => ['permit_empty']],
             'comment'      => ['label' => 'コメント設定', 'rules' => ['permit_empty']],
-            'script.*'     => ['label' => 'スクリプト', 'rules' => [function ($item) {
-                if (empty($item)) {
-                    return true;
-                }
-
-                if (! in_array($item['type'], ['script_in', 'script_out', 'script_in_pin', 'script_in_pin_all', 'script_rephrase', 'script_in_regex', 'script_out_regex', 'script_in_pin_regex', 'script_in_pin_all_regex', 'script_rephrase_regex', 'script_none'], true)) {
-                    $this->validator->setError('script[' . $item['id'] . '][type]', 'スクリプトの種別の指定が不正です。');
-                }
-
-                if (mb_strlen($item['in']) > 1000) {
-                    $this->validator->setError('script[' . $item['id'] . '][in]', 'INは1000文字までしか入力できません。');
-                }
-
-                if (mb_strlen($item['out']) > 1000) {
-                    $this->validator->setError('script[' . $item['id'] . '][out]', 'OUTは1000文字までしか入力できません。');
-                }
-
-                return true;
-            }]],
-            'char_book.*' => ['label' => 'キャラクターブック', 'rules' => [function ($item) {
-                if (empty($item)) {
-                    return true;
-                }
-
-                if (mb_strlen($item['tag']) > 1000) {
-                    $this->validator->setError('char_book[' . $item['id'] . '][tag]', 'タグは500文字までしか入力できません。');
-                }
-
-                if (mb_strlen($item['content']) > 1000) {
-                    $this->validator->setError('char_book[' . $item['id'] . '][content]', '説明は1000文字までしか入力できません。');
-                }
-
-                return true;
-            }]],
+            'script.*.type' => ['label' => 'スクリプト', 'rules' => ['in_list[script_in,script_out,script_in_pin,script_in_pin_all,script_rephrase,script_in_regex,script_out_regex,script_in_pin_regex,script_in_pin_all_regex,script_rephrase_regex,script_none]']],
+            'script.*.in' => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
+            'script.*.out' => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
+            'char_book.*.tag' => ['label' => 'スクリプト', 'rules' => ['max_length[500]']],
+            'char_book.*.content' => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
         ];
 
         $default_pane = '';
