@@ -5,8 +5,13 @@
   margin: auto;
 }
 
-main#create-confirm .wrap {
+.wrap {
   overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.wrap-cell {
+  word-break: break-word;
 }
 
 .tag-link {

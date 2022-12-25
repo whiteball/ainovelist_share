@@ -24,7 +24,7 @@
 
 <?= $this->section('content') ?>
 <?= $this->include('_parts/header_nav') ?>
-<main class="container" id="create-confirm">
+<main class="container">
 	<?php if (! empty($successMessage)) : ?>
 		<div class="alert alert-success" role="alert">
 			<?= esc($successMessage) ?>
@@ -61,6 +61,13 @@
 	</div>
 	<div class="mb-3 text-end">
 		<span class="text-secondary">投稿日:<?= esc($prompt->registered_at) ?><?php if ($prompt->updated_at !== $prompt->registered_at):?>/更新日:<?= esc($prompt->updated_at) ?><?php endif ?></span>
+	<?php if ( ! empty($loginUserId) && (int) $prompt->user_id === $loginUserId): ?>
+		&nbsp;
+			<a class="btn btn-outline-success btn-sm" href="<?= site_url('edit/' . $prompt->id) ?>">
+				<span class="d-inline d-md-none">編集</span>
+				<span class="d-none d-md-inline">このプロンプトを編集</span>
+			</a>
+	<?php endif ?>
 	</div>
 	<div class="mb-3 border rounded p-2">
 		<div class="mb-3">
@@ -202,11 +209,11 @@
 											</tr>
 											<tr>
 												<th scope="row">IN<button class="btn btn-sm copy-btn" data-target="script-in-<?= esc($script['id'], 'attr') ?>"><img alt="copy" src="<?= base_url('img/copy.svg') ?>" width="16"></th></th>
-												<td id="script-in-<?= esc($script['id'], 'attr') ?>-text"><?= esc($script['in']) ?></td>
+												<td id="script-in-<?= esc($script['id'], 'attr') ?>-text" class="wrap-cell"><?= esc($script['in']) ?></td>
 											</tr>
 											<tr>
 												<th scope="row">OUT<button class="btn btn-sm copy-btn" data-target="script-out-<?= esc($script['id'], 'attr') ?>"><img alt="copy" src="<?= base_url('img/copy.svg') ?>" width="16"></th>
-												<td id="script-out-<?= esc($script['id'], 'attr') ?>-text"><?= esc($script['out']) ?></td>
+												<td id="script-out-<?= esc($script['id'], 'attr') ?>-text" class="wrap-cell"><?= esc($script['out']) ?></td>
 											</tr>
 										</table>
 									</div>
