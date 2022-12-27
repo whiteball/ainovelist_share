@@ -61,7 +61,7 @@
 	</div>
 	<div class="mb-3 text-end">
 		<span class="text-secondary">投稿日:<?= esc($prompt->registered_at) ?><?php if ($prompt->updated_at !== $prompt->registered_at):?>/更新日:<?= esc($prompt->updated_at) ?><?php endif ?></span>
-	<?php if ( ! empty($loginUserId) && (int) $prompt->user_id === $loginUserId): ?>
+	<?php if (! empty($loginUserId) && (int) $prompt->user_id === $loginUserId): ?>
 		&nbsp;
 			<a class="btn btn-outline-success btn-sm" href="<?= site_url('edit/' . $prompt->id) ?>">
 				<span class="d-inline d-md-none">編集</span>
@@ -327,10 +327,10 @@
 	<?php endif ?>
 	<?php if ($prompt->r18 === '1' && ($_SESSION['nsfw_mode'] ?? 's') === 's') : ?>
 		<?php
-        $uri         = current_url(true);
-        $query       = preg_replace('/(^|&|\?)(p=\d+|[nl]mode=\w)/u', '', $uri->getQuery());
-        $current_url = str_replace(index_page(), '', implode('/', $uri->getSegments())) . '?' . ($query ? ($query . '&') : '');
-        ?>
+        $uri      = current_url(true);
+	    $query       = preg_replace('/(^|&|\?)(p=\d+|[nl]mode=\w)/u', '', $uri->getQuery());
+	    $current_url = str_replace(index_page(), '', implode('/', $uri->getSegments())) . '?' . ($query ? ($query . '&') : '');
+	    ?>
 		<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#nsfw-modal" style="display: none;" id="nsfw-button"></button>
 		<div class="modal" id="nsfw-modal" tabindex="-1" aria-labelledby="nsfw-modal-label" aria-hidden="true">
 			<div class="modal-dialog modal-fullscreen">
@@ -339,7 +339,7 @@
 						<h4 class="modal-title" id="nsfw-modal-label">R-18 (NSFW) 表示確認</h4>
 					</div>
 					<div class="modal-body text-center">
-						<div class="fs-4">このページにはR-18 (NSFW)の内容を含みます。<br>閲覧を続けますか？</div>
+						<div class="fs-4">このページにはアダルト・グロテスクなどの成人向け(NSFW)の内容を含みます。<br>18歳未満の方、またはそのようなコンテンツの閲覧を望まない方は、「戻る」ボタンで元のページにお戻りください。<br><br>自己の責任において閲覧を望む方は、「続ける」ボタンで先に進んでください。</div>
 						<hr>
 						<div class="row">
 							<div class="col">

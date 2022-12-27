@@ -24,7 +24,7 @@
 					<h4 class="modal-title" id="nsfw-modal-label">R-18 (NSFW) 表示確認</h4>
 				</div>
 				<div class="modal-body text-center">
-					<div class="fs-4">このページにはR-18 (NSFW)の内容を含みます。<br>閲覧を続けますか？</div>
+						<div class="fs-4">このページにはアダルト・グロテスクなどの成人向け(NSFW)の内容を含みます。<br>18歳未満の方、またはそのようなコンテンツの閲覧を望まない方は、「戻る」ボタンで元のページにお戻りください。<br><br>自己の責任において閲覧を望む方は、「続ける」ボタンで先に進んでください。</div>
 					<hr>
 					<div class="row">
 						<div class="col">
