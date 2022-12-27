@@ -46,8 +46,8 @@ class Prompt extends Model
      */
     private function _getSortCol()
     {
-        switch ($_SESSION['sort_mode'] ?? 'u') {
-                // 投稿
+        switch ($_SESSION['sort_mode'] ?? 'c') {
+            // 投稿
             case 'u':
                 // 更新
                 return 'updated_at';
@@ -64,9 +64,9 @@ class Prompt extends Model
      * @param int $limit  Limit
      * @param int $offset Offset
      *
-     * @throws DataException
-     *
      * @return array
+     *
+     * @throws DataException
      */
     public function findAllSafe(int $limit = 0, int $offset = 0)
     {
@@ -81,10 +81,10 @@ class Prompt extends Model
      * @param bool $reset Reset
      * @param bool $test  Test
      *
+     * @return mixed
+     *
      * @throws DatabaseException
      * @throws ModelException
-     *
-     * @return mixed
      */
     public function countAllResultsSafe(bool $reset = true, bool $test = false)
     {
@@ -99,9 +99,9 @@ class Prompt extends Model
      * @param int    $offset Offset
      * @param string $mode   検索モード。andかor
      *
-     * @throws DatabaseException
-     *
      * @return void|(int|array)[]
+     *
+     * @throws DatabaseException
      *
      * @todo サーバー仕様が変わったので検索方法を仮にLIKE検索にしている。FULLTEXTインデックスを使った検索を使えるようにする。
      */
