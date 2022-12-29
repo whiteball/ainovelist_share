@@ -59,7 +59,7 @@ class Prompt
 
         $db = \Config\Database::connect();
         $db->transStart();
-        $prompt_deleted->save($data);
+        $prompt_deleted->save((array) $data);
         $prompt->delete($data->id);
         if (! empty($tag_ids)) {
             $tag->delete($tag_ids);

@@ -125,7 +125,7 @@ class Mypage extends BaseController
             }
 
             $userData = $user->find($this->loginUserId);
-            $user_deleted->save($userData);
+            $user_deleted->save((array) $userData);
             $user->delete($this->loginUserId);
 
             $this->action_log->write($this->loginUserId, 'user delete');
