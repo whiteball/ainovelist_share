@@ -80,19 +80,19 @@ class BaseController extends Controller
         unset($_SESSION['nsfw_mode_confirm']);
 
         // ソートの記憶
-        $sort_mode = $request->getGet('sort');
+        $sort_mode = $this->request->getGet('sort');
         if (! empty($sort_mode)) {
             $_SESSION['sort_mode'] = $sort_mode;
         }
 
         // R-18閲覧の記憶
-        $nsfw_mode = $request->getGet('nmode');
+        $nsfw_mode = $this->request->getGet('nmode');
         if (! empty($nsfw_mode)) {
             $_SESSION['nsfw_mode'] = $nsfw_mode;
         }
 
         // リスト表示モードの記憶
-        $list_mode = $request->getGet('lmode');
+        $list_mode = $this->request->getGet('lmode');
         if (! empty($list_mode)) {
             if ($list_mode === 's' || (in_array($list_mode, ['a', 'n'], true) && ($_SESSION['nsfw_mode'] ?? 's') !== 's')) {
                 $_SESSION['list_mode'] = $list_mode;
