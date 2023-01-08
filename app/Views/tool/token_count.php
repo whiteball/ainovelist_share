@@ -20,7 +20,7 @@
 	<div>
 		これはAIのべりすとに送られた文章がどのようにトークンに分割されるかを、簡易的に表示してカウントするツールです。<br>
 		AIのべりすとが内部で行っていると思われるトークン分割処理とは異なる方法で分割していますので、必ずしもこのツールの通りに分割されているとは限りません。<br>
-		特に、全角の記号や改行やスペースが上手く取り扱えません。あくまで簡易的なものとご承知ください。<br>
+		特に記号や改行などの変換が、上手くできない可能性があります。あくまで簡易的なものとご承知ください。<br>
 		とりんさま/でりだのトークン分割/カウントなら、より正確な<a href="https://colab.research.google.com/github/acorncat/unofficial-tools/blob/main/TokenizeForAIN.ipynb" rel="noopener noreferrer">AIのべりすと非公式トークン化ツール</a>(要Googleアカウント)をお使い下さい。
 	</div>
 	<form id="search-form" class="mt-3 mb-3">

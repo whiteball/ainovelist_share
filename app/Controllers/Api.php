@@ -7,6 +7,7 @@ use App\Models\Yamiotome_token;
 
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\Controller;
+use Normalizer;
 
 class Api extends Controller
 {
@@ -30,11 +31,15 @@ class Api extends Controller
             $side = 'before';
         }
 
+        // Unicode正規化(NFKC)
+        $normalizer = new Normalizer();
+        $string     = $normalizer->normalize($string, Normalizer::FORM_KC);
+
         /** @var Trinsama_token|Yamiotome_token */
         $tokens = (int) $mode === 1 ? model(Yamiotome_token::class) : model(Trinsama_token::class);
         // escapeLikeString()がダブルクオート等をエスケープするが、like()でもエスケープされるので二重エスケープになってしまう。
         // そのため、ここでエスケープを外す。like()の$escapeをfalseにすると、%...%で囲った後にダブルクオートで囲ってくれなくなる。
-        $string = str_replace('\\\\', '\\', str_replace("\\'", "'", str_replace('\\"', '"', $tokens->db->escapeLikeString(mb_convert_kana($string, 'asKV')))));
+        $string = str_replace('\\\\', '\\', str_replace("\\'", "'", str_replace('\\"', '"', $tokens->db->escapeLikeString($string))));
 
         $result = $tokens->select('token')
             ->like('token', $string, $side)
@@ -63,7 +68,9 @@ class Api extends Controller
 
         $counter = 0;
 
-        $string = mb_convert_kana(preg_replace('/\r\n|\r|\n/', '\n', $string), 'asKV');
+        // Unicode正規化(NFKC)
+        $normalizer = new Normalizer();
+        $string     = $normalizer->normalize(preg_replace('/\r\n|\r|\n/', '\n', $string), Normalizer::FORM_KC);
 
         while (mb_strlen($string) > 0 && $counter < 500) {
             $str    = mb_substr($string, 0, 1);
