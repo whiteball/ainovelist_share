@@ -26,6 +26,9 @@
 			<li><a href="#ai_novelist_voicevox">出力をVOICEVOX読み上げ</a></li>
 			<li><a href="#ai_novelist_any_font">任意フォント指定</a></li>
 			<li><a href="#ai_novelist_range2button">スライダーをボタンに置き換え</a></li>
+			<li><a href="#ai_novelist_works_full_text_search">ローカル作品リストで全文検索</a></li>
+			<li><a href="#ai_novelist_tagged_memory">メモリと脚注をタグでグループ化</a></li>
+			<li><a href="#ai_novelist_insert_adjusted_timestamp">「[調整日時]」を任意の日時に置換</a></li>
 			<li><a href="#ai_novelist_trinart_download">TrinArtで生成画像とパラメータをまとめてダウンロード</a></li>
 			<li><a href="#ai_novelist_trinart_download_for_gallery">TrinArtのギャラリー個別ページで画像とパラメータをまとめてダウンロード</a></li>
 			<li><a href="#ai_novelist_trinart_lumina_info">TrinArtでページを開いてからのルミナ消費を表示する</a></li>
@@ -35,7 +38,7 @@
 		<div>
 			<div class="m-2">
 				<a href="https://gist.github.com/whiteball/b2bf1b71e37a07c87bb3948ea6f0f0f8" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
-				最終更新日：2022/12/15 バージョン0.19.0
+				最終更新日：2023/01/06 バージョン0.19.2
 			</div>
 			<div class="m-2">
 				<a href="https://www.nicovideo.jp/watch/sm40158166" target="_blank" rel="noopener noreferrer">導入手順と機能紹介の動画</a>を作成しました。(バージョン0.7時点の情報)
@@ -271,11 +274,90 @@
 			</ul>
 		</div>
 		<hr>
+		<h4 id="ai_novelist_works_full_text_search">ローカル作品リストで全文検索</h4>
+		<div>
+			<div class="m-2">
+				<a href="https://gist.github.com/whiteball/7107168e123380009caef4b9a7fa9278" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
+				最終更新日：2022/12/29 バージョン0.1
+			</div>
+			このスクリプトを導入することで次の機能を追加します。
+			<ul>
+				<li>作品リストの検索ボックス横に「全文」のチェックボックスを追加する。それがチェックされている場合、検索の対象をタイトルだけでなく、全文(本文・メモリ・脚注・キャラクターブック・禁止ワード・タイトル)に変更する。</li>
+			</ul>
+			<h5>導入手順</h5>
+			<ol>
+				<li>ブラウザに<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>をインストールする。</li>
+				<li>「メモリと脚注をタグでグループ化」の<a href="https://gist.github.com/whiteball/7107168e123380009caef4b9a7fa9278" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
+				<li>ダウンロードページの右の方にある「Raw」リンクをクリックする。(<a href="https://gist.github.com/whiteball/7107168e123380009caef4b9a7fa9278/raw/ai_novelist_works_full_text_search.user.js" target="_blank" rel="noopener noreferrer">直リンク</a>)</li>
+				<li>Tampermonkeyのインストール確認ページが開くので、インストールボタンを押す。</li>
+			</ol>
+			<h5>注意</h5>
+			<ul>
+				<li>このスクリプトはローカルの作品リストのみで有効です。</li>
+				<li>AIのべりすとのサイトの構成が変わると、ユーザースクリプトは動作しなくなる可能性があります。</li>
+				<li>Chrome/Firefoxにて動作確認していますが、検索ができないなどの現象が発生しても、作者は責任を負いかねます。</li>
+			</ul>
+		</div>
+		<hr>
+		<h4 id="ai_novelist_tagged_memory">メモリと脚注をタグでグループ化</h4>
+		<div>
+			<div class="m-2">
+				<a href="https://gist.github.com/whiteball/20013e480b3cba97f829fcb9b1c5e458" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
+				最終更新日：2023/01/01 バージョン0.1
+			</div>
+			このスクリプトを導入することで次の機能を追加します。
+			<ul>
+				<li>メモリと脚注をそれぞれ、特定のルールで追加したコメント行により内容をグループ化し、プルダウンリストで有効にしたいテキストを選んで切り替えられるようにする。</li>
+				<li>このスクリプトによるコメント行は、プルダウンで各タグを選択している場合は見えなくなっているが、「全体」を選択すると見えるようになる。</li>
+				<li><a href="https://twitter.com/whiteball/status/1609444669754335234" target="_blank" rel="noopener noreferrer">リリース時のツイート</a></li>
+			</ul>
+			<h5>導入手順</h5>
+			<ol>
+				<li>ブラウザに<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>をインストールする。</li>
+				<li>「メモリと脚注をタグでグループ化」の<a href="https://gist.github.com/whiteball/20013e480b3cba97f829fcb9b1c5e458" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
+				<li>ダウンロードページの右の方にある「Raw」リンクをクリックする。(<a href="https://gist.github.com/whiteball/20013e480b3cba97f829fcb9b1c5e458/raw/ai_novelist_tagged_memory.user.js" target="_blank" rel="noopener noreferrer">直リンク</a>)</li>
+				<li>Tampermonkeyのインストール確認ページが開くので、インストールボタンを押す。</li>
+			</ol>
+			<h5>注意</h5>
+			<ul>
+				<li>AIのべりすとのサイトの構成が変わると、ユーザースクリプトは動作しなくなる可能性があります。</li>
+				<li>Chrome/Firefoxにて動作確認していますが、万が一テキストが消えてしまうなどの現象が発生しても、作者は責任を負いかねます。</li>
+			</ul>
+		</div>
+		<hr>
+		<h4 id="ai_novelist_insert_adjusted_timestamp">「[調整日時]」を任意の日時に置換</h4>
+		<div>
+			<div class="m-2">
+				<a href="https://gist.github.com/whiteball/408b94623a9137553800ad4b67126831" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
+				最終更新日：2023/01/02 バージョン0.1
+			</div>
+			このスクリプトを導入することで次の機能を追加します。
+			<ul>
+				<li>公式機能である「[現在日時]」の置換に加えて、テキストを送信する直前と、出力を表示する直前に、「[調整日時」という部分を任意の日時に置換する。</li>
+				<li>それぞれ「【最新】入力文の確定置換」と「出力文の置換」と同じ範囲にあるものを置換する。</li>
+				<li>挿入する日時の調整は環境設定の下にある設定フォームから行う。ここで「現在日時に対するオフセット」を指定する。</li>
+				<li>例えば、「2023/01/01 12:34:56」が現在時刻だとして、オフセットに「1日」と「-8時」を指定すると、調整日時は「2023/01/02 04:34:56」となる。</li>
+				<li>現在の調整日時は「調整日時を確認」ボタンを押すと確認できる。</li>
+			</ul>
+			<h5>導入手順</h5>
+			<ol>
+				<li>ブラウザに<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>をインストールする。</li>
+				<li>「メモリと脚注をタグでグループ化」の<a href="https://gist.github.com/whiteball/408b94623a9137553800ad4b67126831" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
+				<li>ダウンロードページの右の方にある「Raw」リンクをクリックする。(<a href="https://gist.github.com/whiteball/408b94623a9137553800ad4b67126831/raw/ai_novelist_insert_adjusted_timestamp.user.js" target="_blank" rel="noopener noreferrer">直リンク</a>)</li>
+				<li>Tampermonkeyのインストール確認ページが開くので、インストールボタンを押す。</li>
+			</ol>
+			<h5>注意</h5>
+			<ul>
+				<li>AIのべりすとのサイトの構成が変わると、ユーザースクリプトは動作しなくなる可能性があります。</li>
+				<li>Chrome/Firefoxにて動作確認していますが、万が一テキストが消えてしまうなどの現象が発生しても、作者は責任を負いかねます。</li>
+			</ul>
+		</div>
+		<hr>
 		<h4 id="ai_novelist_trinart_download">TrinArtで生成画像とパラメータをまとめてダウンロード</h4>
 		<div>
 			<div class="m-2">
 				<a href="https://gist.github.com/whiteball/03c4953d7f547187d979267f5ef36c59" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
-				最終更新日：2022/09/25 バージョン0.3.1
+				最終更新日：2022/12/29 バージョン0.4.1
 			</div>
 			このスクリプトを導入することで次の機能を追加します。
 			<ul>
@@ -283,7 +365,9 @@
 				<li><del>ダウンロードボタンの下に、ファイル名を指定する入力欄を追加。デフォルト値はプロンプトのスペースなどを_に置換したものを使う。</del></li>
 				<li><del>UndoやRedoをした場合は、その時に表示している画像をダウンロードする。パラメータも生成当時のものをダウンロードする。</del></li>
 				<li>上記機能はTrinArt本体に取り込まれました。現在以下の機能を提供しています。</li>
-				<li>コンテンツフィルタの設定の下に、自動保存オプションを追加。これがチェックされている場合は、画像の生成完了と同時にダウンロードを開始する。この設定はページをリロードするとオフになる。</li>
+				<li>コンテンツフィルタの設定の下に、自動保存オプションを追加。</li>
+				<li>「生成画像の自動保存」が選択されている場合は、生成完了時に画像のjpgファイルと、生成パラメータが書かれたtxtファイルを自動でダウンロード開始する。(PCのみ選択可能)</li>
+				<li>「生成画像の自動保存(テキスト埋め込み)」が選択されている場合は、生成完了時に生成パラメータを埋め込んだpngファイルを自動でダウンロード開始する。埋め込んだパラメータは<a href="https://image-convert.cman.jp/imgInfo/" target="_blank" rel="noopener noreferrer">CMANの画像情報確認</a>や<a href="https://forest.watch.impress.co.jp/docs/review/669449.html" target="_blank" rel="noopener noreferrer">TweakPNG(Windows用ソフト)</a>などで確認できる。</li>
 			</ul>
 			<h5>導入手順</h5>
 			<ol>
@@ -307,7 +391,8 @@
 				<a href="https://gist.github.com/whiteball/3676fd7a3f58e947a864d2c8ef312024" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
 				最終更新日：2022/09/12 バージョン0.1.1
 			</div>
-			このスクリプトを導入することで次の機能を追加します。
+			<del>このスクリプトを導入することで次の機能を追加します。</del><br>
+			この機能はTrinArt本体に取り込まれました。
 			<ul>
 				<li>TrinArtのギャラリーの画像個別ページの下部に、その画像をjpgとして、またパラメータをtxtとしていっぺんにダウンロードするボタンを表示する。(スマホの場合は個別のダウンロードボタンを表示)</li>
 				<li>ダウンロードボタンの下に、ファイル名を指定する入力欄を追加。デフォルト値はプロンプトのスペースなどを_に置換したものを使う。</li>
@@ -331,13 +416,13 @@
 		<div>
 			<div class="m-2">
 				<a href="https://gist.github.com/whiteball/a2a3af48b3132c00231bf1d77673dddb" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
-				最終更新日：2022/09/24 バージョン0.1.1
+				最終更新日：2022/12/19 バージョン0.2.0
 			</div>
 			このスクリプトを導入することで次の機能を追加します。
 			<ul>
 				<li>TrinArtの画像生成ページの下部に、現在のパラメータで消費するルミナ、現在の残りルミナ、ページを開いたときの残りルミナ、ページを開いてから消費したルミナを表示する。</li>
 				<li>※あくまでも取得できる範囲の情報からルミナを表示しているため、実際のルミナ消費と確実に一致しているかは保証しかねます。</li>
-				<li>※ルミナの割引価格表示には非対応です。</li>
+				<li>※重ね描きアップスケールしたときの消費ルミナの増加には非対応です。</li>
 			</ul>
 			<h5>導入手順</h5>
 			<ol>
