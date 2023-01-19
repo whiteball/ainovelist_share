@@ -114,7 +114,7 @@ class Api extends Controller
             return $this->respond(['result' => 'error'], 404);
         }
 
-        $payload = ['type' => 'plane', 'description' => $promptData->description];
+        $payload = ['type' => 'plain', 'description' => $promptData->description];
 
         return $this->respond(['result' => $payload], 200);
     }
