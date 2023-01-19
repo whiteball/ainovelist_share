@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Prompt;
 use App\Models\Trinsama_token;
 use App\Models\Yamiotome_token;
 
@@ -99,6 +100,21 @@ class Api extends Controller
             }
             $counter++;
         }
+
+        return $this->respond(['result' => $payload], 200);
+    }
+
+    public function get_description($prompt_id)
+    {
+        /** @var Prompt */
+        $prompt     = model(Prompt::class);
+        $promptData = $prompt->where('draft', 0)->find($prompt_id);
+
+        if (empty($promptData)) {
+            return $this->respond(['result' => 'error'], 404);
+        }
+
+        $payload = ['type' => 'plane', 'description' => $promptData->description];
 
         return $this->respond(['result' => $payload], 200);
     }
