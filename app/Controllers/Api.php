@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\Prompt;
+use App\Models\Trin_yami_intersection_token;
+use App\Models\Trin_yami_union_token;
 use App\Models\Trinsama_token;
 use App\Models\Yamiotome_token;
 
@@ -13,6 +15,11 @@ use Normalizer;
 class Api extends Controller
 {
     use ResponseTrait;
+
+    public const MODE_TRINSAMA               = 0;
+    public const MODE_YAMIOTOME              = 1;
+    public const MODE_TRIN_YAMI_INTERSECTION = 2;
+    public const MODE_TRIN_YAMI_UNION        = 3;
 
     public function get_tokens($mode, $string = '')
     {
@@ -37,7 +44,14 @@ class Api extends Controller
         $string     = $normalizer->normalize($string, Normalizer::FORM_KC);
 
         /** @var Trinsama_token|Yamiotome_token */
-        $tokens = (int) $mode === 1 ? model(Yamiotome_token::class) : model(Trinsama_token::class);
+        $token_class_list = [
+            self::MODE_TRINSAMA               => Trinsama_token::class,
+            self::MODE_YAMIOTOME              => Yamiotome_token::class,
+            self::MODE_TRIN_YAMI_INTERSECTION => Trin_yami_intersection_token::class,
+            self::MODE_TRIN_YAMI_UNION        => Trin_yami_union_token::class,
+        ];
+        $tokens = model($token_class_list[(int) $mode] ?? $token_class_list[self::MODE_TRINSAMA]);
+
         // escapeLikeString()がダブルクオート等をエスケープするが、like()でもエスケープされるので二重エスケープになってしまう。
         // そのため、ここでエスケープを外す。like()の$escapeをfalseにすると、%...%で囲った後にダブルクオートで囲ってくれなくなる。
         $string = str_replace('\\\\', '\\', str_replace("\\'", "'", str_replace('\\"', '"', $tokens->db->escapeLikeString($string))));

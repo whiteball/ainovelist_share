@@ -23,6 +23,10 @@
 		検索対象となるトークンは、AIのべりすとWikiのトークン一覧を参考にしています。<br>
 		トークンの過不足がないよう注意していますが、もし検索結果の不備により何らかの不都合が生じても、作者は責任を負いかねますのでご注意ください。
 	</div>
+	<div style="margin-top: 10px;">
+		対象モデルの選択肢の「とりん/やみ共通」は、とりんさま/でりだのトークンにも、やみおとめのトークンにも共通して含まれているトークンのリストを表示します。<br>
+		「とりん/やみ集合」はとりんさま/でりだのトークンか、やみおとめのトークンかどちらか一方にでも含まれているトークンすべてのリストを表示します。やみおとめのみに含まれるトークンは、リストの後半に表示します。
+	</div>
 	<form id="search-form" class="mt-3 mb-3">
 		<div class="mb-3">
 			<label class="form-label">入力</label>
@@ -47,6 +51,12 @@
 			</div>
 			<div class="form-check form-check-inline mb-3">
 				<input id="type-1" type="radio" name="type" value="1" class="form-check-input"><label for="type-1" class="form-check-label">やみおとめ</label>
+			</div>
+			<div class="form-check form-check-inline">
+				<input id="type-2" type="radio" name="type" value="2" class="form-check-input"><label for="type-2" class="form-check-label">とりん/やみ共通</label>
+			</div>
+			<div class="form-check form-check-inline mb-3">
+				<input id="type-3" type="radio" name="type" value="3" class="form-check-input"><label for="type-3" class="form-check-label">とりん/やみ集合</label>
 			</div>
 		</div>
 		<div>
