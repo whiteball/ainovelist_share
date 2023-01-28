@@ -19,12 +19,12 @@ class Prompt
      * @param int|object $prompt_id プロンプトIDまたはプロンプトのレコード
      * @param int        $by        削除を行うユーザーID
      *
+     * @return bool
+     *
      * @throws DatabaseException
      * @throws DataException
      * @throws InvalidArgumentException
      * @throws ReflectionException
-     *
-     * @return bool
      */
     public function delete($prompt_id, $by)
     {
@@ -59,7 +59,7 @@ class Prompt
 
         $db = \Config\Database::connect();
         $db->transStart();
-        $prompt_deleted->save((array) $data);
+        $prompt_deleted->save($data);
         $prompt->delete($data->id);
         if (! empty($tag_ids)) {
             $tag->delete($tag_ids);

@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Libraries\Prompt as PromptLib;
 use App\Libraries\Comment;
+use App\Libraries\Prompt as PromptLib;
 use App\Models\Prompt;
 use App\Models\User;
 use App\Models\User_deleted;
@@ -35,12 +35,20 @@ class Mypage extends BaseController
             }
 
             if ($this->request->getPost('type') === 'change_password' && $this->validate([
-                'current_password' => ['label' => '現在のパスワード', 'rules' => ['required']],
-                'new_password' => ['label' => '新しいパスワード', 'rules' => ['required', 'min_length[12]']],
+                'current_password'     => ['label' => '現在のパスワード', 'rules' => ['required']],
+                'new_password'         => ['label' => '新しいパスワード', 'rules' => ['required', 'min_length[12]']],
                 'new_password_confirm' => ['label' => '新しいパスワード(再入力)', 'rules' => ['required_with[new_password]', 'matches[new_password]']],
             ])) {
-                if (password_verify($this->request->getPost('current_password'), $loginUser->password)) {
-                    $loginUser->password = password_hash($this->request->getPost('new_password'), PASSWORD_DEFAULT);
+                /**
+                 * @var mixed $password
+                 */
+                $password = $this->request->getPost('current_password');
+                /**
+                 * @var mixed $new_password
+                 */
+                $new_password = $this->request->getPost('new_password');
+                if (password_verify($password, $loginUser->password)) {
+                    $loginUser->password = password_hash($new_password, PASSWORD_DEFAULT);
                     $user->save($loginUser);
                     $this->action_log->write($loginUser->id, 'user change password');
                     $success_message2 = 'パスワード変更しました';
@@ -83,7 +91,7 @@ class Mypage extends BaseController
         $comment = new Comment();
 
         return view('mypage/comment_posted', [
-            'comments' => $comment->get_posted($this->loginUserId)
+            'comments' => $comment->get_posted($this->loginUserId),
         ]);
     }
 
@@ -96,7 +104,7 @@ class Mypage extends BaseController
         $comment = new Comment();
 
         return view('mypage/comment_received', [
-            'comments' => $comment->get_received($this->loginUserId)
+            'comments' => $comment->get_received($this->loginUserId),
         ]);
     }
 
@@ -108,7 +116,7 @@ class Mypage extends BaseController
 
         if ($this->isPost()) {
             /** @var User */
-            $user      = model(User::class);
+            $user = model(User::class);
             /** @var User_deleted */
             $user_deleted = model(User_deleted::class);
             /** @var Prompt */
@@ -125,7 +133,7 @@ class Mypage extends BaseController
             }
 
             $userData = $user->find($this->loginUserId);
-            $user_deleted->save((array) $userData);
+            $user_deleted->save($userData);
             $user->delete($this->loginUserId);
 
             $this->action_log->write($this->loginUserId, 'user delete');
@@ -135,6 +143,7 @@ class Mypage extends BaseController
             if ($db->transStatus()) {
                 $this->action_log->write($this->loginUserId, 'user logout');
                 unset($_SESSION['login']);
+
                 return view('mypage/complete_delete');
             }
         }
