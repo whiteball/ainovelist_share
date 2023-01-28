@@ -13,7 +13,8 @@ class Prompt extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
-    protected $allowedFields    = ['user_id', 'title', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'scripts', 'character_book', 'r18', 'draft', 'comment', 'registered_at', 'updated_at'];
+    protected $allowedFields    = ['user_id', 'title', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'scripts', 'character_book', 'r18', 'draft', 'comment', 'registered_at', 'updated_at', 'updated_at_for_sort'];
+    protected $beforeUpdate     = ['updateSortColumn'];
 
     private function _withSafe()
     {
@@ -50,7 +51,7 @@ class Prompt extends Model
             // 投稿
             case 'u':
                 // 更新
-                return 'updated_at';
+                return 'IFNULL(updated_at_for_sort, updated_at)';
 
             case 'c':
             default:
@@ -72,7 +73,7 @@ class Prompt extends Model
     {
         $this->_withSafe();
 
-        return $this->orderBy($this->_getSortCol(), 'desc')->where('draft', 0)->findAll($limit, $offset);
+        return $this->orderBy($this->_getSortCol(), 'desc', false)->where('draft', 0)->findAll($limit, $offset);
     }
 
     /**
@@ -163,5 +164,19 @@ class Prompt extends Model
         }
 
         return ['count' => $count, 'result' => $search_result->getResult($this->returnType)];
+    }
+
+    public function updateSortColumn($data)
+    {
+        log_message('error', print_r($data['data']['updated_at_for_sort'], true));
+        if (isset($data['data']['updated_at_for_sort']) && $data['data']['updated_at_for_sort'] === true) {
+            $data['data']['updated_at_for_sort'] = 'IFNULL(updated_at_for_sort, updated_at)';
+        } else {
+            $data['data']['updated_at_for_sort'] = 'NULL';
+        }
+
+        $this->escape['updated_at_for_sort'] = false;
+
+        return $data;
     }
 }

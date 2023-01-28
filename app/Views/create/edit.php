@@ -144,9 +144,32 @@
 					document.addEventListener('DOMContentLoaded', toggleCommentButton)
 					document.getElementById('comment').addEventListener('click', toggleCommentButton)
 				</script>
+				<input class="btn-check" type="checkbox" value="1" id="updated_at_for_sort" name="updated_at_for_sort" <?= (isset($post_data['updated_at_for_sort']) && ($post_data['updated_at_for_sort'] === '1')) ? 'checked="checked' : (set_checkbox('updated_at_for_sort', '1', isset($post_data['updated_at_for_sort']) ? ($post_data['updated_at_for_sort'] === '1') : false)) ?> autocomplete="off">
+				<label class="btn btn-success ms-4" for="updated_at_for_sort" id="updated_at_for_sort-text">
+					現在は更新順浮上あり設定
+				</label>
+				<?= $validation->showError('updated_at_for_sort') ?>
+				<script>
+					const toggleUpdateAtForSortButton = function() {
+						const check = document.getElementById('updated_at_for_sort')
+						const text = document.getElementById('updated_at_for_sort-text')
+						if (check.checked) {
+							text.classList.remove('btn-success')
+							text.classList.add('btn-outline-danger')
+							text.innerText = '現在は更新順浮上なし設定'
+						} else {
+							text.classList.add('btn-success')
+							text.classList.remove('btn-outline-danger')
+							text.innerText = '現在は更新順浮上あり設定'
+						}
+					}
+					document.addEventListener('DOMContentLoaded', toggleUpdateAtForSortButton)
+					document.getElementById('updated_at_for_sort').addEventListener('click', toggleUpdateAtForSortButton)
+				</script>
 				<div class="mt-2" style="font-size: 75%;">R-18設定にすると、トップページや検索の「全年齢」の一覧には表示されません。</div>
 				<div class="mt-1" style="font-size: 75%;">非公開設定にすると、公開状態に変更するまでトップページや検索の一覧には表示されません。</div>
 				<div class="mt-1" style="font-size: 75%;">コメント許可設定にすると、プロンプト個別ページにコメント欄が表示されます。</div>
+				<div class="mt-1" style="font-size: 75%;">更新順浮上なし設定にすると、プロンプトを更新しても更新日順ソートでの並び順が前回更新日のままになります。</div>
 			</div>
 		</div>
 		<div class="mb-3 border rounded p-2">
@@ -390,9 +413,32 @@
 						document.addEventListener('DOMContentLoaded', toggleCommentFileButton)
 						document.getElementById('comment-file').addEventListener('click', toggleCommentFileButton)
 					</script>
+					<input class="btn-check" type="checkbox" value="1" id="updated_at_for_sort-file" name="updated_at_for_sort-file" <?= (isset($post_data['updated_at_for_sort-file']) && ($post_data['updated_at_for_sort-file'] === '1')) ? 'checked="checked' : (set_checkbox('updated_at_for_sort-file', '1', isset($post_data['updated_at_for_sort-file']) ? ($post_data['updated_at_for_sort-file'] === '1') : true)) ?> autocomplete="off">
+					<label class="btn btn-success ms-4" for="updated_at_for_sort-file" id="updated_at_for_sort-file-text">
+						現在は更新順浮上あり設定
+					</label>
+					<?= $validation->showError('updated_at_for_sort-file') ?>
+					<script>
+						const toggleUpdateAtForSortFileButton = function() {
+							const check = document.getElementById('updated_at_for_sort-file')
+							const text = document.getElementById('updated_at_for_sort-file-text')
+							if (check.checked) {
+								text.classList.remove('btn-success')
+								text.classList.add('btn-outline-danger')
+								text.innerText = '現在は更新順浮上なし設定'
+							} else {
+								text.classList.add('btn-success')
+								text.classList.remove('btn-outline-danger')
+								text.innerText = '現在は更新順浮上あり設定'
+							}
+						}
+						document.addEventListener('DOMContentLoaded', toggleUpdateAtForSortFileButton)
+						document.getElementById('updated_at_for_sort-file').addEventListener('click', toggleUpdateAtForSortFileButton)
+					</script>
 					<div class="mt-2" style="font-size: 75%;">R-18設定にすると、トップページや検索の「全年齢」の一覧には表示されません。</div>
 					<div class="mt-1" style="font-size: 75%;">非公開設定にすると、公開状態に変更するまでトップページや検索の一覧には表示されません。</div>
 					<div class="mt-1" style="font-size: 75%;">コメント許可設定にすると、プロンプト個別ページにコメント欄が表示されます。</div>
+					<div class="mt-1" style="font-size: 75%;">更新順浮上なし設定にすると、プロンプトを更新しても更新日順ソートでの並び順が前回更新日のままになります。</div>
 				</div>
 			</div>
 			<div class="text-center">
