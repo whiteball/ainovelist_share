@@ -62,7 +62,7 @@ class Cookie extends BaseConfig
      *
      * @var bool
      */
-    public $secure = true;
+    public $secure = ENVIRONMENT === 'production';
 
     /**
      * --------------------------------------------------------------------------

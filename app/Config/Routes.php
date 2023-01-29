@@ -71,6 +71,7 @@ $routes->get('/mypage/comment_posted', 'Mypage::comment_posted');
 $routes->get('/mypage/comment_received', 'Mypage::comment_received');
 $routes->get('/api/get_tokens/(:num)/(:any)', 'Api::get_tokens/$1/$2');
 $routes->get('/api/get_description/(:num)', 'Api::get_description/$1');
+$routes->get('/option/ng', 'Option::ng');
 
 /*
  * --------------------------------------------------------------------

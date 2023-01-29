@@ -47,4 +47,23 @@ class Tag extends Model
 
         return $this->where('prompt_id', $prompt_id)->orderBy('id', 'asc')->findAll();
     }
+
+    /**
+     * Cookieに登録されたNGタグを含んでいるプロンプトIDのリストを取得する。
+     * 
+     * @return string[] プロンプトIDのリスト
+     */
+    public function findPromptIdsByNgTags()
+    {
+        helper('ng');
+        $tag_list = clean_up_ng_tags();
+
+        if (empty($tag_list)) {
+            return [];
+        }
+
+        return array_map(function ($val) {
+            return $val->prompt_id;
+        }, $this->select('prompt_id')->whereIn('tag_name', $tag_list)->groupBy('prompt_id')->findAll());
+    }
 }

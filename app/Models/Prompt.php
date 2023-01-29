@@ -60,18 +60,38 @@ class Prompt extends Model
     }
 
     /**
+     * CookieにNGユーザーがあればクエリに追加する。
+     *
+     * @return void
+     */
+    private function _withoutNgUser()
+    {
+        helper('ng');
+        $user_list = clean_up_ng_users();
+
+        if (! empty($user_list)) {
+            $this->whereNotIn('user_id', $user_list);
+        }
+    }
+
+    /**
      * R-18/全年齢の判定付きで取得する。
      *
-     * @param int $limit  Limit
-     * @param int $offset Offset
+     * @param int   $limit         Limit
+     * @param int   $offset        Offset
+     * @param array $ng_prompt_ids NGプロンプトIDのリスト
      *
      * @return array
      *
      * @throws DataException
      */
-    public function findAllSafe(int $limit = 0, int $offset = 0)
+    public function findAllSafe(int $limit = 0, int $offset = 0, $ng_prompt_ids = [])
     {
         $this->_withSafe();
+        $this->_withoutNgUser();
+        if (! empty($ng_prompt_ids) && is_array($ng_prompt_ids)) {
+            $this->whereNotIn('id', $ng_prompt_ids);
+        }
 
         return $this->orderBy($this->_getSortCol(), 'desc', false)->where('draft', 0)->findAll($limit, $offset);
     }
@@ -79,26 +99,32 @@ class Prompt extends Model
     /**
      * * R-18/全年齢の判定付きでカウントする。
      *
-     * @param bool $reset Reset
-     * @param bool $test  Test
+     * @param bool  $reset         Reset
+     * @param bool  $test          Test
+     * @param mixed $ng_prompt_ids
      *
      * @return mixed
      *
      * @throws DatabaseException
      * @throws ModelException
      */
-    public function countAllResultsSafe(bool $reset = true, bool $test = false)
+    public function countAllResultsSafe(bool $reset = true, bool $test = false, $ng_prompt_ids = [])
     {
         $this->_withSafe();
+        $this->_withoutNgUser();
+        if (! empty($ng_prompt_ids) && is_array($ng_prompt_ids)) {
+            $this->whereNotIn('id', $ng_prompt_ids);
+        }
 
         return $this->where('draft', 0)->countAllResults($reset, $test);
     }
 
     /**
-     * @param string $query  検索クエリ
-     * @param int    $limit  Limit
-     * @param int    $offset Offset
-     * @param string $mode   検索モード。andかor
+     * @param string $query         検索クエリ
+     * @param int    $limit         Limit
+     * @param int    $offset        Offset
+     * @param string $mode          検索モード。andかor
+     * @param array  $ng_prompt_ids NGプロンプトIDのリスト
      *
      * @return void|(int|array)[]
      *
@@ -106,7 +132,7 @@ class Prompt extends Model
      *
      * @todo サーバー仕様が変わったので検索方法を仮にLIKE検索にしている。FULLTEXTインデックスを使った検索を使えるようにする。
      */
-    public function captionSearch(string $query, int $limit, int $offset, string $mode = 'and')
+    public function captionSearch(string $query, int $limit, int $offset, string $mode = 'and', $ng_prompt_ids = [])
     {
         $operator = '+'; // デフォルトはAND検索
         if (mb_strtolower($mode) === 'or') {
@@ -130,6 +156,7 @@ class Prompt extends Model
 
         // 全年齢
         $where = ' AND `r18` = 0';
+        $binds = [];
 
         switch ($_SESSION['list_mode'] ?? 's') {
             case 'a':
@@ -144,9 +171,22 @@ class Prompt extends Model
         }
 
         $where .= ' AND `draft` = 0';
+
+        helper('ng');
+        $user_list = clean_up_ng_users();
+        if (! empty($user_list)) {
+            $where .= ' AND `user_id` NOT IN :user_id:';
+            $binds['user_id'] = $user_list;
+        }
+
+        if (! empty($ng_prompt_ids) && is_array($ng_prompt_ids)) {
+            $where .= ' AND `id` NOT IN :prompt_id:';
+            $binds['prompt_id'] = $ng_prompt_ids;
+        }
+
         $table_name = $this->db->protectIdentifiers($this->table);
         // $count_result = $this->db->query("SELECT count(*) AS `count` FROM {$table_name} WHERE MATCH (`title`, `description`) AGAINST (? IN BOOLEAN MODE){$where};", [$search_text]);
-        $count_result = $this->db->query("SELECT count(*) AS `count` FROM {$table_name} WHERE ({$search_text}){$where};");
+        $count_result = $this->db->query("SELECT count(*) AS `count` FROM {$table_name} WHERE ({$search_text}){$where};", $binds);
         if (! $count_result || $count_result->getNumRows() === 0) {
             return ['count' => 0, 'result' => []];
         }
@@ -157,8 +197,10 @@ class Prompt extends Model
         }
 
         $sort = $this->_getSortCol();
+        $binds['limit'] = $limit;
+        $binds['offset'] = $offset;
         // $search_result = $this->db->query("SELECT {$table_name}.* FROM {$table_name} WHERE MATCH (`title`, `description`) AGAINST (? IN BOOLEAN MODE){$where} ORDER BY `{$sort}` desc LIMIT ? OFFSET ?;", [$search_text, $limit, $offset]);
-        $search_result = $this->db->query("SELECT {$table_name}.* FROM {$table_name} WHERE ({$search_text}){$where} ORDER BY `{$sort}` desc LIMIT ? OFFSET ?;", [$limit, $offset]);
+        $search_result = $this->db->query("SELECT {$table_name}.* FROM {$table_name} WHERE ({$search_text}){$where} ORDER BY `{$sort}` desc LIMIT :limit: OFFSET :offset:;", $binds);
         if (! $search_result || $search_result->getNumRows() === 0) {
             return ['count' => $count, 'result' => []];
         }

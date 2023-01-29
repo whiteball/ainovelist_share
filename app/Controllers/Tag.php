@@ -27,6 +27,8 @@ class Tag extends BaseController
     {
         $page = (int) ($this->request->getGet('p') ?? 1);
 
+        $ng_prompt_ids = $this->tag->findPromptIdsByNgTags();
+
         /** @var Prompt */
         $prompt = model(Prompt::class);
         if ($tag_name === 'R-18') {
@@ -44,8 +46,8 @@ class Tag extends BaseController
         $prompts = [];
         $tags    = [];
         if (! empty($prompt_ids) || $tag_name === 'R-18') {
-            $count   = $prompt->countAllResultsSafe(false);
-            $prompts = $prompt->findAllSafe(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1));
+            $count   = $prompt->countAllResultsSafe(false, false, $ng_prompt_ids);
+            $prompts = $prompt->findAllSafe(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1), $ng_prompt_ids);
             if (empty($prompts)) {
                 $count   = 0;
                 $prompts = [];
@@ -110,6 +112,8 @@ class Tag extends BaseController
             $this->tag->resetQuery();
         }
 
+        $ng_prompt_ids = $this->tag->findPromptIdsByNgTags();
+
         /** @var Prompt */
         $prompt = model(Prompt::class);
         $prompt->whereIn('id', $prompt_ids);
@@ -121,8 +125,8 @@ class Tag extends BaseController
             $_SESSION['tag_search_cache_query'] = $query;
             $_SESSION['tag_search_cache_ids']   = $prompt_ids;
             $this->session->markAsTempdata(['tag_search_cache_query', 'tag_search_cache_ids'], 120);
-            $count   = $prompt->countAllResultsSafe(false);
-            $prompts = $prompt->findAllSafe(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1));
+            $count   = $prompt->countAllResultsSafe(false, false, $ng_prompt_ids);
+            $prompts = $prompt->findAllSafe(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1), $ng_prompt_ids);
             if (empty($prompts)) {
                 $count   = 0;
                 $prompts = [];

@@ -17,15 +17,17 @@ class Home extends BaseController
     {
         $page = (int) ($this->request->getGet('p') ?? 1);
 
+        /** @var Tag */
+        $tag        = model(Tag::class);
+        $prompt_ids = $tag->findPromptIdsByNgTags();
+
         /** @var Prompt */
         $prompt  = model(Prompt::class);
-        $prompts = $prompt->findAllSafe(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1));
-        $count   = $prompt->countAllResultsSafe();
+        $prompts = $prompt->findAllSafe(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1), $prompt_ids);
+        $count   = $prompt->countAllResultsSafe(true, false, $prompt_ids);
 
         $tags = [];
         if (! empty($prompts)) {
-            /** @var Tag */
-            $tag  = model(Tag::class);
             $tags = $tag->findByPrompt($prompts);
         }
 
@@ -44,17 +46,19 @@ class Home extends BaseController
         }
 
         if ($this->isPost() && $this->validate([
-            'login_name' => ['label' => 'ログインID', 'rules' => ['required', 'alpha_numeric', 'max_length[255]', 'is_unique[users.login_name]']],
-            'screen_name' => ['label' => 'ユーザー名', 'rules' => ['required', 'max_length[100]']],
-            'password' => ['label' => 'パスワード', 'rules' => ['required', 'min_length[12]']],
+            'login_name'       => ['label' => 'ログインID', 'rules' => ['required', 'alpha_numeric', 'max_length[255]', 'is_unique[users.login_name]']],
+            'screen_name'      => ['label' => 'ユーザー名', 'rules' => ['required', 'max_length[100]']],
+            'password'         => ['label' => 'パスワード', 'rules' => ['required', 'min_length[12]']],
             'password_confirm' => ['label' => 'パスワード(再入力)', 'rules' => ['required_with[password]', 'matches[password]']],
         ])) {
             /** @var User */
-            $user    = model(User::class);
-            $user_id = $user->insert([
+            $user = model(User::class);
+            /** @var string */
+            $password = $this->request->getPost('password');
+            $user_id  = $user->insert([
                 'login_name'  => $this->request->getPost('login_name'),
                 'screen_name' => $this->request->getPost('screen_name'),
-                'password'    => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+                'password'    => password_hash($password, PASSWORD_DEFAULT),
             ]);
 
             $this->action_log->write($user_id, 'user create');
@@ -73,12 +77,14 @@ class Home extends BaseController
 
         if ($this->isPost() && $this->validate([
             'login_name' => ['label' => 'ログインID', 'rules' => ['required', 'alpha_numeric', 'max_length[255]']],
-            'password' => ['label' => 'パスワード', 'rules' => ['required']],
+            'password'   => ['label' => 'パスワード', 'rules' => ['required']],
         ])) {
             /** @var User */
             $user      = model(User::class);
             $loginUser = $user->where('login_name', $this->request->getPost('login_name'))->first();
-            if (empty($loginUser) || ! password_verify($this->request->getPost('password'), $loginUser->password)) {
+            /** @var string */
+            $password = $this->request->getPost('password');
+            if (empty($loginUser) || ! password_verify($password, $loginUser->password)) {
                 return view('login', ['validation' => service('validation'), 'error_message' => 'ログインIDかパスワードが違います']);
             }
 
@@ -173,7 +179,7 @@ class Home extends BaseController
             if ($this->request->getPost('type') === 'comment') {
                 if ($this->validate([
                     'reply-to' => ['label' => 'リプライ先', 'rules' => ['required', 'numeric']],
-                    'comment' => ['label' => 'コメント', 'rules' => ['required', 'max_length[2048]']],
+                    'comment'  => ['label' => 'コメント', 'rules' => ['required', 'max_length[2048]']],
                 ])) {
                     $postData = $this->request->getPost();
                     if ($comment->add($prompt_id, $postData['comment'], $this->loginUserId, $postData['reply-to'])) {
@@ -237,9 +243,13 @@ class Home extends BaseController
 
         $page = (int) ($this->request->getGet('p') ?? 1);
 
+        /** @var Tag */
+        $tag = model(Tag::class);
+        $prompt_ids = $tag->findPromptIdsByNgTags();
+
         /** @var Prompt */
         $prompt = model(Prompt::class);
-        $result = $prompt->captionSearch($query, self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1));
+        $result = $prompt->captionSearch($query, self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1), 'and', $prompt_ids);
 
         $count   = $result['count'];
         $prompts = $result['result'];
@@ -248,8 +258,6 @@ class Home extends BaseController
             $count   = 0;
             $prompts = [];
         } else {
-            /** @var Tag */
-            $tag  = model(Tag::class);
             $tags = $tag->findByPrompt($prompts);
         }
 

@@ -46,13 +46,14 @@ class User extends BaseController
         }
 
         return view('user/index', [
+            'user_id'       => $user->id,
             'user_name'     => $user->screen_name,
             'prompts'       => $prompts,
             'tags'          => $tags,
             'count'         => $count,
             'page'          => $page,
             'last_page'     => (int) ceil($count / self::ITEM_PER_PAGE),
-            'page_base_url' => 'user/' . $user_id,
+            'page_base_url' => 'user/' . $user->id,
         ]);
     }
 }
