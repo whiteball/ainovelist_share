@@ -29,6 +29,8 @@
 			<li><a href="#ai_novelist_works_full_text_search">ローカル作品リストで全文検索</a></li>
 			<li><a href="#ai_novelist_tagged_memory">メモリと脚注をタグでグループ化</a></li>
 			<li><a href="#ai_novelist_insert_adjusted_timestamp">「[調整日時]」を任意の日時に置換</a></li>
+			<li><a href="#ai_novelist_undo_to_head">Undo長押しで履歴の最初まで戻る</a></li>
+			<li><a href="#ai_novelist_toast_on_save">保存時にお知らせがにゅっと出る</a></li>
 			<li><a href="#ai_novelist_trinart_download">TrinArtで生成画像とパラメータをまとめてダウンロード</a></li>
 			<li><a href="#ai_novelist_trinart_download_for_gallery">TrinArtのギャラリー個別ページで画像とパラメータをまとめてダウンロード</a></li>
 			<li><a href="#ai_novelist_trinart_lumina_info">TrinArtでページを開いてからのルミナ消費を表示する</a></li>
@@ -280,9 +282,10 @@
 				<a href="https://gist.github.com/whiteball/7107168e123380009caef4b9a7fa9278" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
 				最終更新日：2022/12/29 バージョン0.1
 			</div>
-			このスクリプトを導入することで次の機能を追加します。
+			このスクリプトの機能は、公式に取り込まれました。
+			<del>このスクリプトを導入することで次の機能を追加します。</del>
 			<ul>
-				<li>作品リストの検索ボックス横に「全文」のチェックボックスを追加する。それがチェックされている場合、検索の対象をタイトルだけでなく、全文(本文・メモリ・脚注・キャラクターブック・禁止ワード・タイトル)に変更する。</li>
+				<li><del>作品リストの検索ボックス横に「全文」のチェックボックスを追加する。それがチェックされている場合、検索の対象をタイトルだけでなく、全文(本文・メモリ・脚注・キャラクターブック・禁止ワード・タイトル)に変更する。</del></li>
 			</ul>
 			<h5>導入手順</h5>
 			<ol>
@@ -342,8 +345,57 @@
 			<h5>導入手順</h5>
 			<ol>
 				<li>ブラウザに<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>をインストールする。</li>
-				<li>「メモリと脚注をタグでグループ化」の<a href="https://gist.github.com/whiteball/408b94623a9137553800ad4b67126831" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
+				<li>「「[調整日時]」を任意の日時に置換」の<a href="https://gist.github.com/whiteball/408b94623a9137553800ad4b67126831" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
 				<li>ダウンロードページの右の方にある「Raw」リンクをクリックする。(<a href="https://gist.github.com/whiteball/408b94623a9137553800ad4b67126831/raw/ai_novelist_insert_adjusted_timestamp.user.js" target="_blank" rel="noopener noreferrer">直リンク</a>)</li>
+				<li>Tampermonkeyのインストール確認ページが開くので、インストールボタンを押す。</li>
+			</ol>
+			<h5>注意</h5>
+			<ul>
+				<li>AIのべりすとのサイトの構成が変わると、ユーザースクリプトは動作しなくなる可能性があります。</li>
+				<li>Chrome/Firefoxにて動作確認していますが、万が一テキストが消えてしまうなどの現象が発生しても、作者は責任を負いかねます。</li>
+			</ul>
+		</div>
+		<hr>
+		<h4 id="ai_novelist_undo_to_head">Undo長押しで履歴の最初まで戻る</h4>
+		<div>
+			<div class="m-2">
+				<a href="https://gist.github.com/whiteball/0c4bcc19e50a4ab4bd91354918c1f248" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
+				最終更新日：2023/01/28 バージョン0.1.1
+			</div>
+			このスクリプトを導入することで次の機能を追加します。
+			<ul>
+				<li>Undoボタンを1秒以上長押ししたときに、Undo履歴の始め(出力文が消えた状態)まで一気に戻します。</li>
+			</ul>
+			<h5>導入手順</h5>
+			<ol>
+				<li>ブラウザに<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>をインストールする。</li>
+				<li>「Undo長押しで履歴の最初まで戻る」の<a href="https://gist.github.com/whiteball/0c4bcc19e50a4ab4bd91354918c1f248" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
+				<li>ダウンロードページの右の方にある「Raw」リンクをクリックする。(<a href="https://gist.github.com/whiteball/0c4bcc19e50a4ab4bd91354918c1f248/raw/ai_novelist_undo_to_head.user.js " target="_blank" rel="noopener noreferrer">直リンク</a>)</li>
+				<li>Tampermonkeyのインストール確認ページが開くので、インストールボタンを押す。</li>
+			</ol>
+			<h5>注意</h5>
+			<ul>
+				<li>AIのべりすとのサイトの構成が変わると、ユーザースクリプトは動作しなくなる可能性があります。</li>
+				<li>Chrome/Firefoxにて動作確認していますが、万が一テキストが消えてしまうなどの現象が発生しても、作者は責任を負いかねます。</li>
+			</ul>
+		</div>
+		<hr>
+		<h4 id="ai_novelist_toast_on_save">保存時にお知らせがにゅっと出る</h4>
+		<div>
+			<div class="m-2">
+				<a href="https://gist.github.com/whiteball/6250defee06ade23b8781bf96435ead3" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
+				最終更新日：2023/01/24 バージョン0.1
+			</div>
+			このスクリプトを導入することで次の機能を追加します。
+			<ul>
+				<li>ローカル保存、またはリモート保存が実行されたときに、右下にお知らせのポップアップ(時刻付き)を表示します。</li>
+				<li>「ストレージが満杯になっている」などの理由で保存が失敗しても、ポップアップは表示されます。</li>
+			</ul>
+			<h5>導入手順</h5>
+			<ol>
+				<li>ブラウザに<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>をインストールする。</li>
+				<li>「保存時にお知らせがにゅっと出る」の<a href="https://gist.github.com/whiteball/6250defee06ade23b8781bf96435ead3" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
+				<li>ダウンロードページの右の方にある「Raw」リンクをクリックする。(<a href="https://gist.github.com/whiteball/6250defee06ade23b8781bf96435ead3/raw/ai_novelist_toast_on_save.user.js " target="_blank" rel="noopener noreferrer">直リンク</a>)</li>
 				<li>Tampermonkeyのインストール確認ページが開くので、インストールボタンを押す。</li>
 			</ol>
 			<h5>注意</h5>

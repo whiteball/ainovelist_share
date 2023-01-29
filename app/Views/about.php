@@ -59,6 +59,7 @@
 	<h4>連絡先</h4>
 	<ul>
 		<li>管理人Twitter: <a href="https://twitter.com/whiteball" rel="noopener noreferrer" target="_blank">@whiteball</a></li>
+		<li>Githubリポジトリ：<a href="https://github.com/whiteball/ainovelist_share" rel="noopener noreferrer" target="_blank">whiteball/ainovelist_share</a></li>
 	</ul>
 	<hr>
 	<h4>更新履歴</h4>
@@ -70,6 +71,18 @@
 			<th scope="col">
 				内容
 			</th>
+		</tr>
+		<tr>
+			<th scope="row">
+				2023/01/29
+			</th>
+			<td>
+				<ul>
+					<li>投稿プロンプトを更新するときに、更新日順ソートでの順位を変更しないオプションを追加。</li>
+					<li>NGユーザー/NGタグ機能を追加。各ユーザー/各タグのページからNGの追加が可能。詳しくは<a href="<?= site_url('option/ng') ?>">NG管理ページ</a>で。</li>
+					<li>ユーザースクリプトのページを更新。新規スクリプトを2件追加。</li>
+				</ul>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row">
