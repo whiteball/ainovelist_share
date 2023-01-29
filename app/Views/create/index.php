@@ -48,73 +48,79 @@
 					<textarea class="form-control" id="prompt" name="prompt" rows="6"><?= set_value('prompt', $post_data['prompt'] ?? '') ?></textarea>
 					<?= $validation->showError('prompt') ?>
 				</div>
-				<div class="mb-3">
-					<input class="btn-check" type="checkbox" value="1" id="r18" name="r18" <?= set_checkbox('r18', '1', isset($post_data['r18']) ? ($post_data['r18'] === '1') : false) ?> autocomplete="off">
-					<label class="btn btn-outline-danger" for="r18" id="r18-text">
-						現在は全年齢設定
-					</label>
-					<?= $validation->showError('r18') ?>
-					<script>
-						const toggleR18Button = function() {
-							const check = document.getElementById('r18')
-							const text = document.getElementById('r18-text')
-							if (check.checked) {
-								text.classList.add('btn-outline-danger')
-								text.classList.remove('btn-outline-success')
-								text.innerText = '現在はR-18設定'
-							} else {
-								text.classList.remove('btn-outline-danger')
-								text.classList.add('btn-outline-success')
-								text.innerText = '現在は全年齢設定'
+				<div class="mb-3 row">
+					<div class="col-lg-3 col-sm-6 mt-2">
+						<input class="btn-check" type="checkbox" value="1" id="r18" name="r18" <?= set_checkbox('r18', '1', isset($post_data['r18']) ? ($post_data['r18'] === '1') : false) ?> autocomplete="off">
+						<label class="btn btn-outline-danger" for="r18" id="r18-text">
+							現在は全年齢設定
+						</label>
+						<?= $validation->showError('r18') ?>
+						<script>
+							const toggleR18Button = function() {
+								const check = document.getElementById('r18')
+								const text = document.getElementById('r18-text')
+								if (check.checked) {
+									text.classList.add('btn-outline-danger')
+									text.classList.remove('btn-outline-success')
+									text.innerText = '現在はR-18設定'
+								} else {
+									text.classList.remove('btn-outline-danger')
+									text.classList.add('btn-outline-success')
+									text.innerText = '現在は全年齢設定'
+								}
 							}
-						}
-						document.addEventListener('DOMContentLoaded', toggleR18Button)
-						document.getElementById('r18').addEventListener('click', toggleR18Button)
-					</script>
-					<input class="btn-check" type="checkbox" value="1" id="draft" name="draft" <?= set_checkbox('draft', '1', isset($post_data['draft']) ? ($post_data['draft'] === '1') : false) ?> autocomplete="off">
-					<label class="btn btn-success ms-4" for="draft" id="draft-text">
-						現在は公開設定
-					</label>
-					<?= $validation->showError('draft') ?>
-					<script>
-						const toggleDraftButton = function() {
-							const check = document.getElementById('draft')
-							const text = document.getElementById('draft-text')
-							if (check.checked) {
-								text.classList.add('btn-secondary')
-								text.classList.remove('btn-success')
-								text.innerText = '現在は非公開設定'
-							} else {
-								text.classList.remove('btn-secondary')
-								text.classList.add('btn-success')
-								text.innerText = '現在は公開設定'
+							document.addEventListener('DOMContentLoaded', toggleR18Button)
+							document.getElementById('r18').addEventListener('click', toggleR18Button)
+						</script>
+					</div>
+					<div class="col-lg-3 col-sm-6 mt-2">
+						<input class="btn-check" type="checkbox" value="1" id="draft" name="draft" <?= set_checkbox('draft', '1', isset($post_data['draft']) ? ($post_data['draft'] === '1') : false) ?> autocomplete="off">
+						<label class="btn btn-success" for="draft" id="draft-text">
+							現在は公開設定
+						</label>
+						<?= $validation->showError('draft') ?>
+						<script>
+							const toggleDraftButton = function() {
+								const check = document.getElementById('draft')
+								const text = document.getElementById('draft-text')
+								if (check.checked) {
+									text.classList.add('btn-secondary')
+									text.classList.remove('btn-success')
+									text.innerText = '現在は非公開設定'
+								} else {
+									text.classList.remove('btn-secondary')
+									text.classList.add('btn-success')
+									text.innerText = '現在は公開設定'
+								}
 							}
-						}
-						document.addEventListener('DOMContentLoaded', toggleDraftButton)
-						document.getElementById('draft').addEventListener('click', toggleDraftButton)
-					</script>
-					<input class="btn-check" type="checkbox" value="1" id="comment" name="comment" <?= set_checkbox('comment', '1', isset($post_data['comment']) ? ($post_data['comment'] === '1') : false) ?> autocomplete="off">
-					<label class="btn btn-outline-secondary ms-4" for="comment" id="comment-text">
-						現在はコメント不許可設定
-					</label>
-					<?= $validation->showError('comment') ?>
-					<script>
-						const toggleCommentButton = function() {
-							const check = document.getElementById('comment')
-							const text = document.getElementById('comment-text')
-							if (check.checked) {
-								text.classList.add('btn-success')
-								text.classList.remove('btn-outline-secondary')
-								text.innerText = '現在はコメント許可設定'
-							} else {
-								text.classList.remove('btn-success')
-								text.classList.add('btn-outline-secondary')
-								text.innerText = '現在はコメント不許可設定'
+							document.addEventListener('DOMContentLoaded', toggleDraftButton)
+							document.getElementById('draft').addEventListener('click', toggleDraftButton)
+						</script>
+					</div>
+					<div class="col-lg-3 col-sm-6 mt-2">
+						<input class="btn-check" type="checkbox" value="1" id="comment" name="comment" <?= set_checkbox('comment', '1', isset($post_data['comment']) ? ($post_data['comment'] === '1') : false) ?> autocomplete="off">
+						<label class="btn btn-outline-secondary" for="comment" id="comment-text">
+							現在はコメント不許可設定
+						</label>
+						<?= $validation->showError('comment') ?>
+						<script>
+							const toggleCommentButton = function() {
+								const check = document.getElementById('comment')
+								const text = document.getElementById('comment-text')
+								if (check.checked) {
+									text.classList.add('btn-success')
+									text.classList.remove('btn-outline-secondary')
+									text.innerText = '現在はコメント許可設定'
+								} else {
+									text.classList.remove('btn-success')
+									text.classList.add('btn-outline-secondary')
+									text.innerText = '現在はコメント不許可設定'
+								}
 							}
-						}
-						document.addEventListener('DOMContentLoaded', toggleCommentButton)
-						document.getElementById('comment').addEventListener('click', toggleCommentButton)
-					</script>
+							document.addEventListener('DOMContentLoaded', toggleCommentButton)
+							document.getElementById('comment').addEventListener('click', toggleCommentButton)
+						</script>
+					</div>
 					<div class="mt-2" style="font-size: 75%;">R-18設定にすると、トップページや検索の「全年齢」の一覧には表示されません。</div>
 					<div class="mt-1" style="font-size: 75%;">非公開設定にすると、公開状態に変更するまでトップページや検索の一覧には表示されません。</div>
 					<div class="mt-1" style="font-size: 75%;">コメント許可設定にすると、プロンプト個別ページにコメント欄が表示されます。</div>
@@ -294,73 +300,79 @@
 					<textarea class="form-control" id="description-file" name="description-file" rows="4" maxlength="2000"><?= set_value('description-file', $post_data['description-file'] ?? '') ?></textarea>
 					<?= $validation->showError('description-file') ?>
 				</div>
-				<div class="mb-3">
-					<input class="btn-check" type="checkbox" value="1" id="r18-file" name="r18-file" <?= set_checkbox('r18-file', '1', isset($post_data['r18-file']) ? ($post_data['r18-file'] === '1') : false) ?> autocomplete="off">
-					<label class="btn btn-outline-danger" for="r18-file" id="r18-file-text">
-						現在は全年齢設定
-					</label>
-					<?= $validation->showError('r18-file') ?>
-					<script>
-						const toggleR18Button2 = function() {
-							const check = document.getElementById('r18-file')
-							const text = document.getElementById('r18-file-text')
-							if (check.checked) {
-								text.classList.add('btn-outline-danger')
-								text.classList.remove('btn-outline-success')
-								text.innerText = '現在はR-18設定'
-							} else {
-								text.classList.remove('btn-outline-danger')
-								text.classList.add('btn-outline-success')
-								text.innerText = '現在は全年齢設定'
+				<div class="mb-3 row">
+					<div class="col-lg-3 col-sm-6 mt-2">
+						<input class="btn-check" type="checkbox" value="1" id="r18-file" name="r18-file" <?= set_checkbox('r18-file', '1', isset($post_data['r18-file']) ? ($post_data['r18-file'] === '1') : false) ?> autocomplete="off">
+						<label class="btn btn-outline-danger" for="r18-file" id="r18-file-text">
+							現在は全年齢設定
+						</label>
+						<?= $validation->showError('r18-file') ?>
+						<script>
+							const toggleR18Button2 = function() {
+								const check = document.getElementById('r18-file')
+								const text = document.getElementById('r18-file-text')
+								if (check.checked) {
+									text.classList.add('btn-outline-danger')
+									text.classList.remove('btn-outline-success')
+									text.innerText = '現在はR-18設定'
+								} else {
+									text.classList.remove('btn-outline-danger')
+									text.classList.add('btn-outline-success')
+									text.innerText = '現在は全年齢設定'
+								}
 							}
-						}
-						document.addEventListener('DOMContentLoaded', toggleR18Button2)
-						document.getElementById('r18-file').addEventListener('click', toggleR18Button2)
-					</script>
-					<input class="btn-check" type="checkbox" value="1" id="draft-file" name="draft-file" <?= set_checkbox('draft-file', '1', isset($post_data['draft-file']) ? ($post_data['draft-file'] === '1') : false) ?> autocomplete="off">
-					<label class="btn btn-success ms-4" for="draft-file" id="draft-file-text">
-						現在は公開設定
-					</label>
-					<?= $validation->showError('draft-file') ?>
-					<script>
-						const toggleDraftFileButton = function() {
-							const check = document.getElementById('draft-file')
-							const text = document.getElementById('draft-file-text')
-							if (check.checked) {
-								text.classList.add('btn-secondary')
-								text.classList.remove('btn-success')
-								text.innerText = '現在は非公開設定'
-							} else {
-								text.classList.remove('btn-secondary')
-								text.classList.add('btn-success')
-								text.innerText = '現在は公開設定'
+							document.addEventListener('DOMContentLoaded', toggleR18Button2)
+							document.getElementById('r18-file').addEventListener('click', toggleR18Button2)
+						</script>
+					</div>
+					<div class="col-lg-3 col-sm-6 mt-2">
+						<input class="btn-check" type="checkbox" value="1" id="draft-file" name="draft-file" <?= set_checkbox('draft-file', '1', isset($post_data['draft-file']) ? ($post_data['draft-file'] === '1') : false) ?> autocomplete="off">
+						<label class="btn btn-success" for="draft-file" id="draft-file-text">
+							現在は公開設定
+						</label>
+						<?= $validation->showError('draft-file') ?>
+						<script>
+							const toggleDraftFileButton = function() {
+								const check = document.getElementById('draft-file')
+								const text = document.getElementById('draft-file-text')
+								if (check.checked) {
+									text.classList.add('btn-secondary')
+									text.classList.remove('btn-success')
+									text.innerText = '現在は非公開設定'
+								} else {
+									text.classList.remove('btn-secondary')
+									text.classList.add('btn-success')
+									text.innerText = '現在は公開設定'
+								}
 							}
-						}
-						document.addEventListener('DOMContentLoaded', toggleDraftFileButton)
-						document.getElementById('draft-file').addEventListener('click', toggleDraftFileButton)
-					</script>
-					<input class="btn-check" type="checkbox" value="1" id="comment-file" name="comment-file" <?= set_checkbox('comment-file', '1', isset($post_data['comment-file']) ? ($post_data['comment-file'] === '1') : false) ?> autocomplete="off">
-					<label class="btn btn-outline-secondary ms-4" for="comment-file" id="comment-file-text">
-						現在はコメント不許可設定
-					</label>
-					<?= $validation->showError('comment-file') ?>
-					<script>
-						const toggleCommentFileButton = function() {
-							const check = document.getElementById('comment-file')
-							const text = document.getElementById('comment-file-text')
-							if (check.checked) {
-								text.classList.add('btn-success')
-								text.classList.remove('btn-outline-secondary')
-								text.innerText = '現在はコメント許可設定'
-							} else {
-								text.classList.remove('btn-success')
-								text.classList.add('btn-outline-secondary')
-								text.innerText = '現在はコメント不許可設定'
+							document.addEventListener('DOMContentLoaded', toggleDraftFileButton)
+							document.getElementById('draft-file').addEventListener('click', toggleDraftFileButton)
+						</script>
+					</div>
+					<div class="col-lg-3 col-sm-6 mt-2">
+						<input class="btn-check" type="checkbox" value="1" id="comment-file" name="comment-file" <?= set_checkbox('comment-file', '1', isset($post_data['comment-file']) ? ($post_data['comment-file'] === '1') : false) ?> autocomplete="off">
+						<label class="btn btn-outline-secondary" for="comment-file" id="comment-file-text">
+							現在はコメント不許可設定
+						</label>
+						<?= $validation->showError('comment-file') ?>
+						<script>
+							const toggleCommentFileButton = function() {
+								const check = document.getElementById('comment-file')
+								const text = document.getElementById('comment-file-text')
+								if (check.checked) {
+									text.classList.add('btn-success')
+									text.classList.remove('btn-outline-secondary')
+									text.innerText = '現在はコメント許可設定'
+								} else {
+									text.classList.remove('btn-success')
+									text.classList.add('btn-outline-secondary')
+									text.innerText = '現在はコメント不許可設定'
+								}
 							}
-						}
-						document.addEventListener('DOMContentLoaded', toggleCommentFileButton)
-						document.getElementById('comment-file').addEventListener('click', toggleCommentFileButton)
-					</script>
+							document.addEventListener('DOMContentLoaded', toggleCommentFileButton)
+							document.getElementById('comment-file').addEventListener('click', toggleCommentFileButton)
+						</script>
+					</div>
 					<div class="mt-2" style="font-size: 75%;">R-18設定にすると、トップページや検索の「全年齢」の一覧には表示されません。</div>
 					<div class="mt-1" style="font-size: 75%;">非公開設定にすると、公開状態に変更するまでトップページや検索の一覧には表示されません。</div>
 					<div class="mt-1" style="font-size: 75%;">コメント許可設定にすると、プロンプト個別ページにコメント欄が表示されます。</div>
