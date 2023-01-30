@@ -40,7 +40,7 @@
 											<?php if ($prompt->r18 === '1') : ?>
 												<a class="btn rounded-pill btn-danger btn-sm tag-link" href="<?= site_url('tag/R-18') ?>">R-18</a>
 											<?php endif ?>
-											<?php foreach ($tags[$prompt->id] as $tag) : ?>
+											<?php foreach ($recent_tags[$prompt->id] as $tag) : ?>
 												<a class="btn rounded-pill btn-outline-secondary btn-sm tag-link" href="<?= site_url('tag/' . $tag->tag_name) ?>"><?= esc($tag->tag_name) ?></a>
 											<?php endforeach ?>
 										</h6>
