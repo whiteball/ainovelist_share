@@ -13,6 +13,7 @@ use App\Models\User;
 class Home extends BaseController
 {
     public const ITEM_PER_PAGE = 12;
+    public const RECENT_ITEM   = 8;
 
     public function index()
     {
@@ -27,12 +28,36 @@ class Home extends BaseController
         $prompts = $prompt->findAllSafe(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1), $prompt_ids);
         $count   = $prompt->countAllResultsSafe(true, false, $prompt_ids);
 
+        if ($page === 1) {
+            /** @var Prompt_recent_output */
+            $promptRecent      = model(Prompt_recent_output::class);
+            $promptRecentTable = $promptRecent->getTable();
+            $prompt->join($promptRecentTable, $promptRecentTable . '.prompt_id = ' . $prompt->getTable() . '.id', 'inner')
+                ->orderBy($promptRecentTable . '.outputted_at', 'desc');
+            $recent_prompts = $prompt->findAllSafe(self::RECENT_ITEM, 0, $prompt_ids);
+            shuffle($recent_prompts);
+            helper('cookie');
+            $cookie = get_cookie('show_recent');
+            $recent_show = ! (isset($cookie) && $cookie === '0');
+        } else {
+            $recent_prompts = [];
+            $recent_show = false;
+        }
+
         $tags = [];
         if (! empty($prompts)) {
             $tags = $tag->findByPrompt($prompts);
         }
 
-        return view('index', ['prompts' => $prompts, 'tags' => $tags, 'count' => $count, 'page' => $page, 'last_page' => (int) ceil($count / self::ITEM_PER_PAGE)]);
+        return view('index', [
+            'prompts'        => $prompts,
+            'tags'           => $tags,
+            'count'          => $count,
+            'page'           => $page,
+            'last_page'      => (int) ceil($count / self::ITEM_PER_PAGE),
+            'recent_prompts' => $recent_prompts,
+            'recent_show'    => $recent_show,
+        ]);
     }
 
     public function about()
