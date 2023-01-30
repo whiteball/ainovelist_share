@@ -4,8 +4,8 @@
 			<a href="<?= site_url('/')?>" class="nav-link px-2 link-dark text-center">AIのべりすと<wbr> プロンプト共有</a>
 		</div>
 
-		<ul class="nav col-5 col-sm-6 col-md-6 ps-sm-4 ps-md-0 justify-content-center">
-			<li><a href="<?= site_url('/about')?>" class="nav-link px-2 link-dark">サイトについて</a></li>
+		<ul class="nav col-4 col-sm-6 col-md-6 ps-5 ps-sm-4 ps-md-0 justify-content-center">
+			<li><a href="<?= site_url('/about')?>" class="nav-link px-2 link-dark" style="word-break: keep-all;">サイトについて</a></li>
 			<li class="d-none d-lg-inline"><a href="<?= site_url('/tags')?>" class="nav-link px-2 link-dark">タグ一覧</a></li>
 			<li class="d-none d-lg-inline"><a href="<?= site_url('/ranking')?>" class="nav-link px-2 link-dark">ランキング</a></li>
 			<li class="d-none d-lg-inline"><a href="<?= site_url('/script')?>" class="nav-link px-2 link-dark">ユーザースクリプト</a></li>
@@ -23,13 +23,13 @@
 			</li>
 		</ul>
 
-		<div class="col-4 col-md-3 text-end">
+		<div class="col-5 col-sm-4 col-md-3 text-end">
 			<?php if (isset($_SESSION['login'])): ?>
-				<a type="button" class="btn btn-outline-success me-2 btn-sm" href="<?= site_url('create') ?>">投稿</a>
-				<a type="button" class="btn btn-outline-info me-2 btn-sm" href="<?= site_url('mypage') ?>">マイページ</a>
+				<a type="button" class="btn btn-outline-success me-2 btn-sm" href="<?= site_url('create') ?>" style="font-size:75%">投稿</a>
+				<a type="button" class="btn btn-outline-info me-2 btn-sm" href="<?= site_url('mypage') ?>" style="font-size:75%">マイページ</a>
 			<?php else: ?>
-				<a type="button" class="btn btn-outline-primary me-2 btn-sm" href="<?= site_url('login') ?>">サインイン</a>
-				<a type="button" class="btn btn-primary btn-sm" href="<?= site_url('register') ?>">登録</a>
+				<a type="button" class="btn btn-outline-primary me-2 btn-sm" href="<?= site_url('login') ?>" style="font-size:75%">サインイン</a>
+				<a type="button" class="btn btn-primary btn-sm" href="<?= site_url('register') ?>" style="font-size:75%">登録</a>
 			<?php endif ?>
 		</div>
 	</header>
