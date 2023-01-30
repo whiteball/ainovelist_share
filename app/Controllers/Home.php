@@ -35,11 +35,19 @@ class Home extends BaseController
         }
 
         if ($page === 1) {
+            $promptTable = $prompt->getTable();
             /** @var Prompt_recent_output */
             $promptRecent      = model(Prompt_recent_output::class);
             $promptRecentTable = $promptRecent->getTable();
+            /** @var Prompt_ignored */
+            $promptIgnored      = model(Prompt_ignored::class);
+            $promptIgnoredTable = $promptIgnored->getTable();
             $prompt->join($promptRecentTable, $promptRecentTable . '.prompt_id = ' . $prompt->getTable() . '.id', 'inner')
-                ->orderBy($promptRecentTable . '.outputted_at', 'desc');
+                ->orderBy($promptRecentTable . '.outputted_at', 'desc')
+                ->join($promptIgnoredTable, $promptIgnoredTable . '.prompt_id = ' . $prompt->getTable() . '.id', 'left')
+                ->select($promptTable . '.*')
+                ->where($promptIgnoredTable . '.prompt_id IS NULL');
+
             $recent_prompts = $prompt->findAllSafe(self::RECENT_ITEM, 0, $prompt_ids);
             shuffle($recent_prompts);
             helper('cookie');
