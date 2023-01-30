@@ -6,6 +6,7 @@ use App\Libraries\Comment;
 use App\Libraries\Prompt as PromptLib;
 use App\Models\Prompt;
 use App\Models\Prompt_access;
+use App\Models\Prompt_ignored;
 use App\Models\Prompt_recent_output;
 use App\Models\Tag;
 use App\Models\User;
@@ -306,5 +307,39 @@ class Home extends BaseController
     public function script()
     {
         return view('script');
+    }
+
+    public function hall_of_fame()
+    {
+        $page = (int) ($this->request->getGet('p') ?? 1);
+
+        /** @var Tag */
+        $tag        = model(Tag::class);
+        $prompt_ids = $tag->findPromptIdsByNgTags();
+
+        /** @var Prompt */
+        $prompt  = model(Prompt::class);
+
+        /** @var Prompt_ignored */
+        $promptIgnored      = model(Prompt_ignored::class);
+        $promptIgnoredTable = $promptIgnored->getTable();
+        $prompt->join($promptIgnoredTable, $promptIgnoredTable . '.prompt_id = ' . $prompt->getTable() . '.id', 'inner');
+
+        $prompts = $prompt->findAllSafe(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1), $prompt_ids);
+        $prompt->join($promptIgnoredTable, $promptIgnoredTable . '.prompt_id = ' . $prompt->getTable() . '.id', 'inner');
+        $count   = $prompt->countAllResultsSafe(true, false, $prompt_ids);
+
+        $tags = [];
+        if (! empty($prompts)) {
+            $tags = $tag->findByPrompt($prompts);
+        }
+
+        return view('hall_of_fame', [
+            'prompts'        => $prompts,
+            'tags'           => $tags,
+            'count'          => $count,
+            'page'           => $page,
+            'last_page'      => (int) ceil($count / self::ITEM_PER_PAGE),
+        ]);
     }
 }
