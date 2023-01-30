@@ -29,6 +29,11 @@ class Home extends BaseController
         $prompts = $prompt->findAllSafe(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1), $prompt_ids);
         $count   = $prompt->countAllResultsSafe(true, false, $prompt_ids);
 
+        $tags = [];
+        if (! empty($prompts)) {
+            $tags = $tag->findByPrompt($prompts);
+        }
+
         if ($page === 1) {
             /** @var Prompt_recent_output */
             $promptRecent      = model(Prompt_recent_output::class);
@@ -40,14 +45,14 @@ class Home extends BaseController
             helper('cookie');
             $cookie = get_cookie('show_recent');
             $recent_show = ! (isset($cookie) && $cookie === '0');
+            $recent_tags = [];
+            if (! empty($recent_prompts)) {
+                $recent_tags = $tag->findByPrompt($recent_prompts);
+            }
         } else {
             $recent_prompts = [];
+            $recent_tags = [];
             $recent_show = false;
-        }
-
-        $tags = [];
-        if (! empty($prompts)) {
-            $tags = $tag->findByPrompt($prompts);
         }
 
         return view('index', [
@@ -57,6 +62,7 @@ class Home extends BaseController
             'page'           => $page,
             'last_page'      => (int) ceil($count / self::ITEM_PER_PAGE),
             'recent_prompts' => $recent_prompts,
+            'recent_tags'    => $recent_tags,
             'recent_show'    => $recent_show,
         ]);
     }
