@@ -6,6 +6,7 @@ use App\Libraries\Comment;
 use App\Libraries\Prompt as PromptLib;
 use App\Models\Prompt;
 use App\Models\Prompt_access;
+use App\Models\Prompt_recent_output;
 use App\Models\Tag;
 use App\Models\User;
 
@@ -148,6 +149,10 @@ class Home extends BaseController
                 }
             }
 
+            /** @var Prompt_recent_output */
+            $promptRecent = model(Prompt_recent_output::class);
+            $promptRecent->updateDateTime($prompt_id);
+
             if (trim($this->request->header('origin')) === 'Origin: https://ai-novel.com') {
                 $prompt_access->countUp($prompt_id, Prompt_access::COUNT_TYPE_IMPORT);
             } else {
@@ -244,7 +249,7 @@ class Home extends BaseController
         $page = (int) ($this->request->getGet('p') ?? 1);
 
         /** @var Tag */
-        $tag = model(Tag::class);
+        $tag        = model(Tag::class);
         $prompt_ids = $tag->findPromptIdsByNgTags();
 
         /** @var Prompt */
