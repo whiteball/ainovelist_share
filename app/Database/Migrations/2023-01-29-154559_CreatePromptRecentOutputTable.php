@@ -16,7 +16,7 @@ class CreatePromptRecentOutputTable extends Migration
             ],
             'outputted_at DATETIME NOT NULL',
         ]);
-        $this->forge->addKey('id', true);
+        $this->forge->addKey('prompt_id', true);
         $this->forge->addKey('outputted_at');
         $this->forge->createTable('prompts_recent_output');
     }
