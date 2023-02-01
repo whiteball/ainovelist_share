@@ -72,7 +72,7 @@
 	<div class="mb-3 border rounded p-2">
 		<div class="mb-3">
 			<h5>タイトル</h5>
-			<div class="wrap border rounded p-2"><?= esc(strip_tags($prompt->title)) ?></div>
+			<div class="wrap border rounded p-2"><?= str_replace(' ', '&nbsp;', esc(strip_tags($prompt->title))) ?></div>
 		</div>
 		<div class="mb-3">
 			<h5>タグ</h5>
@@ -175,7 +175,7 @@
 							<div class="accordion-body">
 								<?php foreach ($prompt->char_book as $char_book) : ?>
 									<div>
-										<h6 class="wrap">タグ: <span id="char-tag-<?= esc($char_book['id'], 'attr') ?>-text"><?= esc($char_book['tag']) ?></span><button class="btn btn-sm copy-btn" data-target="char-tag-<?= esc($char_book['id'], 'attr') ?>"><img alt="copy" src="<?= base_url('img/copy.svg') ?>" width="18"></h6>
+										<h6 class="wrap">タグ: <span id="char-tag-<?= esc($char_book['id'], 'attr') ?>-text"><?= str_replace(' ', '&nbsp;', esc($char_book['tag'])) ?></span><button class="btn btn-sm copy-btn" data-target="char-tag-<?= esc($char_book['id'], 'attr') ?>"><img alt="copy" src="<?= base_url('img/copy.svg') ?>" width="18"></h6>
 										<div class="wrap border rounded p-2 row">
 											<div class="col-12">
 												<div class="position-relative">
@@ -209,11 +209,11 @@
 											</tr>
 											<tr>
 												<th scope="row">IN<button class="btn btn-sm copy-btn" data-target="script-in-<?= esc($script['id'], 'attr') ?>"><img alt="copy" src="<?= base_url('img/copy.svg') ?>" width="16"></th></th>
-												<td id="script-in-<?= esc($script['id'], 'attr') ?>-text" class="wrap-cell"><?= esc($script['in']) ?></td>
+												<td id="script-in-<?= esc($script['id'], 'attr') ?>-text" class="wrap-cell"><?= str_replace(' ', '&nbsp;', esc($script['in'])) ?></td>
 											</tr>
 											<tr>
 												<th scope="row">OUT<button class="btn btn-sm copy-btn" data-target="script-out-<?= esc($script['id'], 'attr') ?>"><img alt="copy" src="<?= base_url('img/copy.svg') ?>" width="16"></th>
-												<td id="script-out-<?= esc($script['id'], 'attr') ?>-text" class="wrap-cell"><?= esc($script['out']) ?></td>
+												<td id="script-out-<?= esc($script['id'], 'attr') ?>-text" class="wrap-cell"><?= str_replace(' ', '&nbsp;', esc($script['out'])) ?></td>
 											</tr>
 										</table>
 									</div>
