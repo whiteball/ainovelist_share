@@ -15,6 +15,7 @@
 <?= $this->section('content') ?>
 <?= $this->include('_parts/header_nav') ?>
 <main class="container">
+	<div style="font-size: 75%;" class="text-center my-1"><span class="text-warning">★お知らせ★</span>　説明欄の内容の意味が通らないプロンプトを非公開状態にしました。心当たりのある方は、プロンプトの説明をきちんと書いてから再公開してください。</div>
 	<?= $this->include('_parts/search_part') ?>
 	<hr>
 	<?php if (! empty($recent_prompts)): ?>
@@ -25,7 +26,7 @@
 						最近ダウンロード/インポートされたプロンプト
 					</button>
 				</h2>
-				<div id="recent-prompt-content" class="accordion-collapse collapse<?= $recent_show ? ' show': '' ?>" aria-labelledby="recent-prompt-header" data-bs-parent="#recent-prompt">
+				<div id="recent-prompt-content" class="accordion-collapse collapse<?= $recent_show ? ' show' : '' ?>" aria-labelledby="recent-prompt-header" data-bs-parent="#recent-prompt">
 					<div class="accordion-body p-0">
 						<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 rounded-bottom p-1 mx-0" style="overflow-x: scroll;flex-wrap: nowrap;">
 							<?php foreach ($recent_prompts as $prompt) : ?>
