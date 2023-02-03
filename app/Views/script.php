@@ -218,6 +218,12 @@
 				<li><a href="https://voicevox.hiroshiba.jp/" target="_blank" rel="noopener noreferrer">VOICEVOX公式サイト</a>からインストーラをダウンロードしてインストールする。CPU版/GPU版どちらでも可。</li>
 				<li>インストールしたVOICEVOXを起動する。もしくはVOICEVOXインストールディレクトリで「run.exe」を実行する。「run.exe」はコマンドライン引数「--host」で待ち受けホスト名を、「--port」で待ち受けポートを指定できる。VOICEVOXを起動した場合も含め、デフォルトは「localhost:50021」。</li>
 				<li>ブラウザで「http://localhost:50021」(ホスト/ポートを変更した場合はそのアドレス)にアクセスし、「VOICEVOX ENGINE」のページが表示されれば導入完了。</li>
+				<li><strong>VOICEVOX ver0.14.0以降の場合</strong>：このバージョン以降はセキュリティのため、<a href="https://github.com/VOICEVOX/voicevox_engine/tree/0.14.1#cors%E8%A8%AD%E5%AE%9A" target="_blank" rel="noopener noreferrer">デフォルトではあらゆるサイト上からのVOICEVOXへのアクセスが禁止</a>されている。解除するためには、以下の設定を行う。
+					<ul>
+						<li>VOICEVOX起動後、<a href="http://localhost:500021/setting" target="_blank" rel="noopener noreferrer">http://localhost:500021/setting</a>(ホスト/ポートデフォルト設定時)にアクセスして、「CORS Policy Mode」を「all」に設定するか、「Allow Origin」に「https://ai-novel.com」を設定してから、VOICEVOXを再起動する。※「all」に設定した場合、あらゆるサイトからのアクセスを受け入れるようになる(0.13.*以前と同じ挙動)。</li>
+						<li>「run.exe」を直接実行する場合は、コマンドライン引数「--allow_origin https://ai-novel.com」を追加する。</li>
+					</ul>
+				</li>
 			</ol>
 			<h5>注意</h5>
 			<ul>
