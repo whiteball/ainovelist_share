@@ -75,7 +75,7 @@ class Create extends BaseController
         $validation_rule = [
             'title'        => ['label' => 'タイトル', 'rules' => ['required', 'max_length[255]']],
             'tags'         => ['label' => 'タグ', 'rules' => ['required', static fn ($value) => ! empty(array_filter(explode(' ', preg_replace('/\s+/u', ' ', $value)), static fn ($val) => $val !== ''))]],
-            'description'  => ['label' => '説明', 'rules' => ['required', 'max_length[2000]']],
+            'description'  => ['label' => '説明', 'rules' => ['required', 'min_length[20]', 'max_length[2000]']],
             'prompt'       => ['label' => 'プロンプト', 'rules' => ['required', 'max_length[16777215]']],
             'memory'       => ['label' => 'メモリ', 'rules' => ['max_length[2000]']],
             'authors_note' => ['label' => '脚注', 'rules' => ['max_length[2000]']],
@@ -315,7 +315,7 @@ class Create extends BaseController
         $validation_rule = [
             'title'        => ['label' => 'タイトル', 'rules' => ['required', 'max_length[255]']],
             'tags'         => ['label' => 'タグ', 'rules' => ['required', static fn ($value) => ! empty(array_filter(explode(' ', preg_replace('/\s+/u', ' ', $value)), static fn ($val) => $val !== ''))]],
-            'description'  => ['label' => '説明', 'rules' => ['required', 'max_length[2000]']],
+            'description'  => ['label' => '説明', 'rules' => ['required', 'min_length[20]', 'max_length[2000]']],
             'prompt'       => ['label' => 'プロンプト', 'rules' => ['required', 'max_length[16777215]']],
             'memory'       => ['label' => 'メモリ', 'rules' => ['max_length[2000]']],
             'authors_note' => ['label' => '脚注', 'rules' => ['max_length[2000]']],

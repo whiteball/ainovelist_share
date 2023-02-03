@@ -41,6 +41,7 @@
 				<div class="mb-3">
 					<label for="description" class="form-label">説明 <span class="text-danger" style="font-size:80%">(必須)</span></label>
 					<textarea class="form-control" id="description" name="description" rows="4" maxlength="2000"><?= set_value('description', $post_data['description'] ?? '') ?></textarea>
+					<div style="font-size: 75%;">このプロンプトの使い方などの説明を、簡潔に記述してください。</div>
 					<?= $validation->showError('description') ?>
 				</div>
 				<div class="mb-3">
@@ -292,12 +293,13 @@
 				<div class="mb-3">
 					<label for="tags-file" class="form-label">タグ <span class="text-danger" style="font-size:80%">(必須)</span></label>
 					<input type="text" class="form-control" id="tags-file" name="tags-file" value="<?= set_value('tags-file', isset($post_data['tags-file']) ? implode(' ', $post_data['tags-file']) : '') ?>" maxlength="1024">
-					<div style="font-size: 75%;">各タグは半角または全角スペースで区切ってください</div>
+					<div style="font-size: 75%;">各タグは半角または全角スペースで区切ってください。タグの個数には制限はありません。</div>
 					<?= $validation->showError('tags-file') ?>
 				</div>
 				<div class="mb-3">
 					<label for="description-file" class="form-label">説明 <span class="text-danger" style="font-size:80%">(必須)</span></label>
 					<textarea class="form-control" id="description-file" name="description-file" rows="4" maxlength="2000"><?= set_value('description-file', $post_data['description-file'] ?? '') ?></textarea>
+					<div style="font-size: 75%;">このプロンプトの使い方などの説明を、簡潔に記述してください。</div>
 					<?= $validation->showError('description-file') ?>
 				</div>
 				<div class="mb-3 row">
