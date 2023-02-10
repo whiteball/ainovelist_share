@@ -51,7 +51,7 @@ class Home extends BaseController
             $recent_prompts = $prompt->findAllSafe(self::RECENT_ITEM, 0, $prompt_ids);
             shuffle($recent_prompts);
             helper('cookie');
-            $cookie = get_cookie('show_recent');
+            $cookie      = get_cookie('show_recent');
             $recent_show = ! (isset($cookie) && $cookie === '0');
             $recent_tags = [];
             if (! empty($recent_prompts)) {
@@ -59,8 +59,8 @@ class Home extends BaseController
             }
         } else {
             $recent_prompts = [];
-            $recent_tags = [];
-            $recent_show = false;
+            $recent_tags    = [];
+            $recent_show    = false;
         }
 
         return view('index', [
@@ -189,14 +189,18 @@ class Home extends BaseController
                 }
             }
 
+            $is_count_up = false;
+            if (trim($this->request->header('origin')) === 'Origin: https://ai-novel.com') {
+                $is_count_up = $prompt_access->countUp($prompt_id, Prompt_access::COUNT_TYPE_IMPORT);
+            } else {
+                $is_count_up = $prompt_access->countUp($prompt_id, Prompt_access::COUNT_TYPE_DOWNLOAD);
+            }
+
+            // ダウンロード/インポートをカウントアップしたときだけ反映する
+            if ($is_count_up) {
             /** @var Prompt_recent_output */
             $promptRecent = model(Prompt_recent_output::class);
             $promptRecent->updateDateTime($prompt_id);
-
-            if (trim($this->request->header('origin')) === 'Origin: https://ai-novel.com') {
-                $prompt_access->countUp($prompt_id, Prompt_access::COUNT_TYPE_IMPORT);
-            } else {
-                $prompt_access->countUp($prompt_id, Prompt_access::COUNT_TYPE_DOWNLOAD);
             }
 
             $novel = preg_replace('/\r\n|\r/u', "\n", "{$main}<|endofsection|>{$promptData->memory}<|endofsection|>{$promptData->authors_note}<|endofsection|>{$param}<|endofsection|>{$char_book}<|endofsection|>{$promptData->ng_words}<|endofsection|>{$promptData->title}<|endofsection|><|endofsection|>{$scripts}");
@@ -332,7 +336,7 @@ class Home extends BaseController
         $prompt_ids = $tag->findPromptIdsByNgTags();
 
         /** @var Prompt */
-        $prompt  = model(Prompt::class);
+        $prompt = model(Prompt::class);
 
         /** @var Prompt_ignored */
         $promptIgnored      = model(Prompt_ignored::class);
@@ -341,7 +345,7 @@ class Home extends BaseController
 
         $prompts = $prompt->findAllSafe(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1), $prompt_ids);
         $prompt->join($promptIgnoredTable, $promptIgnoredTable . '.prompt_id = ' . $prompt->getTable() . '.id', 'inner');
-        $count   = $prompt->countAllResultsSafe(true, false, $prompt_ids);
+        $count = $prompt->countAllResultsSafe(true, false, $prompt_ids);
 
         $tags = [];
         if (! empty($prompts)) {
@@ -349,11 +353,11 @@ class Home extends BaseController
         }
 
         return view('hall_of_fame', [
-            'prompts'        => $prompts,
-            'tags'           => $tags,
-            'count'          => $count,
-            'page'           => $page,
-            'last_page'      => (int) ceil($count / self::ITEM_PER_PAGE),
+            'prompts'   => $prompts,
+            'tags'      => $tags,
+            'count'     => $count,
+            'page'      => $page,
+            'last_page' => (int) ceil($count / self::ITEM_PER_PAGE),
         ]);
     }
 }
