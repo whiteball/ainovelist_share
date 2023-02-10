@@ -126,6 +126,33 @@
 					<div class="mt-1" style="font-size: 75%;">非公開設定にすると、公開状態に変更するまでトップページや検索の一覧には表示されません。</div>
 					<div class="mt-1" style="font-size: 75%;">コメント許可設定にすると、プロンプト個別ページにコメント欄が表示されます。</div>
 				</div>
+				<hr>
+				<div class="mb-3">
+					<label class="form-label">プロンプトの改変可否</label>
+					<div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="license" id="license1" value="1" <?= set_checkbox('license', '1', isset($post_data['license']) ? ($post_data['license'] === '1') : false) ?> autocomplete="off">
+							<label class="form-check-label" for="license1">禁止</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="license" id="license2" value="2" <?= set_checkbox('license', '2', isset($post_data['license']) ? ($post_data['license'] === '2') : false) ?> autocomplete="off">
+							<label class="form-check-label" for="license2">許可</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="license" id="license0" value="0" <?= set_checkbox('license', '0', isset($post_data['license']) ? ($post_data['license'] === '0') : true) ?> autocomplete="off">
+							<label class="form-check-label" for="license0">独自の条件</label>
+						</div>
+					</div>
+					<div class="mt-2" style="font-size: 75%;">
+						公開したプロンプトを、他者が転載したり改変して公開したりすることを許可するかどうかの設定です。<br>
+						※許可しない場合でも「個人で楽しむ範囲内で改変すること」は禁止できません。
+						<ul>
+							<li>禁止：転載・改変公開を一切許可しません</li>
+							<li>許可：転載・改変公開を許可します。<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank" rel="noopener noreferrer">クリエイティブコモンズ 表示-継承 4.0</a>であると明示します。</li>
+							<li>独自の条件：上記以外の条件を設定します。条件は説明に書いてください。</li>
+						</ul>
+					</div>
+				</div>
 			</div>
 			<div class="mb-3 border rounded p-2">
 				<div class="mb-3">
@@ -279,7 +306,7 @@
 					<label for="novel_file" class="form-label">ファイル(10MBまで) <span class="text-danger" style="font-size:80%">(必須)</span></label>
 					<input type="file" class="form-control" id="novel_file" name="novel_file" accept=".novel">
 					<?= $validation->showError('novel_file') ?>
-					<?php if (! empty($file_verify_error)) : ?>
+					<?php if (!empty($file_verify_error)) : ?>
 						<div class="alert alert-danger" style="margin: 5px 0;" role="alert">
 							ファイル検証エラー
 							<ul>
@@ -378,6 +405,33 @@
 					<div class="mt-2" style="font-size: 75%;">R-18設定にすると、トップページや検索の「全年齢」の一覧には表示されません。</div>
 					<div class="mt-1" style="font-size: 75%;">非公開設定にすると、公開状態に変更するまでトップページや検索の一覧には表示されません。</div>
 					<div class="mt-1" style="font-size: 75%;">コメント許可設定にすると、プロンプト個別ページにコメント欄が表示されます。</div>
+				</div>
+				<hr>
+				<div class="mb-3">
+					<label class="form-label">プロンプトの改変可否</label>
+					<div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="license-file" id="license-file1" value="1" <?= set_checkbox('license-file', '1', isset($post_data['license-file']) ? ($post_data['license-file'] === '1') : false) ?> autocomplete="off">
+							<label class="form-check-label" for="license-file1">禁止</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="license-file" id="license-file2" value="2" <?= set_checkbox('license-file', '2', isset($post_data['license-file']) ? ($post_data['license-file'] === '2') : false) ?> autocomplete="off">
+							<label class="form-check-label" for="license-file2">許可</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="license-file" id="license-file0" value="0" <?= set_checkbox('license-file', '0', isset($post_data['license-file']) ? ($post_data['license-file'] === '0') : true) ?> autocomplete="off">
+							<label class="form-check-label" for="license-file0">独自の条件</label>
+						</div>
+					</div>
+					<div class="mt-2" style="font-size: 75%;">
+						公開したプロンプトを、他者が転載したり改変して公開したりすることを許可するかどうかの設定です。<br>
+						※許可しない場合でも「個人で楽しむ範囲内で改変すること」は禁止できません。
+						<ul>
+							<li>禁止：転載・改変公開を一切許可しません</li>
+							<li>許可：転載・改変公開を許可します。<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank" rel="noopener noreferrer">クリエイティブコモンズ 表示-継承 4.0</a>であると明示します。</li>
+							<li>独自の条件：上記以外の条件を設定します。条件は説明に書いてください。</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 			<div class="text-center">

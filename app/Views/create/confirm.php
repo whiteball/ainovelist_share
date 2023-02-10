@@ -44,6 +44,16 @@
 				<div class="wrap border rounded p-2"><?= (! empty($post_data['updated_at_for_sort']) && $post_data['updated_at_for_sort'] === '1') ? '浮上なし' : '浮上あり' ?></div>
 			</div>
 		<?php endif ?>
+		<div class="mb-3">
+			<h5>プロンプトの改変可否</h5>
+			<?php if ($post_data['license'] === '1') : ?>
+				<div class="wrap border rounded p-2"><h5><span class="badge bg-danger text-white">禁止</span></h5>(公開せずに個人的に楽しむ範囲の改変は可能です)</div>
+			<?php elseif ($post_data['license'] === '2') : ?>
+				<div class="wrap border rounded p-2"><h5><span class="badge bg-success text-white">許可</span></h5>(許可条件は<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank" rel="noopener noreferrer">クリエイティブコモンズ 表示-継承 4.0</a>を参照してください)</div>
+			<?php else: ?>
+				<div class="wrap border rounded p-2"><h5><span class="badge bg-secondary text-white">説明欄での条件による</span></h5>(未記入の場合、個別に許可を得られなければ禁止です)</div>
+			<?php endif ?>
+		</div>
 	</div>
 	<?php if (! (empty($post_data['memory']) && empty($post_data['authors_note']) && empty($post_data['ng_words']))) : ?>
 		<div class="mb-3 border rounded p-2">

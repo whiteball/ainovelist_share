@@ -37,6 +37,7 @@ class Create extends BaseController
                 'r18'            => (! empty($post_data['r18']) && $post_data['r18'] === '1') ? 1 : 0,
                 'draft'          => (! empty($post_data['draft']) && $post_data['draft'] === '1') ? 1 : 0,
                 'comment'        => (! empty($post_data['comment']) && $post_data['comment'] === '1') ? 1 : 0,
+                'license'        => $post_data['license'],
                 'scripts'        => json_encode(empty($post_data['script']) ? [] : $post_data['script'], JSON_UNESCAPED_UNICODE),
                 'character_book' => json_encode(empty($post_data['char_book']) ? [] : $post_data['char_book'], JSON_UNESCAPED_UNICODE),
             ]);
@@ -46,7 +47,7 @@ class Create extends BaseController
             }
 
             $prompt_access->new($prompt_id);
-            $this->action_log->write($this->loginUserId, 'prompt create ' . $prompt_id . ' tag add [' . implode(' ', $post_data['tags']) . ']');
+            $this->action_log->write($this->loginUserId, 'prompt create ' . $prompt_id . ' tag add [' . implode(' ', $post_data['tags']) . '] license ' . $post_data['license']);
 
             $db->transComplete();
 
@@ -83,6 +84,7 @@ class Create extends BaseController
             'r18'          => ['label' => 'R-18設定', 'rules' => ['permit_empty']],
             'draft'        => ['label' => '公開設定', 'rules' => ['permit_empty']],
             'comment'      => ['label' => 'コメント設定', 'rules' => ['permit_empty']],
+            'license'      => ['label' => 'プロンプトの改変可否', 'rules' => ['required', 'in_list[0,1,2]']],
             'script.*.type' => ['label' => 'スクリプト', 'rules' => ['permit_empty', 'in_list[script_in,script_out,script_in_pin,script_in_pin_all,script_rephrase,script_in_regex,script_out_regex,script_in_pin_regex,script_in_pin_all_regex,script_rephrase_regex,script_none]']],
             'script.*.in' => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
             'script.*.out' => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
@@ -101,6 +103,7 @@ class Create extends BaseController
                 'r18-file' => ['label' => 'R-18設定', 'rules' => ['permit_empty']],
                 'draft-file' => ['label' => '公開設定', 'rules' => ['permit_empty']],
                 'comment-file' => ['label' => 'コメント設定', 'rules' => ['permit_empty']],
+                'license-file' => ['label' => 'プロンプトの改変可否', 'rules' => ['required', 'in_list[0,1,2]']],
             ])) {
                 $post_data = [];
 
@@ -108,6 +111,7 @@ class Create extends BaseController
                 $post_data['r18']         = $this->request->getPost('r18-file');
                 $post_data['draft']       = $this->request->getPost('draft-file');
                 $post_data['comment']     = $this->request->getPost('comment-file');
+                $post_data['license']     = $this->request->getPost('license-file');
 
                 $file         = $this->request->getFile('novel_file');
                 $novel_format = file_get_contents($file->getTempName());
@@ -175,7 +179,7 @@ class Create extends BaseController
                 $file_verify_error = true;
             }
         } elseif ($this->isPost() && $this->validate($validation_rule)) {
-            $post_data = $this->request->getPost(['title', 'tags', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'script', 'char_book', 'r18', 'draft', 'comment']);
+            $post_data = $this->request->getPost(['title', 'tags', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'script', 'char_book', 'r18', 'draft', 'comment', 'license']);
             if (isset($post_data['char_book'])) {
                 $post_data['char_book'] = array_filter($post_data['char_book'], static fn ($char_book) => ! empty($char_book['tag']));
             }
@@ -201,6 +205,7 @@ class Create extends BaseController
                     'r18-file'         => $_SESSION['prompt_data']['r18'],
                     'draft-file'       => $_SESSION['prompt_data']['draft'],
                     'comment-file'     => $_SESSION['prompt_data']['comment'],
+                    'license-file'     => $_SESSION['prompt_data']['license'],
                 ];
             } else {
                 $data = $_SESSION['prompt_data'];
@@ -246,6 +251,7 @@ class Create extends BaseController
         $data['r18-file']         = $data['r18'];
         $data['draft-file']       = $data['draft'];
         $data['comment-file']     = $data['comment'];
+        $data['license-file']     = $data['license'];
         $data['updated_at_for_sort-file'] = '0';
 
         if ($this->request->getPost('send') === '1' && isset($_SESSION['prompt_edit_data'])) {
@@ -265,6 +271,7 @@ class Create extends BaseController
                 'r18'            => empty($post_data['r18']) ? 0 : 1,
                 'draft'          => empty($post_data['draft']) ? 0 : 1,
                 'comment'        => empty($post_data['comment']) ? 0 : 1,
+                'license'        => $post_data['license'],
                 'scripts'        => json_encode(empty($post_data['script']) ? [] : $post_data['script'], JSON_UNESCAPED_UNICODE),
                 'character_book' => json_encode(empty($post_data['char_book']) ? [] : $post_data['char_book'], JSON_UNESCAPED_UNICODE),
                 // 更新順ソートに使うカラムを更新するかどうか
@@ -283,7 +290,7 @@ class Create extends BaseController
                 $tag->insert(['prompt_id' => $prompt_id, 'tag_name' => $tag_name]);
             }
 
-            $this->action_log->write($this->loginUserId, 'prompt edit ' . $prompt_id . ' tag delete [' . implode(' ', $diff) . '] tag add [' . implode(' ', $diff2) . ']');
+            $this->action_log->write($this->loginUserId, 'prompt edit ' . $prompt_id . ' tag delete [' . implode(' ', $diff) . '] tag add [' . implode(' ', $diff2) . '] license ' . $post_data['license']);
 
             $db->transComplete();
 
@@ -323,6 +330,7 @@ class Create extends BaseController
             'r18'          => ['label' => 'R-18設定', 'rules' => ['permit_empty']],
             'draft'        => ['label' => '公開設定', 'rules' => ['permit_empty']],
             'comment'      => ['label' => 'コメント設定', 'rules' => ['permit_empty']],
+            'license'      => ['label' => 'プロンプトの改変可否', 'rules' => ['required', 'in_list[0,1,2]']],
             'updated_at_for_sort' => ['label' => '更新日順ソート設定', 'rules' => ['permit_empty']],
             'script.*.type' => ['label' => 'スクリプト', 'rules' => ['permit_empty', 'in_list[script_in,script_out,script_in_pin,script_in_pin_all,script_rephrase,script_in_regex,script_out_regex,script_in_pin_regex,script_in_pin_all_regex,script_rephrase_regex,script_none]']],
             'script.*.in' => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
@@ -342,6 +350,7 @@ class Create extends BaseController
                 'r18-file' => ['label' => 'R-18設定', 'rules' => ['permit_empty']],
                 'draft-file' => ['label' => '公開設定', 'rules' => ['permit_empty']],
                 'comment-file' => ['label' => 'コメント設定', 'rules' => ['permit_empty']],
+                'license-file' => ['label' => 'プロンプトの改変可否', 'rules' => ['required', 'in_list[0,1,2]']],
                 'updated_at_for_sort-file' => ['label' => '更新日順ソート設定', 'rules' => ['permit_empty']],
             ])) {
                 $post_data = [];
@@ -350,6 +359,7 @@ class Create extends BaseController
                 $post_data['r18']         = $this->request->getPost('r18-file');
                 $post_data['draft']       = $this->request->getPost('draft-file');
                 $post_data['comment']     = $this->request->getPost('comment-file');
+                $post_data['license']     = $this->request->getPost('license-file');
                 $post_data['updated_at_for_sort'] = $this->request->getPost('updated_at_for_sort-file');
 
                 $file         = $this->request->getFile('novel_file');
@@ -418,7 +428,7 @@ class Create extends BaseController
                 $file_verify_error = true;
             }
         } elseif ($this->isPost() && $this->validate($validation_rule)) {
-            $post_data = $this->request->getPost(['title', 'tags', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'script', 'char_book', 'r18', 'draft', 'comment', 'updated_at_for_sort']);
+            $post_data = $this->request->getPost(['title', 'tags', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'script', 'char_book', 'r18', 'draft', 'comment', 'license', 'updated_at_for_sort']);
             if (isset($post_data['char_book'])) {
                 $post_data['char_book'] = array_filter($post_data['char_book'], static fn ($char_book) => ! empty($char_book['tag']));
             }
@@ -437,7 +447,7 @@ class Create extends BaseController
 
         if ($this->isPost()) {
             if ($default_pane === 'file') {
-                unset($data['tags-file'], $data['description-file'], $data['r18-file'], $data['draft-file'], $data['comment-file'], $data['updated_at_for_sort-file']);
+                unset($data['tags-file'], $data['description-file'], $data['r18-file'], $data['draft-file'], $data['comment-file'], $data['license-file'], $data['updated_at_for_sort-file']);
 
                 $data['script']    = json_decode($data['scripts'], JSON_OBJECT_AS_ARRAY);
                 $data['char_book'] = json_decode($data['character_book'], JSON_OBJECT_AS_ARRAY);
@@ -449,6 +459,7 @@ class Create extends BaseController
                     'r18-file'         => $data_temp['r18-file'],
                     'draft-file'       => $data_temp['draft-file'],
                     'comment-file'     => $data_temp['comment-file'],
+                    'license-file'     => $data_temp['license-file'],
                     'updated_at_for_sort-file' => $data_temp['updated_at_for_sort-file'],
                 ];
             }
@@ -459,6 +470,7 @@ class Create extends BaseController
                 $data['r18-file']         = $_SESSION['prompt_edit_data']['r18'];
                 $data['draft-file']       = $_SESSION['prompt_edit_data']['draft'];
                 $data['comment-file']     = $_SESSION['prompt_edit_data']['comment'];
+                $data['license-file']     = $_SESSION['prompt_edit_data']['license'];
                 $data['updated_at_for_sort-file'] = $_SESSION['prompt_edit_data']['updated_at_for_sort'];
 
                 $data['script']    = json_decode($data['scripts'], JSON_OBJECT_AS_ARRAY);
@@ -472,6 +484,7 @@ class Create extends BaseController
                 $data['r18-file']         = $data_temp['r18-file'];
                 $data['draft-file']       = $data_temp['draft-file'];
                 $data['comment-file']     = $data_temp['comment-file'];
+                $data['license-file']     = $data_temp['license-file'];
                 $data['updated_at_for_sort-file'] = $data_temp['updated_at_for_sort-file'];
             }
         } else {

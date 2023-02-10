@@ -13,7 +13,7 @@ class Prompt extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
-    protected $allowedFields    = ['user_id', 'title', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'scripts', 'character_book', 'r18', 'draft', 'comment', 'registered_at', 'updated_at', 'updated_at_for_sort'];
+    protected $allowedFields    = ['user_id', 'title', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'scripts', 'character_book', 'r18', 'draft', 'comment', 'license', 'registered_at', 'updated_at', 'updated_at_for_sort'];
     protected $beforeUpdate     = ['updateSortColumn'];
 
     private function _withSafe()
@@ -196,8 +196,8 @@ class Prompt extends Model
             return ['count' => 0, 'result' => []];
         }
 
-        $sort = $this->_getSortCol();
-        $binds['limit'] = $limit;
+        $sort            = $this->_getSortCol();
+        $binds['limit']  = $limit;
         $binds['offset'] = $offset;
         // $search_result = $this->db->query("SELECT {$table_name}.* FROM {$table_name} WHERE MATCH (`title`, `description`) AGAINST (? IN BOOLEAN MODE){$where} ORDER BY `{$sort}` desc LIMIT ? OFFSET ?;", [$search_text, $limit, $offset]);
         $search_result = $this->db->query("SELECT {$table_name}.* FROM {$table_name} WHERE ({$search_text}){$where} ORDER BY `{$sort}` desc LIMIT :limit: OFFSET :offset:;", $binds);

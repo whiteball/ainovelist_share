@@ -94,6 +94,16 @@
 			<div class="wrap border rounded p-2"><?= nl2br(str_replace(' ', '&nbsp;', esc($prompt->description))) ?></div>
 		</div>
 		<div class="mb-3">
+			<h5>転載・改変可否</h5>
+			<?php if ($prompt->license === '1') : ?>
+				<div class="wrap border rounded p-2"><h5><span class="badge bg-danger text-white">禁止</span></h5>(公開せずに個人的に楽しむ範囲の改変は可能です)</div>
+			<?php elseif ($prompt->license === '2') : ?>
+				<div class="wrap border rounded p-2"><h5><span class="badge bg-success text-white">許可</span></h5>(許可条件は<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank" rel="noopener noreferrer">クリエイティブコモンズ 表示-継承 4.0</a>を参照してください)</div>
+			<?php else: ?>
+				<div class="wrap border rounded p-2"><h5><span class="badge bg-secondary text-white">説明欄での条件による</span></h5>(未記入の場合、個別に許可を得られなければ禁止です)</div>
+			<?php endif ?>
+		</div>
+		<div class="mb-3">
 			<h5>プロンプト(本文)<button class="btn btn-sm copy-btn" data-target="prompt"><img alt="copy" src="<?= base_url('img/copy.svg') ?>" width="20"></button></h5>
 			<div class="wrap border rounded p-2" id="prompt-text"><?= nl2br(str_replace(' ', '&nbsp;', esc($prompt->prompt))) ?></div>
 		</div>
