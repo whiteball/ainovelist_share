@@ -189,13 +189,14 @@
 		<div>
 			<div class="m-2">
 				<a href="https://gist.github.com/whiteball/f5d700c831a45252b046d2cb1f599a7f" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
-				最終更新日：2022/12/04 バージョン0.1.5
+				最終更新日：2023/02/06 バージョン0.2.0
 			</div>
 			このスクリプトを導入することで次の機能を追加します。
 			<ul>
 				<li>別途インストールした<a href="https://voicevox.hiroshiba.jp/" target="_blank" rel="noopener noreferrer">VOICEVOX</a>を起動しておくと、AIのべりすとの出力文をブラウザ上で音声再生する。</li>
 				<li>本文欄のテキストを選択して「Ctrl+Alt+v」を押すことで、選択テキストを音声再生する。</li>
 				<li>設定を行うことで、読み上げに含めないパターンの指定や、出力文を読み上げる際にその直前の句読点やかぎ括弧までの文章も含めることが可能。</li>
+				<li>話速などのパラメータ調整が可能で、調整したパラメータはプリセットとして保存も可能。</li>
 				<li>スクリプトに設定を行うことで、特定の部分だけ設定のボイスとは異なるボイスで読み上げることが可能。
 					<dl>
 						<dt>使い方</dt>
@@ -227,7 +228,7 @@
 			</ol>
 			<h5>注意</h5>
 			<ul>
-				<li>ボイス一覧にはプリセットも含まれますが、VOICEVOXのアプリ上から設定できるプリセットではありません。VOICEVOXをインストールしたディレクトリにある<a href="https://github.com/VOICEVOX/voicevox_engine#%E3%83%97%E3%83%AA%E3%82%BB%E3%83%83%E3%83%88%E6%A9%9F%E8%83%BD%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6" target="_blank" rel="noopener noreferrer">presets.yaml</a>で設定した内容が一覧に現れます。プリセットを使う場合は、このファイルを直接編集して追加してください。</li>
+				<li>ボイス一覧に含まれるプリセットは、VOICEVOXをインストールしたディレクトリにある<a href="https://github.com/VOICEVOX/voicevox_engine#%E3%83%97%E3%83%AA%E3%82%BB%E3%83%83%E3%83%88%E6%A9%9F%E8%83%BD%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6" target="_blank" rel="noopener noreferrer">presets.yaml</a>に保存されます。</li>
 				<li>AIのべりすとのサイトの構成が変わると、ユーザースクリプトは動作しなくなる可能性があります。</li>
 				<li>Chrome/Firefoxにて動作確認していますが、万が一テキストが消えてしまうなどの現象が発生しても、作者は責任を負いかねます。</li>
 			</ul>
