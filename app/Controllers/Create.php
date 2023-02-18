@@ -6,6 +6,7 @@ use App\Libraries\Prompt as PromptLib;
 use App\Models\Prompt;
 use App\Models\Prompt_access;
 use App\Models\Tag;
+use App\Models\User;
 
 class Create extends BaseController
 {
@@ -16,6 +17,16 @@ class Create extends BaseController
         }
 
         if ($this->request->getPost('send') === '1' && isset($_SESSION['prompt_data'])) {
+            /** @var User */
+            $user = model(User::class);
+            $userDate = $user->find($this->loginUserId);
+            if (! $userDate) {
+                $this->action_log->write($this->loginUserId, 'user logout');
+                unset($this->loginUserId);
+
+                return redirect('/');
+            }
+
             $post_data = $_SESSION['prompt_data'];
             /** @var Prompt */
             $prompt = model(Prompt::class);
@@ -255,6 +266,16 @@ class Create extends BaseController
         $data['updated_at_for_sort-file'] = '0';
 
         if ($this->request->getPost('send') === '1' && isset($_SESSION['prompt_edit_data'])) {
+            /** @var User */
+            $user = model(User::class);
+            $userDate = $user->find($this->loginUserId);
+            if (! $userDate) {
+                $this->action_log->write($this->loginUserId, 'user logout');
+                unset($this->loginUserId);
+
+                return redirect('/');
+            }
+
             $post_data = $_SESSION['prompt_edit_data'];
 
             $db = \Config\Database::connect();

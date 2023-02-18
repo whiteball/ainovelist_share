@@ -19,6 +19,12 @@ class Mypage extends BaseController
         /** @var User */
         $user      = model(User::class);
         $loginUser = $user->find($_SESSION['login']);
+        if (! $loginUser) {
+            $this->action_log->write($_SESSION['login'], 'user logout');
+            unset($_SESSION['login']);
+
+            return redirect('/');
+        }
 
         $success_message  = '';
         $success_message2 = '';
