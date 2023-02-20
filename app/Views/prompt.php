@@ -209,7 +209,7 @@
 						</h2>
 						<div id="script-body" class="accordion-collapse collapse" aria-labelledby="script-head">
 							<div class="accordion-body">
-								<?php $type_list = ['script_in' => '入力文の置換', 'script_out' => '出力文の置換', 'script_in_pin' => '【最新】入力文の確定置換', 'script_in_pin_all' => '【本文全体】入力文の確定置換', 'script_rephrase' => '単語の言い換え', 'script_in_regex' => '入力文の置換（正規表現）', 'script_out_regex' => '出力文の置換（正規表現）', 'script_in_pin_regex' => '【最新】入力文の確定置換（正規表現）', 'script_in_pin_all_regex' => '【本文全体】入力文の確定置換（正規表現）', 'script_rephrase_regex' => '単語の言い換え（正規表現）', 'script_none' => '使用しない'] ?>
+								<?php $type_list = ['script_in' => '入力文の置換', 'script_out' => '出力文の置換', 'script_in_pin' => '【最新】入力文の確定置換', 'script_in_pin_all' => '【本文全体】入力文の確定置換', 'script_in_pin_user' => '発言欄の置換', 'script_rephrase' => '単語の言い換え', 'script_in_regex' => '入力文の置換（正規表現）', 'script_out_regex' => '出力文の置換（正規表現）', 'script_in_pin_regex' => '【最新】入力文の確定置換（正規表現）', 'script_in_pin_all_regex' => '【本文全体】入力文の確定置換（正規表現）', 'script_in_pin_user_regex' => '発言欄の置換（正規表現）', 'script_rephrase_regex' => '単語の言い換え（正規表現）', 'script_none' => '使用しない'] ?>
 								<?php foreach ($prompt->script as $script) : ?>
 									<div class="border rounded p-2">
 										<table class="table">
