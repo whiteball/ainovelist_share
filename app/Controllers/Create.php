@@ -37,6 +37,9 @@ class Create extends BaseController
 
             $db = \Config\Database::connect();
             $db->transStart();
+            
+            $prompt_lib = new PromptLib();
+            $parameters = $prompt_lib->serializeParameters($post_data);
             $prompt_id = $prompt->insert([
                 'user_id'        => $this->loginUserId,
                 'title'          => $post_data['title'],
@@ -51,6 +54,8 @@ class Create extends BaseController
                 'license'        => $post_data['license'],
                 'scripts'        => json_encode(empty($post_data['script']) ? [] : $post_data['script'], JSON_UNESCAPED_UNICODE),
                 'character_book' => json_encode(empty($post_data['char_book']) ? [] : $post_data['char_book'], JSON_UNESCAPED_UNICODE),
+                'parameters'     => $parameters,
+                'chat_template'  => $post_data['chat_template'],
             ]);
 
             foreach ($post_data['tags'] as $tag_name) {
@@ -101,6 +106,28 @@ class Create extends BaseController
             'script.*.out' => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
             'char_book.*.tag' => ['label' => 'スクリプト', 'rules' => ['max_length[500]']],
             'char_book.*.content' => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
+            'temperature' => ['label' => 'ランダム度', 'rules' => ['required', 'integer', 'greater_than_equal_to[12]', 'less_than_equal_to[100]']],
+            'top_p' => ['label' => 'トップP', 'rules' => ['required', 'integer', 'greater_than_equal_to[12]', 'less_than_equal_to[40]']],
+            'tfs' => ['label' => 'テイルフリー', 'rules' => ['required', 'integer', 'greater_than_equal_to[-8]', 'less_than_equal_to[40]']],
+            'freq_p' => ['label' => '繰り返しペナルティ', 'rules' => ['required', 'integer', 'greater_than_equal_to[84]', 'less_than_equal_to[120]']],
+            'length' => ['label' => '出力の長さ', 'rules' => ['required', 'integer', 'greater_than_equal_to[20]', 'less_than_equal_to[150]']],
+            'typical_p' => ['label' => 'タイピカルP', 'rules' => ['required', 'integer', 'greater_than_equal_to[80]', 'less_than_equal_to[100]']],
+            'freq_p_range' => ['label' => '繰り返しペナルティ（検索範囲）', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[256]']],
+            'freq_p_slope' => ['label' => '繰り返しペナルティ（傾斜）', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[200]']],
+            'contextwindow' => ['label' => 'AIが読み取るコンテキストの長さ', 'rules' => ['required', 'integer', 'greater_than_equal_to[38]', 'less_than_equal_to[256]']],
+            'wiplacement' => ['label' => 'キャラクターブックの優先度', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[30]']],
+            'anplacement' => ['label' => '脚注の優先度', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
+            'wiscanrange' => ['label' => 'キャラクターブックをスキャンする文字数', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[1024]']],
+            'dialogue_density' => ['label' => 'セリフの量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
+            'parenthesis_density' => ['label' => '括弧書きの量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
+            'periods_density' => ['label' => '3点リードの量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
+            'br_density' => ['label' => '改行の量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
+            'comma_density' => ['label' => '読点の量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[26]']],
+            'long_term_memory' => ['label' => 'ロングタームメモリ', 'rules' => ['required', 'in_list[NaN,0,1,2,3,4]']],
+            'gui_mode' => ['label' => 'GUIモード', 'rules' => ['permit_empty']],
+            'chat_auto_enter' => ['label' => '自動改行', 'rules' => ['permit_empty']],
+            'chat_auto_brackets' => ['label' => '自動括弧', 'rules' => ['permit_empty']],
+            'chat_template' => ['label' => 'チャットテンプレート', 'rules' => ['max_length[2000]']],
         ];
 
         $default_pane = '';
@@ -177,6 +204,14 @@ class Create extends BaseController
                     }
                 }
 
+                $post_data['chat_template'] = $novel_items[9] ?? '';
+
+                $prompt_lib = new PromptLib();
+                $parameters = $prompt_lib->deserializeParameters($novel_items[3]);
+                foreach ($parameters as $key => $param) {
+                    $post_data[$key] = $param;
+                }
+
                 unset($validation_rule['tags']);
                 if ($this->validator->reset()->setRules($validation_rule)->run($post_data)) {
                     $post_data['tags'] = array_filter(array_unique(array_map(static fn ($val) => mb_substr($val, 0, 128), explode(' ', preg_replace('/\s+/u', ' ', $this->request->getPost('tags-file'))))), static fn ($value) => $value !== '');
@@ -190,7 +225,12 @@ class Create extends BaseController
                 $file_verify_error = true;
             }
         } elseif ($this->isPost() && $this->validate($validation_rule)) {
-            $post_data = $this->request->getPost(['title', 'tags', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'script', 'char_book', 'r18', 'draft', 'comment', 'license']);
+            $post_data = $this->request->getPost([
+                'title', 'tags', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'script', 'char_book', 'r18', 'draft', 'comment', 'license',
+                'temperature', 'top_p', 'tfs', 'freq_p', 'length', 'typical_p', 'freq_p_range', 'freq_p_slope', 'contextwindow', 'wiplacement', 'anplacement',
+                'wiscanrange', 'dialogue_density', 'parenthesis_density', 'periods_density', 'br_density', 'comma_density', 'long_term_memory',
+                'gui_mode', 'chat_auto_enter', 'chat_auto_brackets', 'chat_template',
+            ]);
             if (isset($post_data['char_book'])) {
                 $post_data['char_book'] = array_filter($post_data['char_book'], static fn ($char_book) => ! empty($char_book['tag']));
             }
@@ -256,6 +296,12 @@ class Create extends BaseController
 
         $data['tags'] = $tags;
 
+        $prompt_lib = new PromptLib();
+        $parameters = $prompt_lib->deserializeParameters($data['parameters']);
+        foreach ($parameters as $key => $param) {
+            $data[$key] = $param;
+        }
+
         // ファイルインポート用のinput初期値
         $data['tags-file']        = $data['tags'];
         $data['description-file'] = $data['description'];
@@ -280,6 +326,8 @@ class Create extends BaseController
 
             $db = \Config\Database::connect();
             $db->transStart();
+
+            $parameters = $prompt_lib->serializeParameters($post_data);
             $prompt->save([
                 'id'             => $prompt_id,
                 'user_id'        => $this->loginUserId,
@@ -295,6 +343,8 @@ class Create extends BaseController
                 'license'        => $post_data['license'],
                 'scripts'        => json_encode(empty($post_data['script']) ? [] : $post_data['script'], JSON_UNESCAPED_UNICODE),
                 'character_book' => json_encode(empty($post_data['char_book']) ? [] : $post_data['char_book'], JSON_UNESCAPED_UNICODE),
+                'parameters'     => $parameters,
+                'chat_template'  => $post_data['chat_template'],
                 // 更新順ソートに使うカラムを更新するかどうか
                 'updated_at_for_sort' => ! empty($post_data['updated_at_for_sort']),
             ]);
@@ -358,6 +408,28 @@ class Create extends BaseController
             'script.*.out' => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
             'char_book.*.tag' => ['label' => 'キャラクターブック', 'rules' => ['max_length[500]']],
             'char_book.*.content' => ['label' => 'キャラクターブック', 'rules' => ['max_length[1000]']],
+            'temperature' => ['label' => 'ランダム度', 'rules' => ['required', 'integer', 'greater_than_equal_to[12]', 'less_than_equal_to[100]']],
+            'top_p' => ['label' => 'トップP', 'rules' => ['required', 'integer', 'greater_than_equal_to[12]', 'less_than_equal_to[40]']],
+            'tfs' => ['label' => 'テイルフリー', 'rules' => ['required', 'integer', 'greater_than_equal_to[-8]', 'less_than_equal_to[40]']],
+            'freq_p' => ['label' => '繰り返しペナルティ', 'rules' => ['required', 'integer', 'greater_than_equal_to[84]', 'less_than_equal_to[120]']],
+            'length' => ['label' => '出力の長さ', 'rules' => ['required', 'integer', 'greater_than_equal_to[20]', 'less_than_equal_to[150]']],
+            'typical_p' => ['label' => 'タイピカルP', 'rules' => ['required', 'integer', 'greater_than_equal_to[80]', 'less_than_equal_to[100]']],
+            'freq_p_range' => ['label' => '繰り返しペナルティ（検索範囲）', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[256]']],
+            'freq_p_slope' => ['label' => '繰り返しペナルティ（傾斜）', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[200]']],
+            'contextwindow' => ['label' => 'AIが読み取るコンテキストの長さ', 'rules' => ['required', 'integer', 'greater_than_equal_to[38]', 'less_than_equal_to[256]']],
+            'wiplacement' => ['label' => 'キャラクターブックの優先度', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[30]']],
+            'anplacement' => ['label' => '脚注の優先度', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
+            'wiscanrange' => ['label' => 'キャラクターブックをスキャンする文字数', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[1024]']],
+            'dialogue_density' => ['label' => 'セリフの量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
+            'parenthesis_density' => ['label' => '括弧書きの量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
+            'periods_density' => ['label' => '3点リードの量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
+            'br_density' => ['label' => '改行の量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
+            'comma_density' => ['label' => '読点の量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[26]']],
+            'long_term_memory' => ['label' => 'ロングタームメモリ', 'rules' => ['required', 'in_list[NaN,0,1,2,3,4]']],
+            'gui_mode' => ['label' => 'GUIモード', 'rules' => ['permit_empty']],
+            'chat_auto_enter' => ['label' => '自動改行', 'rules' => ['permit_empty']],
+            'chat_auto_brackets' => ['label' => '自動括弧', 'rules' => ['permit_empty']],
+            'chat_template' => ['label' => 'チャットテンプレート', 'rules' => ['max_length[2000]']],
         ];
 
         $default_pane = '';
@@ -436,6 +508,13 @@ class Create extends BaseController
                     }
                 }
 
+                $post_data['chat_template'] = $novel_items[9] ?? '';
+
+                $parameters = $prompt_lib->deserializeParameters($novel_items[3]);
+                foreach ($parameters as $key => $param) {
+                    $post_data[$key] = $param;
+                }
+
                 unset($validation_rule['tags']);
                 if ($this->validator->reset()->setRules($validation_rule)->run($post_data)) {
                     $post_data['tags'] = array_filter(array_unique(array_map(static fn ($val) => mb_substr($val, 0, 128), explode(' ', preg_replace('/\s+/u', ' ', $this->request->getPost('tags-file'))))), static fn ($value) => $value !== '');
@@ -449,7 +528,12 @@ class Create extends BaseController
                 $file_verify_error = true;
             }
         } elseif ($this->isPost() && $this->validate($validation_rule)) {
-            $post_data = $this->request->getPost(['title', 'tags', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'script', 'char_book', 'r18', 'draft', 'comment', 'license', 'updated_at_for_sort']);
+            $post_data = $this->request->getPost([
+                'title', 'tags', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'script', 'char_book', 'r18', 'draft', 'comment', 'license', 'updated_at_for_sort',
+                'temperature', 'top_p', 'tfs', 'freq_p', 'length', 'typical_p', 'freq_p_range', 'freq_p_slope', 'contextwindow', 'wiplacement', 'anplacement',
+                'wiscanrange', 'dialogue_density', 'parenthesis_density', 'periods_density', 'br_density', 'comma_density', 'long_term_memory',
+                'gui_mode', 'chat_auto_enter', 'chat_auto_brackets', 'chat_template',
+            ]);
             if (isset($post_data['char_book'])) {
                 $post_data['char_book'] = array_filter($post_data['char_book'], static fn ($char_book) => ! empty($char_book['tag']));
             }

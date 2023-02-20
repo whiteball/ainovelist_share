@@ -164,12 +164,14 @@ class Home extends BaseController
         $tag       = model(Tag::class);
         $tagResult = $tag->findByPrompt($prompt_id);
 
+        $promptLib = new PromptLib();
+
         $promptData->{'char_book'} = json_decode($promptData->character_book, JSON_OBJECT_AS_ARRAY);
         $promptData->{'script'}    = json_decode($promptData->scripts, JSON_OBJECT_AS_ARRAY);
 
         if ($asFile) {
             $main      = str_replace(' ', '&nbsp;', preg_replace('/[\r\n]/u', '', nl2br($promptData->prompt, false)));
-            $param     = '31<>29<>93<>60<>256<>3<>1024<>NaN<>0<>NaN<>40<>128<>37<>30<>20<>20<>20<>';
+            $param     = $promptData->parameters ?? $promptLib->serializeParameters([]);
             $char_book = '';
             $scripts   = '';
 
@@ -198,9 +200,9 @@ class Home extends BaseController
 
             // ダウンロード/インポートをカウントアップしたときだけ反映する
             if ($is_count_up) {
-            /** @var Prompt_recent_output */
-            $promptRecent = model(Prompt_recent_output::class);
-            $promptRecent->updateDateTime($prompt_id);
+                /** @var Prompt_recent_output */
+                $promptRecent = model(Prompt_recent_output::class);
+                $promptRecent->updateDateTime($prompt_id);
             }
 
             $novel = preg_replace('/\r\n|\r/u', "\n", "{$main}<|endofsection|>{$promptData->memory}<|endofsection|>{$promptData->authors_note}<|endofsection|>{$param}<|endofsection|>{$char_book}<|endofsection|>{$promptData->ng_words}<|endofsection|>{$promptData->title}<|endofsection|><|endofsection|>{$scripts}");
@@ -212,7 +214,6 @@ class Home extends BaseController
             $promptData->view++;
         }
 
-        $promptLib = new PromptLib();
         $viewData  = [
             'prompt'      => $promptData,
             'author'      => $userData->screen_name,
@@ -221,6 +222,15 @@ class Home extends BaseController
             'loginUserId' => $this->loginUserId,
             'validation'  => service('validation'),
         ];
+
+        // 詳細パラメータ
+        if (! empty($promptData->parameters)) {
+            $parameters = $promptLib->deserializeParameters($promptData->parameters);
+            // デフォルト値と同じかチェック
+            if ($promptLib->serializeParameters($parameters) !== $promptLib->serializeParameters([])) {
+                $viewData['parameters'] = $parameters;
+            }
+        }
 
         // コメント処理
         if ($promptData->comment !== '0') {

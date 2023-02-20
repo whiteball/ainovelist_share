@@ -13,7 +13,7 @@ class Prompt extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
-    protected $allowedFields    = ['user_id', 'title', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'scripts', 'character_book', 'r18', 'draft', 'comment', 'license', 'registered_at', 'updated_at', 'updated_at_for_sort'];
+    protected $allowedFields    = ['user_id', 'title', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'scripts', 'character_book', 'parameters', 'chat_template', 'r18', 'draft', 'comment', 'license', 'registered_at', 'updated_at', 'updated_at_for_sort'];
     protected $beforeUpdate     = ['updateSortColumn'];
 
     private function _withSafe()

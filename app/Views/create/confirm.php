@@ -101,6 +101,250 @@
 			<?php endforeach ?>
 		</div>
 	<?php endif ?>
+	<div class="border rounded accordion-item mb-3">
+		<h2 class="accordion-header" id="parameters-head">
+			<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#parameters-body" aria-expanded="false" aria-controls="parameters-body">
+				パラメーター設定など
+			</button>
+		</h2>
+		<div id="parameters-body" class="accordion-collapse collapse" aria-labelledby="parameters-head">
+			<div class="container p-3">
+				<div id="parameters" class="row">
+					<h5 class="col-12">詳細パラメータ</h5>
+					<div class="col-12 col-lg-6 col-xxl-4 text-center">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width: 50%;">ランダム度</th>
+									<td><?= esc((float) $post_data['temperature'] / 40) ?></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12 col-lg-6 col-xxl-4 text-center">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width: 50%;">トップP</th>
+									<td><?= esc((float) $post_data['top_p'] / 40) ?></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12 col-lg-6 col-xxl-4 text-center">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width: 50%;">テイルフリー</th>
+									<td><?= esc(0.75 + (float) $post_data['tfs'] / 160) ?></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12 col-lg-6 col-xxl-4 text-center">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width: 50%;">繰り返しペナルティ</th>
+									<td><?= esc((float) $post_data['freq_p'] / 80) ?></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12 col-lg-6 col-xxl-4 text-center">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width: 50%;">出力の長さ</th>
+									<td>約<?= esc(floor((float) $post_data['length'] * 2.5)) ?>文字</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12 col-lg-6 col-xxl-4 text-center">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width: 50%;">タイピカルP</th>
+									<td><?= ((int) $post_data['typical_p'] <= 99) ? esc( (float) $post_data['typical_p'] / 100) : '-' ?></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12 col-lg-6 col-xxl-4 text-center">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width: 50%;">繰り返しペナルティ（検索範囲）</th>
+									<td><?= esc((int) $post_data['freq_p_range'] * 8) ?></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12 col-lg-6 col-xxl-4 text-center">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width: 50%;">繰り返しペナルティ（傾斜）</th>
+									<td><?= esc((float) $post_data['freq_p_slope'] / 20) ?></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12 col-lg-6 col-xxl-4 text-center">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width: 50%;">AIが読み取るコンテキストの長さ</th>
+									<td>約<?= esc(floor((float) $post_data['contextwindow'] * 20)) ?>文字</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12 col-lg-6 col-xxl-4 text-center">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width: 50%;">キャラクターブックの優先度</th>
+									<td><?= ((int) $post_data['wiplacement'] >= 30) ? '本文の後ろ' : esc( (int) $post_data['wiplacement'] * 2) ?></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12 col-lg-6 col-xxl-4 text-center">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width: 50%;">脚注の優先度</th>
+									<td><?= esc($post_data['anplacement']) ?></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12 col-lg-6 col-xxl-4 text-center">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width: 50%;">キャラクターブックをスキャンする文字数</th>
+									<td><?= esc((int) $post_data['wiscanrange'] * 8) ?></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12 col-lg-6 col-xxl-4 text-center">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width: 50%;">セリフの量</th>
+									<td><?= esc((float) $post_data['dialogue_density'] / 0.2) ?>%</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12 col-lg-6 col-xxl-4 text-center">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width: 50%;">括弧書きの量</th>
+									<td><?= esc((float) $post_data['parenthesis_density'] / 0.2) ?>%</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12 col-lg-6 col-xxl-4 text-center">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width: 50%;">3点リードの量</th>
+									<td><?= esc((float) $post_data['periods_density'] / 0.2) ?>%</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12 col-lg-6 col-xxl-4 text-center">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width: 50%;">改行の量</th>
+									<td><?= esc((float) $post_data['br_density'] / 0.2) ?>%</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12 col-lg-6 col-xxl-4 text-center">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width: 50%;">読点の量</th>
+									<td><?= esc((float) $post_data['comma_density'] / 0.2) ?>%</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12 col-lg-6 col-xxl-4 text-center">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width: 50%;">ロングタームメモリ</th>
+									<td>
+										<?php $long_term_label = ['なし', '低', '中', '高', '最大'] ?>
+										<?= esc($long_term_label[$post_data['long_term_memory']] ?? $long_term_label[0]) ?>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div id="chat_setting" class="row">
+					<h5 class="col-12">GUIモード / チャット設定</h5>
+					<div class="col-12 col-lg-6 col-xxl-4 text-center">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width: 50%;">GUIモード</th>
+									<td>
+										<?= (! empty($post_data['gui_mode']) && $post_data['gui_mode'] === '1') ? 'チャットモード' : 'ノベルモード' ?>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12 col-lg-6 col-xxl-4 text-center">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width: 50%;">自動改行</th>
+									<td>
+										<?= (! empty($post_data['gui_mode']) && $post_data['gui_mode'] === '1') ? '改行しない' : '改行する' ?>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12 col-lg-6 col-xxl-4 text-center">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width: 50%;">自動括弧</th>
+									<td>
+										<?= (! empty($post_data['gui_mode']) && $post_data['gui_mode'] === '1') ? '括弧で囲む' : '括弧で囲まない' ?>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="mt-2">
+					<h5>チャットテンプレート</h5>
+					<?php if (empty($post_data['chat_template'])) : ?>
+						<div class="text-secondary">入力無し</div>
+					<?php else : ?>
+						<div class="wrap border rounded p-2"><?= nl2br(str_replace(' ', '&nbsp;', esc($post_data['chat_template']))) ?></div>
+					<?php endif ?>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<?= form_open() ?>
 	<?= csrf_field() ?>

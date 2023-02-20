@@ -108,7 +108,7 @@
 			<div class="wrap border rounded p-2" id="prompt-text"><?= nl2br(str_replace(' ', '&nbsp;', esc($prompt->prompt))) ?></div>
 		</div>
 	</div>
-	<?php if (! (empty($prompt->memory) && empty($prompt->authors_note) && empty($prompt->ng_words) && empty($prompt->char_book) && empty($prompt->script))) : ?>
+	<?php if (! (empty($prompt->memory) && empty($prompt->authors_note) && empty($prompt->ng_words) && empty($prompt->char_book) && empty($prompt->script) && empty($parameters) && empty($prompt->chat_template))) : ?>
 		<div class="mb-3 border rounded p-2">
 			<div class="accordion" id="detail-section">
 				<?php if (! empty($prompt->memory)) : ?>
@@ -228,6 +228,265 @@
 										</table>
 									</div>
 								<?php endforeach ?>
+							</div>
+						</div>
+					</div>
+				<?php endif ?>
+				<?php if (! empty($parameters)) : ?>
+					<div class="accordion-item">
+						<h2 class="accordion-header" id="parameters-head">
+							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#parameters-body" aria-expanded="false" aria-controls="parameters-body">
+								パラメーター設定など
+							</button>
+						</h2>
+						<div id="parameters-body" class="accordion-collapse collapse" aria-labelledby="parameters-head">
+							<div class="container p-3">
+								<div id="parameters" class="row">
+									<h5 class="col-12">詳細パラメータ</h5>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">ランダム度</th>
+													<td><?= esc((float) $parameters['temperature'] / 40) ?></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">トップP</th>
+													<td><?= esc((float) $parameters['top_p'] / 40) ?></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">テイルフリー</th>
+													<td><?= esc(0.75 + (float) $parameters['tfs'] / 160) ?></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">繰り返しペナルティ</th>
+													<td><?= esc((float) $parameters['freq_p'] / 80) ?></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">出力の長さ</th>
+													<td>約<?= esc(floor((float) $parameters['length'] * 2.5)) ?>文字</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">タイピカルP</th>
+													<td><?= ((int) $parameters['typical_p'] <= 99) ? esc( (float) $parameters['typical_p'] / 100) : '-' ?></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">繰り返しペナルティ（検索範囲）</th>
+													<td><?= esc((int) $parameters['freq_p_range'] * 8) ?></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">繰り返しペナルティ（傾斜）</th>
+													<td><?= esc((float) $parameters['freq_p_slope'] / 20) ?></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">AIが読み取るコンテキストの長さ</th>
+													<td>約<?= esc(floor((float) $parameters['contextwindow'] * 20)) ?>文字</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">キャラクターブックの優先度</th>
+													<td><?= ((int) $parameters['wiplacement'] >= 30) ? '本文の後ろ' : esc( (int) $parameters['wiplacement'] * 2) ?></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">脚注の優先度</th>
+													<td><?= esc($parameters['anplacement']) ?></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">キャラクターブックをスキャンする文字数</th>
+													<td><?= esc((int) $parameters['wiscanrange'] * 8) ?></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">セリフの量</th>
+													<td><?= esc((float) $parameters['dialogue_density'] / 0.2) ?>%</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">括弧書きの量</th>
+													<td><?= esc((float) $parameters['parenthesis_density'] / 0.2) ?>%</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">3点リードの量</th>
+													<td><?= esc((float) $parameters['periods_density'] / 0.2) ?>%</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">改行の量</th>
+													<td><?= esc((float) $parameters['br_density'] / 0.2) ?>%</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">読点の量</th>
+													<td><?= esc((float) $parameters['comma_density'] / 0.2) ?>%</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">ロングタームメモリ</th>
+													<td>
+														<?php $long_term_label = ['なし', '低', '中', '高', '最大'] ?>
+														<?= esc($long_term_label[$parameters['long_term_memory']] ?? $long_term_label[0]) ?>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div id="chat_setting" class="row">
+									<h5 class="col-12">GUIモード / チャット設定</h5>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">GUIモード</th>
+													<td>
+														<?= (! empty($parameters['gui_mode']) && $parameters['gui_mode'] === '1') ? 'チャットモード' : 'ノベルモード' ?>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">自動改行</th>
+													<td>
+														<?= (! empty($parameters['gui_mode']) && $parameters['gui_mode'] === '1') ? '改行しない' : '改行する' ?>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">自動括弧</th>
+													<td>
+														<?= (! empty($parameters['gui_mode']) && $parameters['gui_mode'] === '1') ? '括弧で囲む' : '括弧で囲まない' ?>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				<?php endif ?>
+				<?php if (! empty($prompt->chat_template)) : ?>
+					<div class="accordion-item">
+						<h2 class="accordion-header" id="chat-template-head">
+							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#chat-template-body" aria-expanded="false" aria-controls="chat-template-body">
+							チャットテンプレート
+							</button>
+						</h2>
+						<div id="chat-template-body" class="accordion-collapse collapse" aria-labelledby="chat-template-head">
+							<div class="accordion-body">
+								<div class="row">
+									<div class="col-12">
+										<div class="position-relative">
+											<button class="btn btn-sm copy-btn position-absolute top-0 end-0" data-target="chat-template"><img alt="copy" src="<?= base_url('img/copy.svg') ?>" width="20"></button>
+										</div>
+									</div>
+									<div class="col-11" id="chat-template-text"><?= nl2br(str_replace(' ', '&nbsp;', esc($prompt->chat_template))) ?></div>
+								</div>
 							</div>
 						</div>
 					</div>
