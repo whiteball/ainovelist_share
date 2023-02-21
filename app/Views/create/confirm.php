@@ -315,7 +315,7 @@
 								<tr>
 									<th style="width: 50%;">自動改行</th>
 									<td>
-										<?= (! empty($post_data['gui_mode']) && $post_data['gui_mode'] === '1') ? '改行しない' : '改行する' ?>
+										<?= (! empty($post_data['chat_auto_enter']) && $post_data['chat_auto_enter'] === '1') ? '改行しない' : '改行する' ?>
 									</td>
 								</tr>
 							</tbody>
@@ -327,7 +327,7 @@
 								<tr>
 									<th style="width: 50%;">自動括弧</th>
 									<td>
-										<?= (! empty($post_data['gui_mode']) && $post_data['gui_mode'] === '1') ? '括弧で囲む' : '括弧で囲まない' ?>
+										<?= (! empty($post_data['chat_auto_brackets']) && $post_data['chat_auto_brackets'] === '1') ? '括弧で囲む' : '括弧で囲まない' ?>
 									</td>
 								</tr>
 							</tbody>
