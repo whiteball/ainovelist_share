@@ -71,7 +71,7 @@ $current_url .= $query ? ($query . '&') : '';
 					<div class="card-body">
 						<h5 class="card-title" style="word-break: break-all;overflow-wrap: break-word;"><a class="link-secondary" href="<?= site_url('prompt/' . $prompt->id) ?>"><?= esc(strip_tags($prompt->title)) ?></a></h5>
 						<h6 class="card-subtitle mb-2 text-muted">投稿: <?= esc(mb_substr($prompt->registered_at, 0, 10)) ?></h6>
-						<p class="card-text" style="word-break: break-all;overflow-wrap: break-word;"><?= str_replace(' ', '&nbsp;', esc(mb_strimwidth(preg_replace('/[\r\n]/u', ' ', trim($prompt->description)), 0, 128, '...'))) ?></p>
+						<p class="card-text" style="word-break: break-all;overflow-wrap: break-word;"><?= str_replace(' ', '&nbsp;', esc(mb_strimwidth(preg_replace('#(' . site_url('prompt'). '/(\d+))#u', 'prompt/$2', preg_replace('/[\r\n]/u', ' ', trim($prompt->description))), 0, 128, '...'))) ?></p>
 						<a href="<?= site_url('prompt/' . $prompt->id) ?>" class="btn btn-secondary">詳細</a>
 						<hr>
 						<h6 class="card-subtitle">タグ:

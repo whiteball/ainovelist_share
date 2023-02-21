@@ -91,7 +91,7 @@
 		</div>
 		<div class="mb-3">
 			<h5>説明</h5>
-			<div class="wrap border rounded p-2"><?= nl2br(str_replace(' ', '&nbsp;', esc($prompt->description))) ?></div>
+			<div class="wrap border rounded p-2"><?= nl2br(preg_replace('#(' . site_url('prompt'). '/(\d+))#u', '<a href="$1">prompt/$2</a>', str_replace(' ', '&nbsp;', esc($prompt->description)))) ?></div>
 		</div>
 		<div class="mb-3">
 			<h5>転載・改変可否</h5>
