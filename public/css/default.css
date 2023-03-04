@@ -36,3 +36,12 @@
 .comment-date {
   font-size: smaller;
 }
+
+a.chat-icon {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+a.chat-icon img {
+  height: 1rem;
+}

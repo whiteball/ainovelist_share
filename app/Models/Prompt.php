@@ -5,7 +5,9 @@ namespace App\Models;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Database\Exceptions\DataException;
 use CodeIgniter\Exceptions\ModelException;
+use CodeIgniter\Files\Exceptions\FileNotFoundException;
 use CodeIgniter\Model;
+use Exception;
 
 class Prompt extends Model
 {
@@ -220,5 +222,78 @@ class Prompt extends Model
         $this->escape['updated_at_for_sort'] = false;
 
         return $data;
+    }
+
+    /**
+     * チャットモードのプロンプト一覧を取得。
+     *
+     * キャプション検索のクエリ生成部分だけを変更したもの。
+     *
+     * @param int   $limit         Limit
+     * @param int   $offset        Offset
+     * @param array $ng_prompt_ids NGプロンプトIDのリスト
+     *
+     * @return (int|array)[]
+     *
+     * @throws DatabaseException
+     * @throws Exception
+     * @throws FileNotFoundException
+     */
+    public function getChatPrompts(int $limit, int $offset, $ng_prompt_ids = [])
+    {
+        $conditions = ["(parameters LIKE '%<>chat<>%')"];
+
+        $search_text = implode(' AND ', $conditions);
+
+        // 全年齢
+        $where = ' AND `r18` = 0';
+        $binds = [];
+
+        switch ($_SESSION['list_mode'] ?? 's') {
+            case 'a':
+                // なにもしない(どっちも)
+                $where = '';
+                break;
+
+            case 'n':
+                // R-18のみ
+                $where = ' AND `r18` = 1';
+                break;
+        }
+
+        $where .= ' AND `draft` = 0';
+
+        helper('ng');
+        $user_list = clean_up_ng_users();
+        if (! empty($user_list)) {
+            $where .= ' AND `user_id` NOT IN :user_id:';
+            $binds['user_id'] = $user_list;
+        }
+
+        if (! empty($ng_prompt_ids) && is_array($ng_prompt_ids)) {
+            $where .= ' AND `id` NOT IN :prompt_id:';
+            $binds['prompt_id'] = $ng_prompt_ids;
+        }
+
+        $table_name   = $this->db->protectIdentifiers($this->table);
+        $count_result = $this->db->query("SELECT count(*) AS `count` FROM {$table_name} WHERE ({$search_text}){$where};", $binds);
+        if (! $count_result || $count_result->getNumRows() === 0) {
+            return ['count' => 0, 'result' => []];
+        }
+
+        $count = (int) $count_result->getRow()->count;
+        if ($count === 0) {
+            return ['count' => 0, 'result' => []];
+        }
+
+        $sort            = $this->_getSortCol();
+        $binds['limit']  = $limit;
+        $binds['offset'] = $offset;
+        $search_result   = $this->db->query("SELECT {$table_name}.* FROM {$table_name} WHERE ({$search_text}){$where} ORDER BY `{$sort}` desc LIMIT :limit: OFFSET :offset:;", $binds);
+        if (! $search_result || $search_result->getNumRows() === 0) {
+            return ['count' => $count, 'result' => []];
+        }
+
+        return ['count' => $count, 'result' => $search_result->getResult($this->returnType)];
     }
 }

@@ -77,6 +77,9 @@
 		<div class="mb-3">
 			<h5>タグ</h5>
 			<div class="wrap border rounded p-2">
+				<?php if (! empty($parameters['gui_mode']) && $parameters['gui_mode'] === '1') : ?>
+					<a class="btn rounded-pill btn-sm tag-link chat-icon" href="<?= site_url('search/chat') ?>"><img src="<?= base_url('img/chat_mode.svg')?>" title="「チャット／ゲーム」モード用プロンプト"></a>
+				<?php endif ?>
 				<?php if ($prompt->r18 === '1') : ?>
 					<a class="btn rounded-pill btn-danger btn-sm tag-link" href="<?= site_url('tag/R-18') ?>">R-18</a>
 				<?php endif ?>

@@ -370,4 +370,35 @@ class Home extends BaseController
             'last_page' => (int) ceil($count / self::ITEM_PER_PAGE),
         ]);
     }
+
+    public function chat()
+    {
+        $page = (int) ($this->request->getGet('p') ?? 1);
+
+        /** @var Tag */
+        $tag        = model(Tag::class);
+        $prompt_ids = $tag->findPromptIdsByNgTags();
+
+        /** @var Prompt */
+        $prompt = model(Prompt::class);
+        $result = $prompt->getChatPrompts(self::ITEM_PER_PAGE, self::ITEM_PER_PAGE * ($page - 1), $prompt_ids);
+
+        $count   = $result['count'];
+        $prompts = $result['result'];
+        $tags    = [];
+        if (empty($prompts)) {
+            $count   = 0;
+            $prompts = [];
+        } else {
+            $tags = $tag->findByPrompt($prompts);
+        }
+
+        return view('chat', [
+            'prompts'   => $prompts,
+            'tags'      => $tags,
+            'count'     => $count,
+            'page'      => $page,
+            'last_page' => (int) ceil($count / self::ITEM_PER_PAGE),
+        ]);
+    }
 }
