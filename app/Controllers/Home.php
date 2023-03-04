@@ -368,6 +368,7 @@ class Home extends BaseController
             'count'     => $count,
             'page'      => $page,
             'last_page' => (int) ceil($count / self::ITEM_PER_PAGE),
+            'page_base_url' => 'hall_of_fame',
         ]);
     }
 
@@ -399,6 +400,7 @@ class Home extends BaseController
             'count'     => $count,
             'page'      => $page,
             'last_page' => (int) ceil($count / self::ITEM_PER_PAGE),
+            'page_base_url' => 'search/chat',
         ]);
     }
 }
