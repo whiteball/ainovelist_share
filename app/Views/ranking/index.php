@@ -78,6 +78,9 @@
 							<a href="<?= site_url('prompt/' . $prompt->prompt_id) ?>" class="btn btn-secondary">詳細</a>
 							<hr>
 							<h6 class="card-subtitle">タグ:
+								<?php if (mb_strstr($prompt->parameters, '<>chat<>') !== false) : ?>
+									<a class="btn rounded-pill btn-sm tag-link chat-icon" href="<?= site_url('search/chat') ?>"><img src="<?= base_url('img/chat_mode.svg')?>" title="「チャット／ゲーム」モード用プロンプト"></a>
+								<?php endif ?>
 								<?php if ($prompt->r18 === '1') : ?>
 									<a class="btn rounded-pill btn-danger btn-sm tag-link" href="<?= site_url('tag/R-18') ?>">R-18</a>
 								<?php endif ?>
