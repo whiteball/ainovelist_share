@@ -31,6 +31,11 @@
 			<li><a href="#ai_novelist_insert_adjusted_timestamp">「[調整日時]」を任意の日時に置換</a></li>
 			<li><a href="#ai_novelist_undo_to_head">Undo長押しで履歴の最初まで戻る</a></li>
 			<li><a href="#ai_novelist_toast_on_save">保存時にお知らせがにゅっと出る</a></li>
+			<li><a href="#ai_novelist_auto_export">自動でZIPですべてエクスポート</a></li>
+			<li><a href="#ai_novelist_clipboard_import_export">本文をクリップボードにコピー／クリップボードで本文を上書き</a></li>
+			<li><a href="#ai_novelist_mark_new_for_remote">ローカルに存在しないリモートデータにNEWと表示</a></li>
+			<li><a href="#ai_novelist_force_side_menu">編集ページ下のメニューを強制サイドメニュー化</a></li>
+			<li><a href="#ai_novelist_prevent_scroll">本文欄にフォーカスが無いときは本文欄をスクロールしない</a></li>
 			<li><a href="#ai_novelist_trinart_download">TrinArtで生成画像とパラメータをまとめてダウンロード</a></li>
 			<li><a href="#ai_novelist_trinart_download_for_gallery">TrinArtのギャラリー個別ページで画像とパラメータをまとめてダウンロード</a></li>
 			<li><a href="#ai_novelist_trinart_lumina_info">TrinArtでページを開いてからのルミナ消費を表示する</a></li>
@@ -40,7 +45,7 @@
 		<div>
 			<div class="m-2">
 				<a href="https://gist.github.com/whiteball/b2bf1b71e37a07c87bb3948ea6f0f0f8" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
-				最終更新日：2023/01/19 バージョン0.20.0
+				最終更新日：2023/03/08 バージョン0.21.0
 			</div>
 			<div class="m-2">
 				<a href="https://www.nicovideo.jp/watch/sm40158166" target="_blank" rel="noopener noreferrer">導入手順と機能紹介の動画</a>を作成しました。(バージョン0.7時点の情報)
@@ -403,6 +408,135 @@
 				<li>ブラウザに<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>をインストールする。</li>
 				<li>「保存時にお知らせがにゅっと出る」の<a href="https://gist.github.com/whiteball/6250defee06ade23b8781bf96435ead3" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
 				<li>ダウンロードページの右の方にある「Raw」リンクをクリックする。(<a href="https://gist.github.com/whiteball/6250defee06ade23b8781bf96435ead3/raw/ai_novelist_toast_on_save.user.js " target="_blank" rel="noopener noreferrer">直リンク</a>)</li>
+				<li>Tampermonkeyのインストール確認ページが開くので、インストールボタンを押す。</li>
+			</ol>
+			<h5>注意</h5>
+			<ul>
+				<li>AIのべりすとのサイトの構成が変わると、ユーザースクリプトは動作しなくなる可能性があります。</li>
+				<li>Chrome/Firefoxにて動作確認していますが、万が一テキストが消えてしまうなどの現象が発生しても、作者は責任を負いかねます。</li>
+			</ul>
+		</div>
+		<hr>
+		<h4 id="ai_novelist_auto_export">自動でZIPですべてエクスポート</h4>
+		<div>
+			<div class="m-2">
+				<a href="https://gist.github.com/whiteball/f14ddfc89ed8781d5253314620b63679" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
+				最終更新日：2023/02/17 バージョン0.1
+			</div>
+			このスクリプトを導入することで次の機能を追加します。
+			<ul>
+				<li>作品リストページを表示したとき、自動で「ZIPですべてエクスポート」を実行して、ZIPファイルのダウンロードを開始する。</li>
+				<li>ダウンロードは指定日数経過した後に作品リストページを表示すると、再度行われる。</li>
+			</ul>
+			<h5>導入手順</h5>
+			<ol>
+				<li>ブラウザに<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>をインストールする。</li>
+				<li>「自動でZIPですべてエクスポート」の<a href="https://gist.github.com/whiteball/f14ddfc89ed8781d5253314620b63679" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
+				<li>ダウンロードページの右の方にある「Raw」リンクをクリックする。(<a href="https://gist.github.com/whiteball/f14ddfc89ed8781d5253314620b63679/raw/ai_novelist_auto_export.user.js " target="_blank" rel="noopener noreferrer">直リンク</a>)</li>
+				<li>Tampermonkeyのインストール確認ページが開くので、インストールボタンを押す。</li>
+			</ol>
+			<h5>注意</h5>
+			<ul>
+				<li>AIのべりすとのサイトの構成が変わると、ユーザースクリプトは動作しなくなる可能性があります。</li>
+				<li>Chrome/Firefoxにて動作確認していますが、万が一テキストが消えてしまうなどの現象が発生しても、作者は責任を負いかねます。</li>
+			</ul>
+		</div>
+		<hr>
+		<h4 id="ai_novelist_clipboard_import_export">本文をクリップボードにコピー／クリップボードで本文を上書き</h4>
+		<div>
+			<div class="m-2">
+				<a href="https://gist.github.com/whiteball/6ffbc2836cd42bd911aaae5eab127454" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
+				最終更新日：2023/03/29 バージョン0.1.1
+			</div>
+			このスクリプトを導入することで次の機能を追加します。
+			<ul>
+				<li>編集ページにある環境設定(デスクスタンドのアイコン)の「インポート／エクスポート」の下に、「本文をクリップボードにコピー」ボタン(Chrome/Firefox)と「クリップボードで本文を完全に上書き」ボタン(Chromeのみ)を追加する。</li>
+				<li>「コメント(@_や@endpointなど)を除去」にチェックを入れると、コピーするときにコメント部分は除外してコピーする。</li>
+				<li>注意：「クリップボードで本文を完全に上書き」は本文を完全に上書きして、取り消すことができない。</li>
+			</ul>
+			<h5>導入手順</h5>
+			<ol>
+				<li>ブラウザに<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>をインストールする。</li>
+				<li>「本文をクリップボードにコピー／クリップボードで本文を上書き」の<a href="https://gist.github.com/whiteball/6ffbc2836cd42bd911aaae5eab127454" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
+				<li>ダウンロードページの右の方にある「Raw」リンクをクリックする。(<a href="https://gist.github.com/whiteball/6ffbc2836cd42bd911aaae5eab127454/raw/ai_novelist_clipboard_import_export.user.js " target="_blank" rel="noopener noreferrer">直リンク</a>)</li>
+				<li>Tampermonkeyのインストール確認ページが開くので、インストールボタンを押す。</li>
+			</ol>
+			<h5>注意</h5>
+			<ul>
+				<li>AIのべりすとのサイトの構成が変わると、ユーザースクリプトは動作しなくなる可能性があります。</li>
+				<li>Chrome/Firefoxにて動作確認していますが、万が一テキストが消えてしまうなどの現象が発生しても、作者は責任を負いかねます。</li>
+			</ul>
+		</div>
+		<hr>
+		<h4 id="ai_novelist_mark_new_for_remote">ローカルに存在しないリモートデータにNEWと表示</h4>
+		<div>
+			<div class="m-2">
+				<a href="https://gist.github.com/whiteball/c37e0f01884341bec6da77b054b9df22" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
+				最終更新日：2023/03/23 バージョン0.1.0
+			</div>
+			このスクリプトを導入することで次の機能を追加します。
+			<ul>
+				<li>作品リスト(リモート)で、ローカルに存在しないIDを持った作品のタイトルの先頭に🆕を追加する。</li>
+				<li>なお、その作品をローカルに取り込んだとしても、ローカルコピー時に新しIDが割り振られるため、リモートにある同作品の🆕マークは消えない。</li>
+			</ul>
+			<h5>導入手順</h5>
+			<ol>
+				<li>ブラウザに<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>をインストールする。</li>
+				<li>「ローカルに存在しないリモートデータにNEWと表示」の<a href="https://gist.github.com/whiteball/c37e0f01884341bec6da77b054b9df22" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
+				<li>ダウンロードページの右の方にある「Raw」リンクをクリックする。(<a href="https://gist.github.com/whiteball/c37e0f01884341bec6da77b054b9df22/raw/ai_novelist_mark_new_for_remote.user.js " target="_blank" rel="noopener noreferrer">直リンク</a>)</li>
+				<li>Tampermonkeyのインストール確認ページが開くので、インストールボタンを押す。</li>
+			</ol>
+			<h5>注意</h5>
+			<ul>
+				<li>AIのべりすとのサイトの構成が変わると、ユーザースクリプトは動作しなくなる可能性があります。</li>
+				<li>Chrome/Firefoxにて動作確認していますが、万が一テキストが消えてしまうなどの現象が発生しても、作者は責任を負いかねます。</li>
+			</ul>
+		</div>
+		<hr>
+		<h4 id="ai_novelist_force_side_menu">編集ページ下のメニューを強制サイドメニュー化</h4>
+		<div>
+			<div class="m-2">
+				<a href="https://gist.github.com/whiteball/45315af64ccc21ea0bbf83a9d38b6062" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
+				最終更新日：2023/04/30 バージョン0.3.0
+			</div>
+			このスクリプトを導入することで次の機能を追加します。
+			<ul>
+				<li>通常ではリトライなどのボタンの下にある、詳細パラメータや、メモリ、キャラクターブックなどのメニューを、本文欄の横に表示されるようにする。</li>
+				<li>初期設定では、右上に表示される「≪」ボタンをクリックすることで、サイドメニューが表示される。</li>
+				<li>開閉ボタンの位置は、左上・右上・左下・右下から、サイドメニューは左・右から表示位置を選択できる。</li>
+				<li>サイドメニューの幅と、サイドメニューを本文欄に被せて表示するかどうかも設定可能。</li>
+				<li>一部のメニュー内容は、サイドメニュー化に合わせて表示形式を変更している。(例：プリセット選択はボタンからプルダウンメニューに変更。)</li>
+			</ul>
+			<h5>導入手順</h5>
+			<ol>
+				<li>ブラウザに<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>をインストールする。</li>
+				<li>「編集ページ下のメニューを強制サイドメニュー化」の<a href="https://gist.github.com/whiteball/45315af64ccc21ea0bbf83a9d38b6062" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
+				<li>ダウンロードページの右の方にある「Raw」リンクをクリックする。(<a href="https://gist.github.com/whiteball/45315af64ccc21ea0bbf83a9d38b6062/raw/ai_novelist_force_side_menu.user.js " target="_blank" rel="noopener noreferrer">直リンク</a>)</li>
+				<li>Tampermonkeyのインストール確認ページが開くので、インストールボタンを押す。</li>
+			</ol>
+			<h5>注意</h5>
+			<ul>
+				<li>AIのべりすとのサイトの構成が変わると、ユーザースクリプトは動作しなくなる可能性があります。</li>
+				<li>Chrome/Firefoxにて動作確認していますが、万が一テキストが消えてしまうなどの現象が発生しても、作者は責任を負いかねます。</li>
+			</ul>
+		</div>
+		<hr>
+		<h4 id="ai_novelist_prevent_scroll">本文欄にフォーカスが無いときは本文欄をスクロールしない</h4>
+		<div>
+			<div class="m-2">
+				<a href="https://gist.github.com/whiteball/17b85e1ed55542e94a4298ad9e1e8481" target="_blank" rel="noopener noreferrer">ダウンロードページ</a><br>
+				最終更新日：2023/05/02 バージョン0.1.2
+			</div>
+			このスクリプトを導入することで次の機能を追加します。
+			<ul>
+				<li>本文欄にフォーカスがないときはそのスクロールバーを無効にして、マウスカーソルが本文欄の上にあるときでも、ホイールスクロールでページ全体がスクロールするようにする。</li>
+				<li>注意：本文欄がフォーカスを得る・失うタイミングで入力枠の幅が変わるので、文章によっては折り返しの位置が変動する場合がある。</li>
+			</ul>
+			<h5>導入手順</h5>
+			<ol>
+				<li>ブラウザに<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener noreferrer">Tampermonkey</a>をインストールする。</li>
+				<li>「編集ページ下のメニューを強制サイドメニュー化」の<a href="https://gist.github.com/whiteball/17b85e1ed55542e94a4298ad9e1e8481" target="_blank" rel="noopener noreferrer">ダウンロードページ</a>を開く。</li>
+				<li>ダウンロードページの右の方にある「Raw」リンクをクリックする。(<a href="https://gist.github.com/whiteball/17b85e1ed55542e94a4298ad9e1e8481/raw/ai_novelist_prevent_scroll.user.js " target="_blank" rel="noopener noreferrer">直リンク</a>)</li>
 				<li>Tampermonkeyのインストール確認ページが開くので、インストールボタンを押す。</li>
 			</ol>
 			<h5>注意</h5>
