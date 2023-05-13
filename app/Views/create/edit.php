@@ -289,19 +289,9 @@
 						<label class="col-md-1 col-form-label" for="script[<?= $i ?>][type]">種別</label>
 						<div class="col-md-11">
 							<select class="form-control" id="script[<?= $i ?>][type]" name="script[<?= $i ?>][type]" disabled>
-								<option value="script_in" <?= set_select('script[' . $i . '][type]', 'script_in', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_in') : true) ?>>入力文の置換</option>
-								<option value="script_out" <?= set_select('script[' . $i . '][type]', 'script_out', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_out') : false) ?>>出力文の置換</option>
-								<option value="script_in_pin" <?= set_select('script[' . $i . '][type]', 'script_in_pin', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_in_pin') : false) ?>>【最新】入力文の確定置換</option>
-								<option value="script_in_pin_all" <?= set_select('script[' . $i . '][type]', 'script_in_pin_all', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_in_pin_all') : false) ?>>【本文全体】入力文の確定置換</option>
-								<option value="script_in_pin_user" <?= set_select('script[' . $i . '][type]', 'script_in_pin_user', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_in_pin_user') : false) ?>>送信欄の置換</option>
-								<option value="script_rephrase" <?= set_select('script[' . $i . '][type]', 'script_rephrase', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_rephrase') : false) ?>>単語の言い換え</option>
-								<option value="script_in_regex" <?= set_select('script[' . $i . '][type]', 'script_in_regex', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_in_regex') : false) ?>>入力文の置換（正規表現）</option>
-								<option value="script_out_regex" <?= set_select('script[' . $i . '][type]', 'script_out_regex', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_out_regex') : false) ?>>出力文の置換（正規表現）</option>
-								<option value="script_in_pin_regex" <?= set_select('script[' . $i . '][type]', 'script_in_pin_regex', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_in_pin_regex') : false) ?>>【最新】入力文の確定置換（正規表現）</option>
-								<option value="script_in_pin_all_regex" <?= set_select('script[' . $i . '][type]', 'script_in_pin_all_regex', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_in_pin_all_regex') : false) ?>>【本文全体】入力文の確定置換（正規表現）</option>
-								<option value="script_in_pin_user_regex" <?= set_select('script[' . $i . '][type]', 'script_in_pin_user_regex', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_in_pin_user_regex') : false) ?>>送信欄の置換（正規表現）</option>
-								<option value="script_rephrase_regex" <?= set_select('script[' . $i . '][type]', 'script_rephrase_regex', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_rephrase_regex') : false) ?>>単語の言い換え（正規表現）</option>
-								<option value="script_none" <?= set_select('script[' . $i . '][type]', 'script_none', isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === 'script_none') : false) ?>>使用しない</option>
+								<?php foreach (SCRIPT_TYPE_LIST as $script_type => $label) : ?>
+									<option value="<?= esc($script_type, 'attr') ?>" <?= set_select('script[' . $i . '][type]', $script_type, isset($post_data['script'][$i]['type']) ? ($post_data['script'][$i]['type'] === $script_type) : ($script_type === 'script_in')) ?>><?= esc($label) ?></option>
+								<?php endforeach ?>
 							</select>
 							<?= $validation->showError('script' . $i . '.type') ?>
 						</div>
@@ -614,6 +604,39 @@
 							}
 							document.addEventListener('DOMContentLoaded', toggleChatAutoBracketsButton)
 							document.getElementById('chat_auto_brackets').addEventListener('click', toggleChatAutoBracketsButton)
+						</script>
+					</div>
+					<div class="col-lg-3 col-sm-6 mt-2">
+						<select class="form-control" id="chat_enter_key" name="chat_enter_key">
+							<option value="0" <?= set_select('chat_enter_key', '0', isset($post_data['chat_enter_key']) ? ($post_data['chat_enter_key'] === '0') : false) ?>>改行/送信キー無効</option>
+							<option value="1" <?= set_select('chat_enter_key', '1', isset($post_data['chat_enter_key']) ? ($post_data['chat_enter_key'] === '1') : true) ?>>Enterで改行、Shift+Enterで送信</option>
+							<option value="2" <?= set_select('chat_enter_key', '2', isset($post_data['chat_enter_key']) ? ($post_data['chat_enter_key'] === '2') : false) ?>>Enterで改行、Ctrl+Enterで送信</option>
+							<option value="3" <?= set_select('chat_enter_key', '3', isset($post_data['chat_enter_key']) ? ($post_data['chat_enter_key'] === '3') : false) ?>>Enterで改行、Alt+Enterで送信</option>
+						</select>
+						<?= $validation->showError('chat_enter_key') ?>
+					</div>
+					<div class="col-lg-3 col-sm-6 mt-2">
+						<input class="btn-check" type="checkbox" value="1" id="chat_change_enter_key" name="chat_change_enter_key" <?= set_checkbox('chat_change_enter_key', '1', isset($post_data['chat_change_enter_key']) ? ($post_data['chat_change_enter_key'] === '1') : false) ?> autocomplete="off">
+						<label class="btn btn-success" for="chat_change_enter_key" id="chat_change_enter_key-text">
+							現在は改行/送信キーを入れ替える
+						</label>
+						<?= $validation->showError('chat_change_enter_key') ?>
+						<script>
+							const toggleChatChangeEnterKeyButton = function() {
+								const check = document.getElementById('chat_change_enter_key')
+								const text = document.getElementById('chat_change_enter_key-text')
+								if (check.checked) {
+									text.classList.remove('btn-success')
+									text.classList.add('btn-outline-secondary')
+									text.innerText = '現在は改行/送信キーを入れ替えない'
+								} else {
+									text.classList.add('btn-success')
+									text.classList.remove('btn-outline-secondary')
+									text.innerText = '現在は改行/送信キーを入れ替える'
+								}
+							}
+							document.addEventListener('DOMContentLoaded', toggleChatChangeEnterKeyButton)
+							document.getElementById('chat_change_enter_key').addEventListener('click', toggleChatChangeEnterKeyButton)
 						</script>
 					</div>
 				</div>

@@ -155,13 +155,14 @@ class Prompt
     /**
      * 詳細パラメータを配列から単一文字列に変換する。
      * 不足したパラメータはデフォルト値を使う。
-     * 
+     *
      * @param array $parameters パラメータの配列
+     *
      * @return string
      */
     public function serializeParameters($parameters)
     {
-        $parameter_str = implode('<>', [
+        return implode('<>', [
             $parameters['temperature'] ?? '31',
             $parameters['top_p'] ?? '29',
             $parameters['freq_p'] ?? '93',
@@ -185,44 +186,48 @@ class Prompt
             (! empty($parameters['gui_mode']) && $parameters['gui_mode'] === '1') ? 'chat' : 'novel',
             (! empty($parameters['chat_auto_enter']) && $parameters['chat_auto_enter'] === '1') ? 'true' : 'false',
             (! empty($parameters['chat_auto_brackets']) && $parameters['chat_auto_brackets'] === '1') ? 'true' : 'false',
+            $parameters['chat_enter_key'] ?? '1',
+            // デフォルトが有効なので、UIとの兼ね合いで値は反転して持っている
+            ((! empty($parameters['chat_change_enter_key']) && $parameters['chat_change_enter_key'] === '1')) ? 'false' : 'true',
         ]);
-
-        return $parameter_str;
     }
+
     /**
      * 詳細パラメータの文字列を配列に変換する。
      * 不足したパラメータはデフォルト値を使う。
-     * 
+     *
      * @param string $parameter_str <>で区切られたパラメータの文字列
+     *
      * @return array
      */
     public function deserializeParameters($parameter_str)
     {
         $temp = explode('<>', $parameter_str);
-        $parameters = [
-            'temperature' => empty($temp[0]) ? '31' : $temp[0],
-            'top_p' => empty($temp[1]) ? '29' : $temp[1],
-            'freq_p' => empty($temp[2]) ? '93' : $temp[2],
-            'length' => empty($temp[3]) ? '60' : $temp[3],
-            'contextwindow' => empty($temp[4]) ? '256' : $temp[4],
-            'anplacement' => empty($temp[5]) ? '3' : $temp[5],
-            'wiscanrange' => empty($temp[6]) ? '128' : $temp[6],
-            'long_term_memory' => empty($temp[9]) ? '0' : $temp[9],
-            'tfs' => empty($temp[10]) ? '40' : $temp[10],
-            'freq_p_range' => empty($temp[11]) ? '128' : $temp[11],
-            'freq_p_slope' => empty($temp[12]) ? '37' : $temp[12],
-            'wiplacement' => empty($temp[13]) ? '30' : $temp[13],
-            'dialogue_density' => empty($temp[14]) ? '20' : $temp[14],
-            'br_density' => empty($temp[15]) ? '20' : $temp[15],
-            'comma_density' => empty($temp[16]) ? '20' : $temp[16],
-            'typical_p' => empty($temp[17]) ? '100' : $temp[17],
-            'parenthesis_density' => empty($temp[18]) ? '20' : $temp[18],
-            'periods_density' => empty($temp[19]) ? '20' : $temp[19],
-            'gui_mode' => empty($temp[20]) ? '0' : ($temp[20] === 'chat' ? '1' : '0'),
-            'chat_auto_enter' => empty($temp[21]) ? '0' : ($temp[21] === 'true' ? '1' : '0'),
-            'chat_auto_brackets' => empty($temp[22]) ? '0' : ($temp[22] === 'true' ? '1' : '0'),
-        ];
 
-        return $parameters;
+        return [
+            'temperature'           => empty($temp[0]) ? '31' : $temp[0],
+            'top_p'                 => empty($temp[1]) ? '29' : $temp[1],
+            'freq_p'                => empty($temp[2]) ? '93' : $temp[2],
+            'length'                => empty($temp[3]) ? '60' : $temp[3],
+            'contextwindow'         => empty($temp[4]) ? '256' : $temp[4],
+            'anplacement'           => empty($temp[5]) ? '3' : $temp[5],
+            'wiscanrange'           => empty($temp[6]) ? '128' : $temp[6],
+            'long_term_memory'      => empty($temp[9]) ? '0' : $temp[9],
+            'tfs'                   => empty($temp[10]) ? '40' : $temp[10],
+            'freq_p_range'          => empty($temp[11]) ? '128' : $temp[11],
+            'freq_p_slope'          => empty($temp[12]) ? '37' : $temp[12],
+            'wiplacement'           => empty($temp[13]) ? '30' : $temp[13],
+            'dialogue_density'      => empty($temp[14]) ? '20' : $temp[14],
+            'br_density'            => empty($temp[15]) ? '20' : $temp[15],
+            'comma_density'         => empty($temp[16]) ? '20' : $temp[16],
+            'typical_p'             => empty($temp[17]) ? '100' : $temp[17],
+            'parenthesis_density'   => empty($temp[18]) ? '20' : $temp[18],
+            'periods_density'       => empty($temp[19]) ? '20' : $temp[19],
+            'gui_mode'              => empty($temp[20]) ? '0' : ($temp[20] === 'chat' ? '1' : '0'),
+            'chat_auto_enter'       => empty($temp[21]) ? '0' : ($temp[21] === 'true' ? '1' : '0'),
+            'chat_auto_brackets'    => empty($temp[22]) ? '0' : ($temp[22] === 'true' ? '1' : '0'),
+            'chat_enter_key'        => ! isset($temp[23]) ? '1' : $temp[23],
+            'chat_change_enter_key' => empty($temp[24]) ? '0' : ($temp[24] === 'true' ? '0' : '1'),
+        ];
     }
 }

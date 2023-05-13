@@ -77,3 +77,24 @@ defined('EXIT_USER_INPUT')     || define('EXIT_USER_INPUT', 7); // invalid user 
 defined('EXIT_DATABASE')       || define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      || define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      || define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+
+// スクリプトの種別
+defined('SCRIPT_TYPE_LIST') || define('SCRIPT_TYPE_LIST', [
+    'script_in'                          => '入力文の置換',
+    'script_out'                         => '出力文の置換',
+    'script_in_pin'                      => '【最新】入力文の確定置換',
+    'script_in_pin_all'                  => '【本文全体】入力文の確定置換',
+    'script_in_pin_user'                 => '送信欄の置換',
+    'script_in_pin_user_after'           => '【最新】送信欄挿入後の置換',
+    'script_in_pin_user_after_all'       => '【本文全体】送信欄挿入後の置換',
+    'script_rephrase'                    => '単語の言い換え',
+    'script_in_regex'                    => '入力文の置換（正規表現）',
+    'script_out_regex'                   => '出力文の置換（正規表現）',
+    'script_in_pin_regex'                => '【最新】入力文の確定置換（正規表現）',
+    'script_in_pin_all_regex'            => '【本文全体】入力文の確定置換（正規表現）',
+    'script_in_pin_user_regex'           => '送信欄の置換（正規表現）',
+    'script_in_pin_user_after_regex'     => '【最新】送信欄挿入後の置換（正規表現）',
+    'script_in_pin_user_after_all_regex' => '【本文全体】送信欄挿入後の置換（正規表現）',
+    'script_rephrase_regex'              => '単語の言い換え（正規表現）',
+    'script_none'                        => '使用しない',
+]);

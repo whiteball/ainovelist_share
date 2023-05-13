@@ -101,7 +101,7 @@ class Create extends BaseController
             'draft'        => ['label' => '公開設定', 'rules' => ['permit_empty']],
             'comment'      => ['label' => 'コメント設定', 'rules' => ['permit_empty']],
             'license'      => ['label' => 'プロンプトの改変可否', 'rules' => ['required', 'in_list[0,1,2]']],
-            'script.*.type' => ['label' => 'スクリプト', 'rules' => ['permit_empty', 'in_list[script_in,script_out,script_in_pin,script_in_pin_all,script_in_pin_user,script_rephrase,script_in_regex,script_out_regex,script_in_pin_regex,script_in_pin_all_regex,script_in_pin_user_regex,script_rephrase_regex,script_none]']],
+            'script.*.type' => ['label' => 'スクリプト', 'rules' => ['permit_empty', 'in_list[' . implode(',', array_keys(SCRIPT_TYPE_LIST)) . ']']],
             'script.*.in' => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
             'script.*.out' => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
             'char_book.*.tag' => ['label' => 'スクリプト', 'rules' => ['max_length[500]']],
@@ -127,6 +127,8 @@ class Create extends BaseController
             'gui_mode' => ['label' => 'GUIモード', 'rules' => ['permit_empty']],
             'chat_auto_enter' => ['label' => '自動改行', 'rules' => ['permit_empty']],
             'chat_auto_brackets' => ['label' => '自動括弧', 'rules' => ['permit_empty']],
+            'chat_enter_key' => ['label' => '改行/送信キー設定', 'rules' => ['required', 'integer', 'in_list[0,1,2,3]']],
+            'chat_change_enter_key' => ['label' => '改行/送信キー入替', 'rules' => ['permit_empty']],
             'chat_template' => ['label' => 'チャットテンプレート', 'rules' => ['max_length[2000]']],
         ];
 
@@ -229,7 +231,7 @@ class Create extends BaseController
                 'title', 'tags', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'script', 'char_book', 'r18', 'draft', 'comment', 'license',
                 'temperature', 'top_p', 'tfs', 'freq_p', 'length', 'typical_p', 'freq_p_range', 'freq_p_slope', 'contextwindow', 'wiplacement', 'anplacement',
                 'wiscanrange', 'dialogue_density', 'parenthesis_density', 'periods_density', 'br_density', 'comma_density', 'long_term_memory',
-                'gui_mode', 'chat_auto_enter', 'chat_auto_brackets', 'chat_template',
+                'gui_mode', 'chat_auto_enter', 'chat_auto_brackets', 'chat_enter_key', 'chat_change_enter_key', 'chat_template',
             ]);
             if (isset($post_data['char_book'])) {
                 $post_data['char_book'] = array_filter($post_data['char_book'], static fn ($char_book) => ! empty($char_book['tag']));
@@ -403,7 +405,7 @@ class Create extends BaseController
             'comment'      => ['label' => 'コメント設定', 'rules' => ['permit_empty']],
             'license'      => ['label' => 'プロンプトの改変可否', 'rules' => ['required', 'in_list[0,1,2]']],
             'updated_at_for_sort' => ['label' => '更新日順ソート設定', 'rules' => ['permit_empty']],
-            'script.*.type' => ['label' => 'スクリプト', 'rules' => ['permit_empty', 'in_list[script_in,script_out,script_in_pin,script_in_pin_all,script_in_pin_user,script_rephrase,script_in_regex,script_out_regex,script_in_pin_regex,script_in_pin_all_regex,script_in_pin_user_regex,script_rephrase_regex,script_none]']],
+            'script.*.type' => ['label' => 'スクリプト', 'rules' => ['permit_empty', 'in_list[' . implode(',', array_keys(SCRIPT_TYPE_LIST)) . ']']],
             'script.*.in' => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
             'script.*.out' => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
             'char_book.*.tag' => ['label' => 'キャラクターブック', 'rules' => ['max_length[500]']],
@@ -429,6 +431,8 @@ class Create extends BaseController
             'gui_mode' => ['label' => 'GUIモード', 'rules' => ['permit_empty']],
             'chat_auto_enter' => ['label' => '自動改行', 'rules' => ['permit_empty']],
             'chat_auto_brackets' => ['label' => '自動括弧', 'rules' => ['permit_empty']],
+            'chat_enter_key' => ['label' => '改行/送信キー設定', 'rules' => ['required', 'integer', 'in_list[0,1,2,3]']],
+            'chat_change_enter_key' => ['label' => '改行/送信キー入替', 'rules' => ['permit_empty']],
             'chat_template' => ['label' => 'チャットテンプレート', 'rules' => ['max_length[2000]']],
         ];
 
@@ -532,7 +536,7 @@ class Create extends BaseController
                 'title', 'tags', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'script', 'char_book', 'r18', 'draft', 'comment', 'license', 'updated_at_for_sort',
                 'temperature', 'top_p', 'tfs', 'freq_p', 'length', 'typical_p', 'freq_p_range', 'freq_p_slope', 'contextwindow', 'wiplacement', 'anplacement',
                 'wiscanrange', 'dialogue_density', 'parenthesis_density', 'periods_density', 'br_density', 'comma_density', 'long_term_memory',
-                'gui_mode', 'chat_auto_enter', 'chat_auto_brackets', 'chat_template',
+                'gui_mode', 'chat_auto_enter', 'chat_auto_brackets', 'chat_enter_key', 'chat_change_enter_key', 'chat_template',
             ]);
             if (isset($post_data['char_book'])) {
                 $post_data['char_book'] = array_filter($post_data['char_book'], static fn ($char_book) => ! empty($char_book['tag']));

@@ -94,7 +94,7 @@
 		</div>
 		<div class="mb-3">
 			<h5>説明</h5>
-			<div class="wrap border rounded p-2"><?= nl2br(preg_replace('#(' . site_url('prompt'). '/(\d+))#u', '<a href="$1">prompt/$2</a>', str_replace(' ', '&nbsp;', esc($prompt->description)))) ?></div>
+			<div class="wrap border rounded p-2"><?= nl2br(preg_replace('#(' . site_url('prompt') . '/(\d+))#u', '<a href="$1">prompt/$2</a>', str_replace(' ', '&nbsp;', esc($prompt->description)))) ?></div>
 		</div>
 		<div class="mb-3">
 			<h5>転載・改変可否</h5>
@@ -212,13 +212,12 @@
 						</h2>
 						<div id="script-body" class="accordion-collapse collapse" aria-labelledby="script-head">
 							<div class="accordion-body">
-								<?php $type_list = ['script_in' => '入力文の置換', 'script_out' => '出力文の置換', 'script_in_pin' => '【最新】入力文の確定置換', 'script_in_pin_all' => '【本文全体】入力文の確定置換', 'script_in_pin_user' => '送信欄の置換', 'script_rephrase' => '単語の言い換え', 'script_in_regex' => '入力文の置換（正規表現）', 'script_out_regex' => '出力文の置換（正規表現）', 'script_in_pin_regex' => '【最新】入力文の確定置換（正規表現）', 'script_in_pin_all_regex' => '【本文全体】入力文の確定置換（正規表現）', 'script_in_pin_user_regex' => '送信欄の置換（正規表現）', 'script_rephrase_regex' => '単語の言い換え（正規表現）', 'script_none' => '使用しない'] ?>
 								<?php foreach ($prompt->script as $script) : ?>
 									<div class="border rounded p-2">
 										<table class="table">
 											<tr>
 												<th scope="row" width="85">種類
-												<td><?= esc($type_list[$script['type']]) ?></td>
+												<td><?= esc(SCRIPT_TYPE_LIST[$script['type']]) ?></td>
 											</tr>
 											<tr>
 												<th scope="row">IN<button class="btn btn-sm copy-btn" data-target="script-in-<?= esc($script['id'], 'attr') ?>"><img alt="copy" src="<?= base_url('img/copy.svg') ?>" width="16"></th></th>
@@ -301,7 +300,7 @@
 											<tbody>
 												<tr>
 													<th style="width: 50%;">タイピカルP</th>
-													<td><?= ((int) $parameters['typical_p'] <= 99) ? esc( (float) $parameters['typical_p'] / 100) : '-' ?></td>
+													<td><?= ((int) $parameters['typical_p'] <= 99) ? esc((float) $parameters['typical_p'] / 100) : '-' ?></td>
 												</tr>
 											</tbody>
 										</table>
@@ -341,7 +340,7 @@
 											<tbody>
 												<tr>
 													<th style="width: 50%;">キャラクターブックの優先度</th>
-													<td><?= ((int) $parameters['wiplacement'] >= 30) ? '本文の後ろ' : esc( (int) $parameters['wiplacement'] * 2) ?></td>
+													<td><?= ((int) $parameters['wiplacement'] >= 30) ? '本文の後ろ' : esc((int) $parameters['wiplacement'] * 2) ?></td>
 												</tr>
 											</tbody>
 										</table>
@@ -463,6 +462,30 @@
 													<th style="width: 50%;">自動括弧</th>
 													<td>
 														<?= (! empty($parameters['chat_auto_brackets']) && $parameters['chat_auto_brackets'] === '1') ? '括弧で囲む' : '括弧で囲まない' ?>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">改行/送信キー設定</th>
+													<td>
+														<?php $chat_enter_key_label = ['無効', 'Enterで改行、Shift+Enterで送信', 'Enterで改行、Ctrl+Enterで送信', 'Enterで改行、Alt+Enterで送信'] ?>
+														<?= esc($chat_enter_key_label[$parameters['chat_enter_key']] ?? $chat_enter_key_label[1]) ?>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-12 col-lg-6 col-xxl-4 text-center">
+										<table class="table table-bordered">
+											<tbody>
+												<tr>
+													<th style="width: 50%;">改行/送信キー入替</th>
+													<td>
+														<?= (! empty($parameters['chat_change_enter_key']) && $parameters['chat_change_enter_key'] === '1') ? '入れ替えない' : '入れ替える' ?>
 													</td>
 												</tr>
 											</tbody>
