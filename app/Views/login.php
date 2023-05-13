@@ -35,5 +35,8 @@
 	</div>
 	<button type="submit" class="btn btn-primary">ログイン</button>
 	<?= form_close() ?>
+	<div class="mt-3">
+		<a href="<?= site_url('password_reset') ?>">パスワードを忘れたときは</a>
+	</div>
 </main>
 <?= $this->endSection() ?>

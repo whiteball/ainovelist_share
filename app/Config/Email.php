@@ -26,7 +26,7 @@ class Email extends BaseConfig
      *
      * @var string
      */
-    public $userAgent = 'CodeIgniter';
+    public $userAgent = 'ainovelist_share';
 
     /**
      * The mail sending protocol: mail, sendmail, smtp
@@ -96,7 +96,7 @@ class Email extends BaseConfig
      *
      * @var bool
      */
-    public $wordWrap = true;
+    public $wordWrap = false;
 
     /**
      * Character count to wrap at

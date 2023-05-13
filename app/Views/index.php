@@ -16,7 +16,7 @@
 <?= $this->include('_parts/header_nav') ?>
 <main class="container">
 	<?php if (! empty($recent_prompts)): ?>
-		<div style="font-size: 75%;" class="text-center my-1"><span class="text-warning">★お知らせ★</span>　説明欄の内容の意味が通らないプロンプトを非公開状態にしました。心当たりのある方は、プロンプトの説明をきちんと書いてから再公開してください。</div>
+		<div style="font-size: 75%;" class="text-center my-1"><span class="text-warning">★お知らせ★</span>　パスワードリセットに対応しました。利用する場合はマイページからメールアドレスを登録してください。</div>
 	<?php endif ?>
 	<?= $this->include('_parts/search_part') ?>
 	<hr>

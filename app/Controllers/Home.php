@@ -10,6 +10,8 @@ use App\Models\Prompt_ignored;
 use App\Models\Prompt_recent_output;
 use App\Models\Tag;
 use App\Models\User;
+use App\Models\User_password_reset;
+use CodeIgniter\Config\Services;
 
 class Home extends BaseController
 {
@@ -402,5 +404,127 @@ class Home extends BaseController
             'last_page' => (int) ceil($count / self::ITEM_PER_PAGE),
             'page_base_url' => 'search/chat',
         ]);
+    }
+
+    public function password_reset()
+    {
+        if ($this->isPost() && $this->validate([
+            'login_name' => ['label' => 'ログインID', 'rules' => ['required', 'alpha_numeric', 'max_length[255]']],
+            'mail_address' => ['label' => 'メールアドレス', 'rules' => ['required', 'max_length[255]', 'valid_email']],
+        ])) {
+            /** @var mixed */
+            $loginName = $this->request->getPost('login_name');
+            /** @var mixed */
+            $mailAddr = $this->request->getPost('mail_address');
+
+            /** @var User */
+            $user = model(User::class);
+            /** @var User_password_reset */
+            $userPassReset = model(User_password_reset::class);
+            $reset = $user->where('login_name', $loginName)
+                ->join($userPassReset->getTable(), 'user_id = id', 'LEFT')
+                ->findAll();
+
+            if (password_verify($mailAddr, $reset[0]->digest ?? '')) {
+                helper('text');
+                $code = random_string('alnum', 12);
+                $_SESSION['password_reset_number'] = password_hash($code, PASSWORD_ARGON2ID);
+                $_SESSION['password_reset_user_id'] = $reset[0]->user_id;
+                $_SESSION['password_reset_count'] = 3;
+                $this->session->markAsTempdata('password_reset_number', 30 * 60);
+                $this->session->markAsTempdata('password_reset_user_id', 30 * 60);
+                $this->session->markAsTempdata('password_reset_count', 30 * 60);
+
+                $url = base_url();
+                $emailConfig = config('Email');
+                $email = Services::email($emailConfig);
+                $email->setTo($mailAddr);
+                $email->setSubject('[AIのべりすと プロンプト共有] パスワードリセット確認');
+                $email->setMessage(<<<"EOT"
+                {$reset[0]->screen_name} 様
+    
+                AIのべりすと プロンプト共有です。
+                パスワードリセットの確認です。
+                パスワードをリセットする場合は、下記の12桁の英数字コードをサイト上で入力してください。
+                コードは30分間有効です。
+
+                {$code}
+
+                もしこのメールに心当たりがない場合は、無視してください。
+                ログインパスワードは十分な長さのもの使うことをおすすめします。
+
+                ----
+                AIのべりすと プロンプト共有
+                {$url}
+                EOT);
+                $email->send();
+            } else {
+                // IDとメールの組が間違っているのでダミーデータを設定する
+                $_SESSION['password_reset_number'] = password_hash("!!!!invalid!!!!\x01", PASSWORD_ARGON2ID);
+                $_SESSION['password_reset_user_id'] = $loginName;
+                $_SESSION['password_reset_count'] = 3;
+                $this->session->markAsTempdata('password_reset_number', 30 * 60);
+                $this->session->markAsTempdata('password_reset_user_id', 30 * 60);
+                $this->session->markAsTempdata('password_reset_count', 30 * 60);
+            }
+
+            // ログインID/パスワードの組が間違っていても検証ページに飛ばす
+            return redirect('password_reset_verify');
+        }
+
+        return view('password_reset/index', ['validation' => service('validation')]);
+    }
+
+    public function password_reset_verify()
+    {
+        if (! isset($_SESSION['password_reset_number']) || ! isset($_SESSION['password_reset_user_id']) || ! isset($_SESSION['password_reset_count'])) {
+            return redirect('password_reset');
+        }
+
+        $errorMessage = '';
+        if ($this->isPost() && $this->validate([
+            'code'                 => ['label' => 'コード', 'rules' => ['required', 'alpha_numeric', 'max_length[64]']],
+            'new_password'         => ['label' => '新しいパスワード', 'rules' => ['required', 'min_length[12]']],
+            'new_password_confirm' => ['label' => '新しいパスワード(再入力)', 'rules' => ['required_with[new_password]', 'matches[new_password]']],
+        ])) {
+            $_SESSION['password_reset_count']--;
+
+            /** @var mixed */
+            $code = $this->request->getPost('code');
+            /** @var mixed */
+            $new_password = $this->request->getPost('new_password');
+            /** @var User */
+            $user = model(User::class);
+
+            $userData = $user->find($_SESSION['password_reset_user_id'] ?? -1);
+            if (password_verify($code, $_SESSION['password_reset_number'] ?? '') && $userData) {
+                $userData->password = password_hash($new_password, PASSWORD_DEFAULT);
+                $user->save($userData);
+                $this->action_log->write($userData->id, 'user change password by reset form');
+                
+                $this->session->unmarkTempdata('password_reset_number');
+                $this->session->unmarkTempdata('password_reset_user_id');
+                $this->session->unmarkTempdata('password_reset_count');
+                unset($_SESSION['password_reset_number']);
+                unset($_SESSION['password_reset_user_id']);
+                unset($_SESSION['password_reset_count']);
+                return view('password_reset/complete');
+            }
+
+            $errorMessage = 'コードが一致しません。';
+        }
+
+        if ($_SESSION['password_reset_count'] <= 0) {
+            // 規定回数以上間違えたので最初から
+            $this->session->unmarkTempdata('password_reset_number');
+            $this->session->unmarkTempdata('password_reset_user_id');
+            $this->session->unmarkTempdata('password_reset_count');
+            unset($_SESSION['password_reset_number']);
+            unset($_SESSION['password_reset_user_id']);
+            unset($_SESSION['password_reset_count']);
+            return redirect('password_reset');
+        }
+
+        return view('password_reset/verify', ['validation' => service('validation'), 'error_message' => $errorMessage]);
     }
 }

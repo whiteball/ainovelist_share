@@ -21,4 +21,6 @@ database.default.DBDriver = MySQLi
 
 app.sessionDriver = "CodeIgniter\Session\Handlers\DatabaseHandler"
 app.sessionSavePath = "ci_sessions"
+
+email.fromEmail = {適当なメールアドレス}
 ~~~

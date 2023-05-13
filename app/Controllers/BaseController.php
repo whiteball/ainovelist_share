@@ -118,4 +118,10 @@ class BaseController extends Controller
     {
         return ! $this->_isLoggedIn();
     }
+
+    protected function _logout()
+    {
+        $this->action_log->write($_SESSION['login'], 'user logout');
+        unset($_SESSION['login']);
+    }
 }

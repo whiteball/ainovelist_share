@@ -74,6 +74,10 @@ $routes->get('/api/get_description/(:num)', 'Api::get_description/$1');
 $routes->get('/option/ng', 'Option::ng');
 $routes->get('/hall_of_fame', 'Home::hall_of_fame');
 $routes->get('/search/chat', 'Home::chat');
+$routes->get('/password_reset', 'Home::password_reset');
+$routes->post('/password_reset', 'Home::password_reset');
+$routes->get('/password_reset_verify', 'Home::password_reset_verify');
+$routes->post('/password_reset_verify', 'Home::password_reset_verify');
 
 /*
  * --------------------------------------------------------------------

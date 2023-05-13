@@ -84,7 +84,36 @@
 		<?php endif ?>
 		<button type="submit" class="btn btn-primary">変更</button>
 		<?= form_close() ?>
+		<hr>
+		<?= form_open() ?>
+		<?= csrf_field() ?>
+		<?= form_hidden('type', 'password_reset') ?>
+		<div class="mb-3 row">
+			<h4 class="h4 fw-normal">パスワードリセット設定</h4>
+			<div>
+				パスワードを忘れたとき、ここで設定したメールアドレスとログインIDを入力することで、パスワードリセットをすることができます。<br>
+				メールアドレスの登録に成功すると、そのアドレスに受付完了メールが送られます。<br>
+				メールアドレスはハッシュ化して保存するため、サイト運営者にメールアドレスが知られることはありません。
+			</div>
+			<?php if (empty($has_reset)) : ?>
+				<div>設定状態：未設定</div>
+			<?php else : ?>
+				<div>設定状態：<span class="text-success">設定済み</span></div>
+			<?php endif ?>
+			<label for="mail-address" class="col-sm-2 col-form-label">メールアドレス</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="mail-address" name="mail_address" value="">
+				<?= $validation->showError('mail_address') ?>
+			</div>
+		</div>
+		<?php if (! empty($mail_address) && ! empty($from_address)) : ?>
+			<div class="alert alert-success" role="alert">
+				「<?= esc($mail_address) ?>」をパスワードリセット用に登録して、「<?= esc($from_address) ?>」から受付完了メールを送信しました。<br>
+				もしメールが届かない場合は、再度パスワードリセット設定を行ってください。
+			</div>
+		<?php endif ?>
+		<button type="submit" class="btn btn-primary">設定</button>
+		<?= form_close() ?>
 	</div>
-
 </main>
 <?= $this->endSection() ?>
