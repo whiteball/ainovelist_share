@@ -70,8 +70,8 @@ class Mypage extends BaseController
             }
 
             if ($this->request->getPost('type') === 'password_reset' && $this->validate([
-                'mail_address' => ['label' => '送信先メールアドレス', 'rules' => ['required', 'max_length[255]', 'valid_email']],
-            ])) {
+                'mail_address' => ['label' => '送信先メールアドレス', 'rules' => ['required', 'max_length[255]', 'valid_email', 'regex_match[/@(?!gmail.com).+$/]']],
+            ], ['mail_address' => ['regex_match' => '申し訳ありませんが、Gmailは登録できません。']])) {
                 /** @var mixed */
                 $mailAddr = $this->request->getPost('mail_address');
                 $userPassReset->save([
