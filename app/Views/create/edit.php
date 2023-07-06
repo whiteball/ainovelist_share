@@ -492,6 +492,14 @@
 						</div>
 						<?= $validation->showError('long_term_memory') ?>
 					</div>
+					<div class="col-12 col-lg-6 col-xxl-4">
+						<label for="top_a" class="form-label">トップA</label>
+						<div class="row">
+							<div class="col-10 col-lg-9"><input type="range" class="form-range" id="top_a" name="top_a" min="0" max="20" value="<?= set_value('top_a', $post_data['top_a'] ?? '0') ?>"></div>
+							<div class="col-2 col-lg-3 text-center"><label id="top_a-label"></label></div>
+						</div>
+						<?= $validation->showError('top_a') ?>
+					</div>
 					<script>
 						const changeRangeLabel = function () {
 							const long_term_label = [
@@ -516,6 +524,7 @@
 								'br_density': val => Number(val) / 0.2 + '%',
 								'comma_density': val => Number(val) / 0.2 + '%',
 								'long_term_memory': val => long_term_label[val] ? long_term_label[val] : long_term_label[0],
+								'top_a': val => Number(val) > 0 ? Number(val) / 50 : '-',
 							}
 							for (const input of document.querySelectorAll('#parameters input')) {
 								document.getElementById(input.id + '-label').innerText = funcList[input.id](input.value)

@@ -124,6 +124,7 @@ class Create extends BaseController
             'br_density' => ['label' => '改行の量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
             'comma_density' => ['label' => '読点の量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[26]']],
             'long_term_memory' => ['label' => 'ロングタームメモリ', 'rules' => ['required', 'in_list[NaN,0,1,2,3,4,5,6,7,8]']],
+            'top_a' => ['label' => 'トップA', 'rules' => ['required', 'integer', 'greater_than_equal_to[0]', 'less_than_equal_to[20]']],
             'gui_mode' => ['label' => 'GUIモード', 'rules' => ['permit_empty']],
             'chat_auto_enter' => ['label' => '自動改行', 'rules' => ['permit_empty']],
             'chat_auto_brackets' => ['label' => '自動括弧', 'rules' => ['permit_empty']],
@@ -230,7 +231,7 @@ class Create extends BaseController
             $post_data = $this->request->getPost([
                 'title', 'tags', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'script', 'char_book', 'r18', 'draft', 'comment', 'license',
                 'temperature', 'top_p', 'tfs', 'freq_p', 'length', 'typical_p', 'freq_p_range', 'freq_p_slope', 'contextwindow', 'wiplacement', 'anplacement',
-                'wiscanrange', 'dialogue_density', 'parenthesis_density', 'periods_density', 'br_density', 'comma_density', 'long_term_memory',
+                'wiscanrange', 'dialogue_density', 'parenthesis_density', 'periods_density', 'br_density', 'comma_density', 'long_term_memory', 'top_a',
                 'gui_mode', 'chat_auto_enter', 'chat_auto_brackets', 'chat_enter_key', 'chat_change_enter_key', 'chat_template',
             ]);
             if (isset($post_data['char_book'])) {
@@ -428,6 +429,7 @@ class Create extends BaseController
             'br_density' => ['label' => '改行の量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
             'comma_density' => ['label' => '読点の量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[26]']],
             'long_term_memory' => ['label' => 'ロングタームメモリ', 'rules' => ['required', 'in_list[NaN,0,1,2,3,4,5,6,7,8]']],
+            'top_a' => ['label' => 'トップA', 'rules' => ['required', 'integer', 'greater_than_equal_to[0]', 'less_than_equal_to[20]']],
             'gui_mode' => ['label' => 'GUIモード', 'rules' => ['permit_empty']],
             'chat_auto_enter' => ['label' => '自動改行', 'rules' => ['permit_empty']],
             'chat_auto_brackets' => ['label' => '自動括弧', 'rules' => ['permit_empty']],
@@ -535,7 +537,7 @@ class Create extends BaseController
             $post_data = $this->request->getPost([
                 'title', 'tags', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'script', 'char_book', 'r18', 'draft', 'comment', 'license', 'updated_at_for_sort',
                 'temperature', 'top_p', 'tfs', 'freq_p', 'length', 'typical_p', 'freq_p_range', 'freq_p_slope', 'contextwindow', 'wiplacement', 'anplacement',
-                'wiscanrange', 'dialogue_density', 'parenthesis_density', 'periods_density', 'br_density', 'comma_density', 'long_term_memory',
+                'wiscanrange', 'dialogue_density', 'parenthesis_density', 'periods_density', 'br_density', 'comma_density', 'long_term_memory', 'top_a',
                 'gui_mode', 'chat_auto_enter', 'chat_auto_brackets', 'chat_enter_key', 'chat_change_enter_key', 'chat_template',
             ]);
             if (isset($post_data['char_book'])) {

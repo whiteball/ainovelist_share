@@ -293,6 +293,16 @@
 							</tbody>
 						</table>
 					</div>
+					<div class="col-12 col-lg-6 col-xxl-4 text-center">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width: 50%;">トップP</th>
+									<td><?= ((int) $post_data['top_a'] > 0) ? esc((float) $post_data['top_a'] / 50) : '-' ?></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
 				<div id="chat_setting" class="row">
 					<h5 class="col-12">GUIモード / チャット設定</h5>

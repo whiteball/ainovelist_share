@@ -189,6 +189,7 @@ class Prompt
             $parameters['chat_enter_key'] ?? '1',
             // デフォルトが有効なので、UIとの兼ね合いで値は反転して持っている
             ((! empty($parameters['chat_change_enter_key']) && $parameters['chat_change_enter_key'] === '1')) ? 'false' : 'true',
+            $parameters['top_a'] ?? '0',
         ]);
     }
 
@@ -228,6 +229,7 @@ class Prompt
             'chat_auto_brackets'    => empty($temp[22]) ? '0' : ($temp[22] === 'true' ? '1' : '0'),
             'chat_enter_key'        => ! isset($temp[23]) ? '1' : $temp[23],
             'chat_change_enter_key' => empty($temp[24]) ? '0' : ($temp[24] === 'true' ? '0' : '1'),
+            'top_a'                 => empty($temp[25]) ? '0' : $temp[25],
         ];
     }
 }
