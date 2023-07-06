@@ -487,7 +487,7 @@
 					<div class="col-12 col-lg-6 col-xxl-4">
 						<label for="long_term_memory" class="form-label">ロングタームメモリ</label>
 						<div class="row">
-							<div class="col-10 col-lg-9"><input type="range" class="form-range" id="long_term_memory" name="long_term_memory" min="0" max="4" value="<?= set_value('long_term_memory', $post_data['long_term_memory'] ?? '0') ?>"></div>
+							<div class="col-10 col-lg-9"><input type="range" class="form-range" id="long_term_memory" name="long_term_memory" min="0" max="8" value="<?= set_value('long_term_memory', $post_data['long_term_memory'] ?? '0') ?>"></div>
 							<div class="col-2 col-lg-3 text-center"><label id="long_term_memory-label"></label></div>
 						</div>
 						<?= $validation->showError('long_term_memory') ?>
@@ -495,7 +495,7 @@
 					<script>
 						const changeRangeLabel = function () {
 							const long_term_label = [
-								'なし', '低', '中', '高', '最大'
+								'なし', '低', '中', '高', '最大', 'H低', 'H中', 'H高', 'H最大'
 							]
 							const funcList = {
 								'temperature': val => Number(val) / 40,

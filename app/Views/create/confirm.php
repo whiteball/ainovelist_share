@@ -286,7 +286,7 @@
 								<tr>
 									<th style="width: 50%;">ロングタームメモリ</th>
 									<td>
-										<?php $long_term_label = ['なし', '低', '中', '高', '最大'] ?>
+										<?php $long_term_label = ['なし', '低', '中', '高', '最大', 'H低', 'H中', 'H高', 'H最大'] ?>
 										<?= esc($long_term_label[$post_data['long_term_memory']] ?? $long_term_label[0]) ?>
 									</td>
 								</tr>
