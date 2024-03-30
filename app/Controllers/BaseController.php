@@ -22,7 +22,7 @@ use Psr\Log\LoggerInterface;
  *
  * For security be sure to declare any new methods as protected or private.
  */
-class BaseController extends Controller
+abstract class BaseController extends Controller
 {
     /**
      * Instance of the main Request object.
@@ -36,7 +36,7 @@ class BaseController extends Controller
      * class instantiation. These helpers will be available
      * to all other controllers that extend BaseController.
      *
-     * @var array
+     * @var list<string>
      */
     protected $helpers = ['form'];
 
@@ -58,7 +58,7 @@ class BaseController extends Controller
     protected $action_log;
 
     /**
-     * Constructor.
+     * @return void
      */
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {

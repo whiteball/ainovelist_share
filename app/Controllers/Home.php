@@ -18,7 +18,7 @@ class Home extends BaseController
     public const ITEM_PER_PAGE = 12;
     public const RECENT_ITEM   = 8;
 
-    public function index()
+    public function index(): string
     {
         $page = (int) ($this->request->getGet('p') ?? 1);
 
