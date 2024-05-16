@@ -29,10 +29,10 @@
 			<textarea id="text" class="form-control"></textarea>
 		</div>
 		<div class="form-check form-check-inline">
-			<input id="type-0" type="radio" name="type" value="0" class="form-check-input" checked><label for="type-0" class="form-check-label">とりんさま/でりだ</label>
+			<input id="type-0" type="radio" name="type" value="0" class="form-check-input"><label for="type-0" class="form-check-label">とりんさま/でりだ</label>
 		</div>
 		<div class="form-check form-check-inline mb-3">
-			<input id="type-1" type="radio" name="type" value="1" class="form-check-input"><label for="type-1" class="form-check-label">やみおとめ</label>
+			<input id="type-1" type="radio" name="type" value="1" class="form-check-input" checked><label for="type-1" class="form-check-label">やみおとめ/スーパーとりん</label>
 		</div>
 		<div>
 			<button id="submit" class="btn btn-primary" type="button">送信</button>
