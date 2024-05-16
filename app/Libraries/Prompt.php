@@ -5,6 +5,7 @@ namespace App\Libraries;
 use App\Models\Action_log;
 use App\Models\Prompt as PromptModel;
 use App\Models\Prompt_deleted;
+use App\Models\Tag;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Database\Exceptions\DataException;
 use InvalidArgumentException;
