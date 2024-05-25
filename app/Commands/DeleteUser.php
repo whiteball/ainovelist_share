@@ -5,6 +5,8 @@ namespace App\Commands;
 use App\Libraries\Prompt as PromptLib;
 use App\Models\Action_log;
 use App\Models\Prompt;
+use App\Models\User;
+use App\Models\User_deleted;
 use CodeIgniter\CLI\BaseCommand;
 
 class DeleteUser extends BaseCommand
@@ -53,7 +55,7 @@ class DeleteUser extends BaseCommand
 
         $db->transComplete();
 
-        if (!$db->transStatus()) {
+        if (! $db->transStatus()) {
             echo 'db error.';
 
             return;

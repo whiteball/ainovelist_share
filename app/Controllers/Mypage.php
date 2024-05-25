@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\User_deleted;
 use App\Models\User_password_reset;
 use CodeIgniter\Config\Services;
+use Config\Email;
 
 class Mypage extends BaseController
 {
@@ -80,7 +81,8 @@ class Mypage extends BaseController
                 ]);
                 $this->action_log->write($this->loginUserId, 'user set password reset');
 
-                $url         = base_url();
+                $url = base_url();
+                /** @var Email */
                 $emailConfig = config('Email');
                 $email       = Services::email($emailConfig);
                 $email->setTo($mailAddr);
