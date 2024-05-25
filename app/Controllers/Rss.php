@@ -61,6 +61,7 @@ class Rss extends BaseController
                 ->description(str_replace(' ', '&nbsp;', esc(mb_strimwidth(preg_replace('#(' . site_url('prompt') . '/(\d+))#u', 'prompt/$2', preg_replace('/[\r\n]/u', ' ', trim($prompt_data->description))), 0, 128, '...'))))
                 ->contentEncoded($prompt_data->description)
                 ->url(site_url('prompt/' . $prompt_data->id))
+                ->guid('prompt/' . $prompt_data->id, false)
                 // ->creator()
                 ->pubDate($timestamp)
                 ->preferCdata(true)
