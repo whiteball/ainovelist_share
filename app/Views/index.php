@@ -10,13 +10,29 @@
 <meta property="og:description" content="<?= $description ?>" />
 <meta name="twitter:description" content="<?= $description ?>">
 <meta name="description" content="<?= $description ?>" />
+<?php
+$suffix = '';
+switch ($_SESSION['list_mode'] ?? 's') {
+	case 'n':
+		$suffix = '-r18';
+		break;
+	case 'a':
+		$suffix = '-all';
+		break;
+	case 's':
+	default:
+		$suffix = '';
+		break;
+}
+?>
+<link rel="alternate" type="application/rss+xml" type="RSS" href="<?= site_url('/rss' . $suffix . '.xml') ?>"/>
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <?= $this->include('_parts/header_nav') ?>
 <main class="container">
 	<?php if (! empty($recent_prompts)): ?>
-		<div style="font-size: 75%;" class="text-center my-1"><span class="text-warning">★お知らせ★</span>　パスワードリセットに対応しました。利用する場合はマイページからメールアドレスを登録してください。</div>
+		<div style="font-size: 75%;" class="text-center my-1"><span class="text-warning">★お知らせ★</span>　RSSフィードを追加しました。上のメニューのRSSアイコンからご利用ください。現在の全年齢/R-18/すべての表示状態にあわせたRSSフィードへのリンクが表示されます。</div>
 	<?php endif ?>
 	<?= $this->include('_parts/search_part') ?>
 	<hr>

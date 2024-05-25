@@ -52,3 +52,6 @@ $routes->get('/password_reset', 'Home::password_reset');
 $routes->post('/password_reset', 'Home::password_reset');
 $routes->get('/password_reset_verify', 'Home::password_reset_verify');
 $routes->post('/password_reset_verify', 'Home::password_reset_verify');
+$routes->get('rss.xml', 'Rss::index');
+$routes->get('rss-all.xml', 'Rss::index/a');
+$routes->get('rss-r18.xml', 'Rss::index/n');

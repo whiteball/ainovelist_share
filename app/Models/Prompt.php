@@ -18,9 +18,16 @@ class Prompt extends Model
     protected $allowedFields    = ['user_id', 'title', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'scripts', 'character_book', 'parameters', 'chat_template', 'r18', 'draft', 'comment', 'license', 'registered_at', 'updated_at', 'updated_at_for_sort'];
     protected $beforeUpdate     = ['updateSortColumn'];
 
-    private function _withSafe()
+    /**
+     * r18プロンプトの有無の条件を追加する。
+     *
+     * @param string $mode 表示条件を示す1文字(s/n/a)
+     *
+     * @return void
+     */
+    private function _withSafe($mode)
     {
-        switch ($_SESSION['list_mode'] ?? 's') {
+        switch ($mode) {
             case 's':
                 // 全年齢
                 $this->where('r18', 0);
@@ -43,13 +50,25 @@ class Prompt extends Model
     }
 
     /**
+     * セッション値に見合う、r18プロンプトの有無の条件を追加する。
+     *
+     * @return void
+     */
+    private function _withSafeSession()
+    {
+        $this->_withSafe($_SESSION['list_mode'] ?? 's');
+    }
+
+    /**
      * ソートカラムを取得する。
+     *
+     * @param string $sort_mode ソート順を示す1文字(u/c)
      *
      * @return string
      */
-    private function _getSortCol()
+    private function _getSortCol($sort_mode)
     {
-        switch ($_SESSION['sort_mode'] ?? 'c') {
+        switch ($sort_mode) {
             // 投稿
             case 'u':
                 // 更新
@@ -59,6 +78,16 @@ class Prompt extends Model
             default:
                 return 'registered_at';
         }
+    }
+
+    /**
+     * セッション値に見合う、ソートカラムを取得する。
+     *
+     * @return string
+     */
+    private function _getSortColSession()
+    {
+        return $this->_getSortCol($_SESSION['sort_mode'] ?? 'c');
     }
 
     /**
@@ -89,13 +118,13 @@ class Prompt extends Model
      */
     public function findAllSafe(int $limit = 0, int $offset = 0, $ng_prompt_ids = [])
     {
-        $this->_withSafe();
+        $this->_withSafeSession();
         $this->_withoutNgUser();
         if (! empty($ng_prompt_ids) && is_array($ng_prompt_ids)) {
             $this->whereNotIn('id', $ng_prompt_ids);
         }
 
-        return $this->orderBy($this->_getSortCol(), 'desc', false)->where('draft', 0)->findAll($limit, $offset);
+        return $this->orderBy($this->_getSortColSession(), 'desc', false)->where('draft', 0)->findAll($limit, $offset);
     }
 
     /**
@@ -112,7 +141,7 @@ class Prompt extends Model
      */
     public function countAllResultsSafe(bool $reset = true, bool $test = false, $ng_prompt_ids = [])
     {
-        $this->_withSafe();
+        $this->_withSafeSession();
         $this->_withoutNgUser();
         if (! empty($ng_prompt_ids) && is_array($ng_prompt_ids)) {
             $this->whereNotIn('id', $ng_prompt_ids);
@@ -128,7 +157,7 @@ class Prompt extends Model
      * @param string $mode          検索モード。andかor
      * @param array  $ng_prompt_ids NGプロンプトIDのリスト
      *
-     * @return void|(int|array)[]
+     * @return list<array|int>|void
      *
      * @throws DatabaseException
      *
@@ -198,7 +227,7 @@ class Prompt extends Model
             return ['count' => 0, 'result' => []];
         }
 
-        $sort            = $this->_getSortCol();
+        $sort            = $this->_getSortColSession();
         $binds['limit']  = $limit;
         $binds['offset'] = $offset;
         // $search_result = $this->db->query("SELECT {$table_name}.* FROM {$table_name} WHERE MATCH (`title`, `description`) AGAINST (? IN BOOLEAN MODE){$where} ORDER BY `{$sort}` desc LIMIT ? OFFSET ?;", [$search_text, $limit, $offset]);
@@ -233,7 +262,7 @@ class Prompt extends Model
      * @param int   $offset        Offset
      * @param array $ng_prompt_ids NGプロンプトIDのリスト
      *
-     * @return (int|array)[]
+     * @return list<array|int>
      *
      * @throws DatabaseException
      * @throws Exception
@@ -286,7 +315,7 @@ class Prompt extends Model
             return ['count' => 0, 'result' => []];
         }
 
-        $sort            = $this->_getSortCol();
+        $sort            = $this->_getSortColSession();
         $binds['limit']  = $limit;
         $binds['offset'] = $offset;
         $search_result   = $this->db->query("SELECT {$table_name}.* FROM {$table_name} WHERE ({$search_text}){$where} ORDER BY `{$sort}` desc LIMIT :limit: OFFSET :offset:;", $binds);
@@ -295,5 +324,25 @@ class Prompt extends Model
         }
 
         return ['count' => $count, 'result' => $search_result->getResult($this->returnType)];
+    }
+
+    /**
+     * RSS向けの新着プロンプトを取得する。
+     *
+     * @param int    $limit 取得件数
+     * @param string $mode  R18プロンプトの表示モード
+     *
+     * @return array
+     *
+     * @throws DataException
+     */
+    public function findForRss($limit, $mode = 's')
+    {
+        $this->_withSafe($mode);
+
+        return $this
+            ->where('draft', 0)
+            ->orderBy($this->_getSortCol('u'), 'desc', false)
+            ->findAll($limit);
     }
 }

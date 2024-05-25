@@ -78,6 +78,16 @@
 		<tbody>
 			<tr>
 				<th scope="row">
+					2024/05/26
+				</th>
+				<td>
+					<ul>
+						<li>新着/更新プロンプトのRSSフィードを追加。<a href="<?= site_url('rss.xml') ?>" target="_blank">全年齢</a>・<a href="<?= site_url('rss-r18.xml') ?>" target="_blank">R-18</a>・<a href="<?= site_url('rss-all.xml') ?>" target="_blank">すべて</a>の3種類を用意。</li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row">
 					2024/05/16
 				</th>
 				<td>

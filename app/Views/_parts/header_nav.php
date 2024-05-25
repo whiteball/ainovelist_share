@@ -1,3 +1,18 @@
+<?php
+$suffix = '';
+switch ($_SESSION['list_mode'] ?? 's') {
+	case 'n':
+		$suffix = '-r18';
+		break;
+	case 'a':
+		$suffix = '-all';
+		break;
+	case 's':
+	default:
+		$suffix = '';
+		break;
+}
+?>
 <div class="container">
 	<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-md-3 mb-4 border-bottom">
 		<div class="d-flex align-items-center col-3 col-sm-2 col-md-3 mb-0 text-dark text-decoration-none" style="word-break: keep-all;">
@@ -10,6 +25,7 @@
 			<li class="d-none d-lg-inline"><a href="<?= site_url('/ranking')?>" class="nav-link px-2 link-dark">ランキング</a></li>
 			<li class="d-none d-lg-inline"><a href="<?= site_url('/script')?>" class="nav-link px-2 link-dark">ユーザースクリプト</a></li>
 			<li class="d-none d-lg-inline"><a href="<?= site_url('/tool')?>" class="nav-link px-2 link-dark">ツール</a></li>
+			<li class="d-none d-lg-inline"><a href="<?= site_url('/rss' . $suffix . '.xml')?>" target="_blank" class="nav-link px-2 link-dark"><img src="<?= base_url('img/rss.svg') ?>" style="height: 16px;" title="RSSフィード" alt="RSSフィード"></a></li>
 			<li class="nav-item dropdown d-inline d-lg-none">
 				<a class="nav-link dropdown-toggle px-2 link-dark" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 					ナビゲーション
@@ -19,6 +35,7 @@
 					<li><a href="<?= site_url('/ranking')?>" class="dropdown-item link-dark">ランキング</a></li>
 					<li><a href="<?= site_url('/script')?>" class="dropdown-item link-dark">ユーザースクリプト</a></li>
 					<li><a href="<?= site_url('/tool')?>" class="dropdown-item link-dark">ツール</a></li>
+					<li><a href="<?= site_url('/rss' . $suffix . '.xml')?>" target="_blank" class="dropdown-item link-dark"><img src="<?= base_url('img/rss.svg') ?>" style="height: 16px;" title="RSSフィード" alt="RSSフィード">&nbsp;RSSフィード</a></li>
 				</ul>
 			</li>
 		</ul>
