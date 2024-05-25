@@ -50,7 +50,7 @@ class Rss extends BaseController
         $prompts = $prompt->findForRss(self::ITEM_LIMIT, $mode);
 
         foreach ($prompts as $prompt_data) {
-            $timestamp = date_timestamp_get(date_create($prompt_data->updated_at_for_sort));
+            $timestamp = date_timestamp_get(date_create(empty($prompt_data->updated_at_for_sort) ? $prompt_data->updated_at : $prompt_data->updated_at_for_sort));
             if ($timestamp > $last_timestamp) {
                 $last_timestamp = $timestamp;
             }
