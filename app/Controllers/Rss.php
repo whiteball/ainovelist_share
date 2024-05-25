@@ -13,13 +13,30 @@ class Rss extends BaseController
 
     public function index($mode = '')
     {
+        $suffix = '';
+
+        switch ($_SESSION['list_mode'] ?? 's') {
+            case 'n':
+                $suffix = '-r18';
+                break;
+
+            case 'a':
+                $suffix = '-all';
+                break;
+
+            case 's':
+            default:
+                $suffix = '';
+                break;
+        }
+
         $feed    = new Feed();
         $channel = new Channel();
         $channel
             ->title('AIのべりすと プロンプト共有')
             ->description('AIのべりすとのプロンプトを投稿・共有するためのサイト。投稿されたプロンプトは直接AIのべりすとに読み込み可能。')
             ->url(base_url())
-            ->feedUrl(base_url('rss.xml'))
+            ->feedUrl(base_url('rss' . $suffix . '.xml'))
             ->language('ja-JP')
             // ->pubDate(strtotime('Tue, 21 Aug 2012 19:50:37 +0900'))
             // ->lastBuildDate(strtotime('Tue, 21 Aug 2012 19:50:37 +0900'))
@@ -53,6 +70,7 @@ class Rss extends BaseController
         $channel->pubDate($last_timestamp)->lastBuildDate($last_timestamp);
 
         $this->response->setContentType('application/rss+xml');
+
         return $feed->render();
     }
 }
