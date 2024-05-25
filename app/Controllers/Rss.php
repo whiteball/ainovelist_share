@@ -15,7 +15,7 @@ class Rss extends BaseController
     {
         $suffix = '';
 
-        switch ($_SESSION['list_mode'] ?? 's') {
+        switch ($mode) {
             case 'n':
                 $suffix = '-r18';
                 break;
