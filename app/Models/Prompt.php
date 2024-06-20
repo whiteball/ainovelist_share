@@ -230,8 +230,8 @@ class Prompt extends Model
         $sort            = $this->_getSortColSession();
         $binds['limit']  = $limit;
         $binds['offset'] = $offset;
-        // $search_result = $this->db->query("SELECT {$table_name}.* FROM {$table_name} WHERE MATCH (`title`, `description`) AGAINST (? IN BOOLEAN MODE){$where} ORDER BY `{$sort}` desc LIMIT ? OFFSET ?;", [$search_text, $limit, $offset]);
-        $search_result = $this->db->query("SELECT {$table_name}.* FROM {$table_name} WHERE ({$search_text}){$where} ORDER BY `{$sort}` desc LIMIT :limit: OFFSET :offset:;", $binds);
+        // $search_result = $this->db->query("SELECT {$table_name}.* FROM {$table_name} WHERE MATCH (`title`, `description`) AGAINST (? IN BOOLEAN MODE){$where} ORDER BY {$sort} desc LIMIT ? OFFSET ?;", [$search_text, $limit, $offset]);
+        $search_result = $this->db->query("SELECT {$table_name}.* FROM {$table_name} WHERE ({$search_text}){$where} ORDER BY {$sort} desc LIMIT :limit: OFFSET :offset:;", $binds);
         if (! $search_result || $search_result->getNumRows() === 0) {
             return ['count' => $count, 'result' => []];
         }
@@ -318,7 +318,7 @@ class Prompt extends Model
         $sort            = $this->_getSortColSession();
         $binds['limit']  = $limit;
         $binds['offset'] = $offset;
-        $search_result   = $this->db->query("SELECT {$table_name}.* FROM {$table_name} WHERE ({$search_text}){$where} ORDER BY `{$sort}` desc LIMIT :limit: OFFSET :offset:;", $binds);
+        $search_result   = $this->db->query("SELECT {$table_name}.* FROM {$table_name} WHERE ({$search_text}){$where} ORDER BY {$sort} desc LIMIT :limit: OFFSET :offset:;", $binds);
         if (! $search_result || $search_result->getNumRows() === 0) {
             return ['count' => $count, 'result' => []];
         }
