@@ -24,3 +24,8 @@ app.sessionSavePath = "ci_sessions"
 
 email.fromEmail = {適当なメールアドレス}
 ~~~
+
+## 使用素材
+
+アイコン画像は下記サイトで配布されているものを利用しています。
+https://icooon-mono.com/license/
