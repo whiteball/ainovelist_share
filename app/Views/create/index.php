@@ -360,7 +360,7 @@
 						<div class="col-12 col-lg-6 col-xxl-4">
 							<label for="contextwindow" class="form-label">AIが読み取るコンテキストの長さ</label>
 							<div class="row">
-								<div class="col-10 col-lg-9"><input type="range" class="form-range" id="contextwindow" name="contextwindow" min="38" max="256" value="<?= set_value('contextwindow', $post_data['contextwindow'] ?? '256') ?>"></div>
+								<div class="col-10 col-lg-9"><input type="range" class="form-range" id="contextwindow" name="contextwindow" min="38" max="1152" value="<?= set_value('contextwindow', $post_data['contextwindow'] ?? '256') ?>"></div>
 								<div class="col-2 col-lg-3 text-center"><label id="contextwindow-label"></label></div>
 							</div>
 							<?= $validation->showError('contextwindow') ?>

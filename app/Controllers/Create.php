@@ -18,7 +18,7 @@ class Create extends BaseController
 
         if ($this->request->getPost('send') === '1' && isset($_SESSION['prompt_data'])) {
             /** @var User */
-            $user = model(User::class);
+            $user     = model(User::class);
             $userDate = $user->find($this->loginUserId);
             if (! $userDate) {
                 $this->action_log->write($this->loginUserId, 'user logout');
@@ -37,10 +37,10 @@ class Create extends BaseController
 
             $db = \Config\Database::connect();
             $db->transStart();
-            
+
             $prompt_lib = new PromptLib();
             $parameters = $prompt_lib->serializeParameters($post_data);
-            $prompt_id = $prompt->insert([
+            $prompt_id  = $prompt->insert([
                 'user_id'        => $this->loginUserId,
                 'title'          => $post_data['title'],
                 'description'    => $post_data['description'],
@@ -90,47 +90,47 @@ class Create extends BaseController
         }
 
         $validation_rule = [
-            'title'        => ['label' => 'タイトル', 'rules' => ['required', 'max_length[255]']],
-            'tags'         => ['label' => 'タグ', 'rules' => ['required', static fn ($value) => ! empty(array_filter(explode(' ', preg_replace('/\s+/u', ' ', $value)), static fn ($val) => $val !== ''))]],
-            'description'  => ['label' => '説明', 'rules' => ['required', 'min_length[20]', 'max_length[2000]']],
-            'prompt'       => ['label' => 'プロンプト', 'rules' => ['required', 'max_length[16777215]']],
-            'memory'       => ['label' => 'メモリ', 'rules' => ['max_length[2000]']],
-            'authors_note' => ['label' => '脚注', 'rules' => ['max_length[2000]']],
-            'ng_words'     => ['label' => 'NGワード', 'rules' => ['max_length[2000]']],
-            'r18'          => ['label' => 'R-18設定', 'rules' => ['permit_empty']],
-            'draft'        => ['label' => '公開設定', 'rules' => ['permit_empty']],
-            'comment'      => ['label' => 'コメント設定', 'rules' => ['permit_empty']],
-            'license'      => ['label' => 'プロンプトの改変可否', 'rules' => ['required', 'in_list[0,1,2]']],
-            'script.*.type' => ['label' => 'スクリプト', 'rules' => ['permit_empty', 'in_list[' . implode(',', array_keys(SCRIPT_TYPE_LIST)) . ']']],
-            'script.*.in' => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
-            'script.*.out' => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
-            'char_book.*.tag' => ['label' => 'スクリプト', 'rules' => ['max_length[500]']],
-            'char_book.*.content' => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
-            'temperature' => ['label' => 'ランダム度', 'rules' => ['required', 'integer', 'greater_than_equal_to[12]', 'less_than_equal_to[100]']],
-            'top_p' => ['label' => 'トップP', 'rules' => ['required', 'integer', 'greater_than_equal_to[12]', 'less_than_equal_to[40]']],
-            'tfs' => ['label' => 'テイルフリー', 'rules' => ['required', 'integer', 'greater_than_equal_to[-8]', 'less_than_equal_to[40]']],
-            'freq_p' => ['label' => '繰り返しペナルティ', 'rules' => ['required', 'integer', 'greater_than_equal_to[84]', 'less_than_equal_to[120]']],
-            'length' => ['label' => '出力の長さ', 'rules' => ['required', 'integer', 'greater_than_equal_to[20]', 'less_than_equal_to[150]']],
-            'typical_p' => ['label' => 'タイピカルP', 'rules' => ['required', 'integer', 'greater_than_equal_to[80]', 'less_than_equal_to[100]']],
-            'freq_p_range' => ['label' => '繰り返しペナルティ（検索範囲）', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[256]']],
-            'freq_p_slope' => ['label' => '繰り返しペナルティ（傾斜）', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[200]']],
-            'contextwindow' => ['label' => 'AIが読み取るコンテキストの長さ', 'rules' => ['required', 'integer', 'greater_than_equal_to[38]', 'less_than_equal_to[256]']],
-            'wiplacement' => ['label' => 'キャラクターブックの優先度', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[30]']],
-            'anplacement' => ['label' => '脚注の優先度', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
-            'wiscanrange' => ['label' => 'キャラクターブックをスキャンする文字数', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[1024]']],
-            'dialogue_density' => ['label' => 'セリフの量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
-            'parenthesis_density' => ['label' => '括弧書きの量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
-            'periods_density' => ['label' => '3点リードの量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
-            'br_density' => ['label' => '改行の量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
-            'comma_density' => ['label' => '読点の量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[26]']],
-            'long_term_memory' => ['label' => 'ロングタームメモリ', 'rules' => ['required', 'in_list[NaN,0,1,2,3,4,5,6,7,8]']],
-            'top_a' => ['label' => 'トップA', 'rules' => ['required', 'integer', 'greater_than_equal_to[0]', 'less_than_equal_to[20]']],
-            'gui_mode' => ['label' => 'GUIモード', 'rules' => ['permit_empty']],
-            'chat_auto_enter' => ['label' => '自動改行', 'rules' => ['permit_empty']],
-            'chat_auto_brackets' => ['label' => '自動括弧', 'rules' => ['permit_empty']],
-            'chat_enter_key' => ['label' => '改行/送信キー設定', 'rules' => ['required', 'integer', 'in_list[0,1,2,3]']],
+            'title'                 => ['label' => 'タイトル', 'rules' => ['required', 'max_length[255]']],
+            'tags'                  => ['label' => 'タグ', 'rules' => ['required', static fn ($value) => ! empty(array_filter(explode(' ', preg_replace('/\s+/u', ' ', $value)), static fn ($val) => $val !== ''))]],
+            'description'           => ['label' => '説明', 'rules' => ['required', 'min_length[20]', 'max_length[2000]']],
+            'prompt'                => ['label' => 'プロンプト', 'rules' => ['required', 'max_length[16777215]']],
+            'memory'                => ['label' => 'メモリ', 'rules' => ['max_length[2000]']],
+            'authors_note'          => ['label' => '脚注', 'rules' => ['max_length[2000]']],
+            'ng_words'              => ['label' => 'NGワード', 'rules' => ['max_length[2000]']],
+            'r18'                   => ['label' => 'R-18設定', 'rules' => ['permit_empty']],
+            'draft'                 => ['label' => '公開設定', 'rules' => ['permit_empty']],
+            'comment'               => ['label' => 'コメント設定', 'rules' => ['permit_empty']],
+            'license'               => ['label' => 'プロンプトの改変可否', 'rules' => ['required', 'in_list[0,1,2]']],
+            'script.*.type'         => ['label' => 'スクリプト', 'rules' => ['permit_empty', 'in_list[' . implode(',', array_keys(SCRIPT_TYPE_LIST)) . ']']],
+            'script.*.in'           => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
+            'script.*.out'          => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
+            'char_book.*.tag'       => ['label' => 'スクリプト', 'rules' => ['max_length[500]']],
+            'char_book.*.content'   => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
+            'temperature'           => ['label' => 'ランダム度', 'rules' => ['required', 'integer', 'greater_than_equal_to[12]', 'less_than_equal_to[100]']],
+            'top_p'                 => ['label' => 'トップP', 'rules' => ['required', 'integer', 'greater_than_equal_to[12]', 'less_than_equal_to[40]']],
+            'tfs'                   => ['label' => 'テイルフリー', 'rules' => ['required', 'integer', 'greater_than_equal_to[-8]', 'less_than_equal_to[40]']],
+            'freq_p'                => ['label' => '繰り返しペナルティ', 'rules' => ['required', 'integer', 'greater_than_equal_to[84]', 'less_than_equal_to[120]']],
+            'length'                => ['label' => '出力の長さ', 'rules' => ['required', 'integer', 'greater_than_equal_to[20]', 'less_than_equal_to[150]']],
+            'typical_p'             => ['label' => 'タイピカルP', 'rules' => ['required', 'integer', 'greater_than_equal_to[80]', 'less_than_equal_to[100]']],
+            'freq_p_range'          => ['label' => '繰り返しペナルティ（検索範囲）', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[256]']],
+            'freq_p_slope'          => ['label' => '繰り返しペナルティ（傾斜）', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[200]']],
+            'contextwindow'         => ['label' => 'AIが読み取るコンテキストの長さ', 'rules' => ['required', 'integer', 'greater_than_equal_to[38]', 'less_than_equal_to[1152]']],
+            'wiplacement'           => ['label' => 'キャラクターブックの優先度', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[30]']],
+            'anplacement'           => ['label' => '脚注の優先度', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
+            'wiscanrange'           => ['label' => 'キャラクターブックをスキャンする文字数', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[1024]']],
+            'dialogue_density'      => ['label' => 'セリフの量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
+            'parenthesis_density'   => ['label' => '括弧書きの量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
+            'periods_density'       => ['label' => '3点リードの量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
+            'br_density'            => ['label' => '改行の量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
+            'comma_density'         => ['label' => '読点の量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[26]']],
+            'long_term_memory'      => ['label' => 'ロングタームメモリ', 'rules' => ['required', 'in_list[NaN,0,1,2,3,4,5,6,7,8]']],
+            'top_a'                 => ['label' => 'トップA', 'rules' => ['required', 'integer', 'greater_than_equal_to[0]', 'less_than_equal_to[20]']],
+            'gui_mode'              => ['label' => 'GUIモード', 'rules' => ['permit_empty']],
+            'chat_auto_enter'       => ['label' => '自動改行', 'rules' => ['permit_empty']],
+            'chat_auto_brackets'    => ['label' => '自動括弧', 'rules' => ['permit_empty']],
+            'chat_enter_key'        => ['label' => '改行/送信キー設定', 'rules' => ['required', 'integer', 'in_list[0,1,2,3]']],
             'chat_change_enter_key' => ['label' => '改行/送信キー入替', 'rules' => ['permit_empty']],
-            'chat_template' => ['label' => 'チャットテンプレート', 'rules' => ['max_length[2000]']],
+            'chat_template'         => ['label' => 'チャットテンプレート', 'rules' => ['max_length[2000]']],
         ];
 
         $default_pane = '';
@@ -138,13 +138,13 @@ class Create extends BaseController
             $default_pane = 'file';
 
             if ($this->isPost() && $this->validate([
-                'novel_file' => ['label' => 'ファイル', 'rules' => ['uploaded[novel_file]', 'max_size[novel_file,10240]']],
-                'tags-file' => ['label' => 'タグ', 'rules' => ['required', static fn ($value) => ! empty(array_filter(explode(' ', preg_replace('/\s+/u', ' ', $value)), static fn ($val) => $val !== ''))]],
+                'novel_file'       => ['label' => 'ファイル', 'rules' => ['uploaded[novel_file]', 'max_size[novel_file,10240]']],
+                'tags-file'        => ['label' => 'タグ', 'rules' => ['required', static fn ($value) => ! empty(array_filter(explode(' ', preg_replace('/\s+/u', ' ', $value)), static fn ($val) => $val !== ''))]],
                 'description-file' => ['label' => '説明', 'rules' => ['required', 'max_length[2000]']],
-                'r18-file' => ['label' => 'R-18設定', 'rules' => ['permit_empty']],
-                'draft-file' => ['label' => '公開設定', 'rules' => ['permit_empty']],
-                'comment-file' => ['label' => 'コメント設定', 'rules' => ['permit_empty']],
-                'license-file' => ['label' => 'プロンプトの改変可否', 'rules' => ['required', 'in_list[0,1,2]']],
+                'r18-file'         => ['label' => 'R-18設定', 'rules' => ['permit_empty']],
+                'draft-file'       => ['label' => '公開設定', 'rules' => ['permit_empty']],
+                'comment-file'     => ['label' => 'コメント設定', 'rules' => ['permit_empty']],
+                'license-file'     => ['label' => 'プロンプトの改変可否', 'rules' => ['required', 'in_list[0,1,2]']],
             ])) {
                 $post_data = [];
 
@@ -211,6 +211,7 @@ class Create extends BaseController
 
                 $prompt_lib = new PromptLib();
                 $parameters = $prompt_lib->deserializeParameters($novel_items[3]);
+
                 foreach ($parameters as $key => $param) {
                     $post_data[$key] = $param;
                 }
@@ -301,22 +302,23 @@ class Create extends BaseController
 
         $prompt_lib = new PromptLib();
         $parameters = $prompt_lib->deserializeParameters($data['parameters']);
+
         foreach ($parameters as $key => $param) {
             $data[$key] = $param;
         }
 
         // ファイルインポート用のinput初期値
-        $data['tags-file']        = $data['tags'];
-        $data['description-file'] = $data['description'];
-        $data['r18-file']         = $data['r18'];
-        $data['draft-file']       = $data['draft'];
-        $data['comment-file']     = $data['comment'];
-        $data['license-file']     = $data['license'];
+        $data['tags-file']                = $data['tags'];
+        $data['description-file']         = $data['description'];
+        $data['r18-file']                 = $data['r18'];
+        $data['draft-file']               = $data['draft'];
+        $data['comment-file']             = $data['comment'];
+        $data['license-file']             = $data['license'];
         $data['updated_at_for_sort-file'] = '0';
 
         if ($this->request->getPost('send') === '1' && isset($_SESSION['prompt_edit_data'])) {
             /** @var User */
-            $user = model(User::class);
+            $user     = model(User::class);
             $userDate = $user->find($this->loginUserId);
             if (! $userDate) {
                 $this->action_log->write($this->loginUserId, 'user logout');
@@ -394,48 +396,48 @@ class Create extends BaseController
         }
 
         $validation_rule = [
-            'title'        => ['label' => 'タイトル', 'rules' => ['required', 'max_length[255]']],
-            'tags'         => ['label' => 'タグ', 'rules' => ['required', static fn ($value) => ! empty(array_filter(explode(' ', preg_replace('/\s+/u', ' ', $value)), static fn ($val) => $val !== ''))]],
-            'description'  => ['label' => '説明', 'rules' => ['required', 'min_length[20]', 'max_length[2000]']],
-            'prompt'       => ['label' => 'プロンプト', 'rules' => ['required', 'max_length[16777215]']],
-            'memory'       => ['label' => 'メモリ', 'rules' => ['max_length[2000]']],
-            'authors_note' => ['label' => '脚注', 'rules' => ['max_length[2000]']],
-            'ng_words'     => ['label' => 'NGワード', 'rules' => ['max_length[2000]']],
-            'r18'          => ['label' => 'R-18設定', 'rules' => ['permit_empty']],
-            'draft'        => ['label' => '公開設定', 'rules' => ['permit_empty']],
-            'comment'      => ['label' => 'コメント設定', 'rules' => ['permit_empty']],
-            'license'      => ['label' => 'プロンプトの改変可否', 'rules' => ['required', 'in_list[0,1,2]']],
-            'updated_at_for_sort' => ['label' => '更新日順ソート設定', 'rules' => ['permit_empty']],
-            'script.*.type' => ['label' => 'スクリプト', 'rules' => ['permit_empty', 'in_list[' . implode(',', array_keys(SCRIPT_TYPE_LIST)) . ']']],
-            'script.*.in' => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
-            'script.*.out' => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
-            'char_book.*.tag' => ['label' => 'キャラクターブック', 'rules' => ['max_length[500]']],
-            'char_book.*.content' => ['label' => 'キャラクターブック', 'rules' => ['max_length[1000]']],
-            'temperature' => ['label' => 'ランダム度', 'rules' => ['required', 'integer', 'greater_than_equal_to[12]', 'less_than_equal_to[100]']],
-            'top_p' => ['label' => 'トップP', 'rules' => ['required', 'integer', 'greater_than_equal_to[12]', 'less_than_equal_to[40]']],
-            'tfs' => ['label' => 'テイルフリー', 'rules' => ['required', 'integer', 'greater_than_equal_to[-8]', 'less_than_equal_to[40]']],
-            'freq_p' => ['label' => '繰り返しペナルティ', 'rules' => ['required', 'integer', 'greater_than_equal_to[84]', 'less_than_equal_to[120]']],
-            'length' => ['label' => '出力の長さ', 'rules' => ['required', 'integer', 'greater_than_equal_to[20]', 'less_than_equal_to[150]']],
-            'typical_p' => ['label' => 'タイピカルP', 'rules' => ['required', 'integer', 'greater_than_equal_to[80]', 'less_than_equal_to[100]']],
-            'freq_p_range' => ['label' => '繰り返しペナルティ（検索範囲）', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[256]']],
-            'freq_p_slope' => ['label' => '繰り返しペナルティ（傾斜）', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[200]']],
-            'contextwindow' => ['label' => 'AIが読み取るコンテキストの長さ', 'rules' => ['required', 'integer', 'greater_than_equal_to[38]', 'less_than_equal_to[256]']],
-            'wiplacement' => ['label' => 'キャラクターブックの優先度', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[30]']],
-            'anplacement' => ['label' => '脚注の優先度', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
-            'wiscanrange' => ['label' => 'キャラクターブックをスキャンする文字数', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[1024]']],
-            'dialogue_density' => ['label' => 'セリフの量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
-            'parenthesis_density' => ['label' => '括弧書きの量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
-            'periods_density' => ['label' => '3点リードの量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
-            'br_density' => ['label' => '改行の量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
-            'comma_density' => ['label' => '読点の量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[26]']],
-            'long_term_memory' => ['label' => 'ロングタームメモリ', 'rules' => ['required', 'in_list[NaN,0,1,2,3,4,5,6,7,8]']],
-            'top_a' => ['label' => 'トップA', 'rules' => ['required', 'integer', 'greater_than_equal_to[0]', 'less_than_equal_to[20]']],
-            'gui_mode' => ['label' => 'GUIモード', 'rules' => ['permit_empty']],
-            'chat_auto_enter' => ['label' => '自動改行', 'rules' => ['permit_empty']],
-            'chat_auto_brackets' => ['label' => '自動括弧', 'rules' => ['permit_empty']],
-            'chat_enter_key' => ['label' => '改行/送信キー設定', 'rules' => ['required', 'integer', 'in_list[0,1,2,3]']],
+            'title'                 => ['label' => 'タイトル', 'rules' => ['required', 'max_length[255]']],
+            'tags'                  => ['label' => 'タグ', 'rules' => ['required', static fn ($value) => ! empty(array_filter(explode(' ', preg_replace('/\s+/u', ' ', $value)), static fn ($val) => $val !== ''))]],
+            'description'           => ['label' => '説明', 'rules' => ['required', 'min_length[20]', 'max_length[2000]']],
+            'prompt'                => ['label' => 'プロンプト', 'rules' => ['required', 'max_length[16777215]']],
+            'memory'                => ['label' => 'メモリ', 'rules' => ['max_length[2000]']],
+            'authors_note'          => ['label' => '脚注', 'rules' => ['max_length[2000]']],
+            'ng_words'              => ['label' => 'NGワード', 'rules' => ['max_length[2000]']],
+            'r18'                   => ['label' => 'R-18設定', 'rules' => ['permit_empty']],
+            'draft'                 => ['label' => '公開設定', 'rules' => ['permit_empty']],
+            'comment'               => ['label' => 'コメント設定', 'rules' => ['permit_empty']],
+            'license'               => ['label' => 'プロンプトの改変可否', 'rules' => ['required', 'in_list[0,1,2]']],
+            'updated_at_for_sort'   => ['label' => '更新日順ソート設定', 'rules' => ['permit_empty']],
+            'script.*.type'         => ['label' => 'スクリプト', 'rules' => ['permit_empty', 'in_list[' . implode(',', array_keys(SCRIPT_TYPE_LIST)) . ']']],
+            'script.*.in'           => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
+            'script.*.out'          => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
+            'char_book.*.tag'       => ['label' => 'キャラクターブック', 'rules' => ['max_length[500]']],
+            'char_book.*.content'   => ['label' => 'キャラクターブック', 'rules' => ['max_length[1000]']],
+            'temperature'           => ['label' => 'ランダム度', 'rules' => ['required', 'integer', 'greater_than_equal_to[12]', 'less_than_equal_to[100]']],
+            'top_p'                 => ['label' => 'トップP', 'rules' => ['required', 'integer', 'greater_than_equal_to[12]', 'less_than_equal_to[40]']],
+            'tfs'                   => ['label' => 'テイルフリー', 'rules' => ['required', 'integer', 'greater_than_equal_to[-8]', 'less_than_equal_to[40]']],
+            'freq_p'                => ['label' => '繰り返しペナルティ', 'rules' => ['required', 'integer', 'greater_than_equal_to[84]', 'less_than_equal_to[120]']],
+            'length'                => ['label' => '出力の長さ', 'rules' => ['required', 'integer', 'greater_than_equal_to[20]', 'less_than_equal_to[150]']],
+            'typical_p'             => ['label' => 'タイピカルP', 'rules' => ['required', 'integer', 'greater_than_equal_to[80]', 'less_than_equal_to[100]']],
+            'freq_p_range'          => ['label' => '繰り返しペナルティ（検索範囲）', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[256]']],
+            'freq_p_slope'          => ['label' => '繰り返しペナルティ（傾斜）', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[200]']],
+            'contextwindow'         => ['label' => 'AIが読み取るコンテキストの長さ', 'rules' => ['required', 'integer', 'greater_than_equal_to[38]', 'less_than_equal_to[1152]']],
+            'wiplacement'           => ['label' => 'キャラクターブックの優先度', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[30]']],
+            'anplacement'           => ['label' => '脚注の優先度', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
+            'wiscanrange'           => ['label' => 'キャラクターブックをスキャンする文字数', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[1024]']],
+            'dialogue_density'      => ['label' => 'セリフの量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
+            'parenthesis_density'   => ['label' => '括弧書きの量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
+            'periods_density'       => ['label' => '3点リードの量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
+            'br_density'            => ['label' => '改行の量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[20]']],
+            'comma_density'         => ['label' => '読点の量', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[26]']],
+            'long_term_memory'      => ['label' => 'ロングタームメモリ', 'rules' => ['required', 'in_list[NaN,0,1,2,3,4,5,6,7,8]']],
+            'top_a'                 => ['label' => 'トップA', 'rules' => ['required', 'integer', 'greater_than_equal_to[0]', 'less_than_equal_to[20]']],
+            'gui_mode'              => ['label' => 'GUIモード', 'rules' => ['permit_empty']],
+            'chat_auto_enter'       => ['label' => '自動改行', 'rules' => ['permit_empty']],
+            'chat_auto_brackets'    => ['label' => '自動括弧', 'rules' => ['permit_empty']],
+            'chat_enter_key'        => ['label' => '改行/送信キー設定', 'rules' => ['required', 'integer', 'in_list[0,1,2,3]']],
             'chat_change_enter_key' => ['label' => '改行/送信キー入替', 'rules' => ['permit_empty']],
-            'chat_template' => ['label' => 'チャットテンプレート', 'rules' => ['max_length[2000]']],
+            'chat_template'         => ['label' => 'チャットテンプレート', 'rules' => ['max_length[2000]']],
         ];
 
         $default_pane = '';
@@ -443,22 +445,22 @@ class Create extends BaseController
             $default_pane = 'file';
 
             if ($this->isPost() && $this->validate([
-                'novel_file' => ['label' => 'ファイル', 'rules' => ['uploaded[novel_file]', 'max_size[novel_file,10240]']],
-                'tags-file' => ['label' => 'タグ', 'rules' => ['required', static fn ($value) => ! empty(array_filter(explode(' ', preg_replace('/\s+/u', ' ', $value)), static fn ($val) => $val !== ''))]],
-                'description-file' => ['label' => '説明', 'rules' => ['required', 'max_length[2000]']],
-                'r18-file' => ['label' => 'R-18設定', 'rules' => ['permit_empty']],
-                'draft-file' => ['label' => '公開設定', 'rules' => ['permit_empty']],
-                'comment-file' => ['label' => 'コメント設定', 'rules' => ['permit_empty']],
-                'license-file' => ['label' => 'プロンプトの改変可否', 'rules' => ['required', 'in_list[0,1,2]']],
+                'novel_file'               => ['label' => 'ファイル', 'rules' => ['uploaded[novel_file]', 'max_size[novel_file,10240]']],
+                'tags-file'                => ['label' => 'タグ', 'rules' => ['required', static fn ($value) => ! empty(array_filter(explode(' ', preg_replace('/\s+/u', ' ', $value)), static fn ($val) => $val !== ''))]],
+                'description-file'         => ['label' => '説明', 'rules' => ['required', 'max_length[2000]']],
+                'r18-file'                 => ['label' => 'R-18設定', 'rules' => ['permit_empty']],
+                'draft-file'               => ['label' => '公開設定', 'rules' => ['permit_empty']],
+                'comment-file'             => ['label' => 'コメント設定', 'rules' => ['permit_empty']],
+                'license-file'             => ['label' => 'プロンプトの改変可否', 'rules' => ['required', 'in_list[0,1,2]']],
                 'updated_at_for_sort-file' => ['label' => '更新日順ソート設定', 'rules' => ['permit_empty']],
             ])) {
                 $post_data = [];
 
-                $post_data['description'] = $this->request->getPost('description-file');
-                $post_data['r18']         = $this->request->getPost('r18-file');
-                $post_data['draft']       = $this->request->getPost('draft-file');
-                $post_data['comment']     = $this->request->getPost('comment-file');
-                $post_data['license']     = $this->request->getPost('license-file');
+                $post_data['description']         = $this->request->getPost('description-file');
+                $post_data['r18']                 = $this->request->getPost('r18-file');
+                $post_data['draft']               = $this->request->getPost('draft-file');
+                $post_data['comment']             = $this->request->getPost('comment-file');
+                $post_data['license']             = $this->request->getPost('license-file');
                 $post_data['updated_at_for_sort'] = $this->request->getPost('updated_at_for_sort-file');
 
                 $file         = $this->request->getFile('novel_file');
@@ -517,6 +519,7 @@ class Create extends BaseController
                 $post_data['chat_template'] = $novel_items[9] ?? '';
 
                 $parameters = $prompt_lib->deserializeParameters($novel_items[3]);
+
                 foreach ($parameters as $key => $param) {
                     $post_data[$key] = $param;
                 }
@@ -565,23 +568,23 @@ class Create extends BaseController
             } else {
                 $data_temp = $data;
                 $data      = [
-                    'tags-file'        => $data_temp['tags-file'],
-                    'description-file' => $data_temp['description-file'],
-                    'r18-file'         => $data_temp['r18-file'],
-                    'draft-file'       => $data_temp['draft-file'],
-                    'comment-file'     => $data_temp['comment-file'],
-                    'license-file'     => $data_temp['license-file'],
+                    'tags-file'                => $data_temp['tags-file'],
+                    'description-file'         => $data_temp['description-file'],
+                    'r18-file'                 => $data_temp['r18-file'],
+                    'draft-file'               => $data_temp['draft-file'],
+                    'comment-file'             => $data_temp['comment-file'],
+                    'license-file'             => $data_temp['license-file'],
                     'updated_at_for_sort-file' => $data_temp['updated_at_for_sort-file'],
                 ];
             }
         } elseif ($this->request->getGet('back') === '1') {
             if ($default_pane === 'file') {
-                $data['tags-file']        = $_SESSION['prompt_edit_data']['tags'];
-                $data['description-file'] = $_SESSION['prompt_edit_data']['description'];
-                $data['r18-file']         = $_SESSION['prompt_edit_data']['r18'];
-                $data['draft-file']       = $_SESSION['prompt_edit_data']['draft'];
-                $data['comment-file']     = $_SESSION['prompt_edit_data']['comment'];
-                $data['license-file']     = $_SESSION['prompt_edit_data']['license'];
+                $data['tags-file']                = $_SESSION['prompt_edit_data']['tags'];
+                $data['description-file']         = $_SESSION['prompt_edit_data']['description'];
+                $data['r18-file']                 = $_SESSION['prompt_edit_data']['r18'];
+                $data['draft-file']               = $_SESSION['prompt_edit_data']['draft'];
+                $data['comment-file']             = $_SESSION['prompt_edit_data']['comment'];
+                $data['license-file']             = $_SESSION['prompt_edit_data']['license'];
                 $data['updated_at_for_sort-file'] = $_SESSION['prompt_edit_data']['updated_at_for_sort'];
 
                 $data['script']    = json_decode($data['scripts'], JSON_OBJECT_AS_ARRAY);
@@ -590,12 +593,12 @@ class Create extends BaseController
                 $data_temp = $data;
                 $data      = $_SESSION['prompt_edit_data'];
 
-                $data['tags-file']        = $data_temp['tags-file'];
-                $data['description-file'] = $data_temp['description-file'];
-                $data['r18-file']         = $data_temp['r18-file'];
-                $data['draft-file']       = $data_temp['draft-file'];
-                $data['comment-file']     = $data_temp['comment-file'];
-                $data['license-file']     = $data_temp['license-file'];
+                $data['tags-file']                = $data_temp['tags-file'];
+                $data['description-file']         = $data_temp['description-file'];
+                $data['r18-file']                 = $data_temp['r18-file'];
+                $data['draft-file']               = $data_temp['draft-file'];
+                $data['comment-file']             = $data_temp['comment-file'];
+                $data['license-file']             = $data_temp['license-file'];
                 $data['updated_at_for_sort-file'] = $data_temp['updated_at_for_sort-file'];
             }
         } else {
