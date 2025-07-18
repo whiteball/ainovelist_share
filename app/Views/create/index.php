@@ -157,7 +157,7 @@
 			<div class="mb-3 border rounded p-2">
 				<div class="mb-3">
 					<label for="memory" class="form-label">メモリ</label>
-					<textarea class="form-control" id="memory" name="memory" rows="4" maxlength="2000"><?= set_value('memory', $post_data['memory'] ?? '') ?></textarea>
+					<textarea class="form-control" id="memory" name="memory" rows="4" maxlength="8000"><?= set_value('memory', $post_data['memory'] ?? '') ?></textarea>
 					<?= $validation->showError('memory') ?>
 				</div>
 				<div class="mb-3">
@@ -191,7 +191,7 @@
 						<div class="row mb-3">
 							<label class="col-md-1 col-form-label" for="char_book[<?= $i ?>][content]">説明</label>
 							<div class="col-md-11">
-								<textarea class="form-control" id="char_book[<?= $i ?>][content]" name="char_book[<?= $i ?>][content]" rows="4" maxlength="1000" disabled><?= set_value('char_book[' . $i . '][content]', $post_data['char_book'][$i]['content'] ?? '') ?></textarea>
+								<textarea class="form-control" id="char_book[<?= $i ?>][content]" name="char_book[<?= $i ?>][content]" rows="4" maxlength="3000" disabled><?= set_value('char_book[' . $i . '][content]', $post_data['char_book'][$i]['content'] ?? '') ?></textarea>
 								<?= $validation->showError('char_book.' . $i . '.content') ?>
 							</div>
 						</div>
