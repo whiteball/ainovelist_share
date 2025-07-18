@@ -78,6 +78,16 @@
 		<tbody>
 			<tr>
 				<th scope="row">
+					2025/07/19
+				</th>
+				<td>
+					<ul>
+						<li>「AIが読み取るコンテキストの長さ」の最大値を4096に変更。</li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row">
 					2025/07/18
 				</th>
 				<td>
