@@ -417,7 +417,7 @@ class Create extends BaseController
             'top_p'                 => ['label' => 'トップP', 'rules' => ['required', 'integer', 'greater_than_equal_to[12]', 'less_than_equal_to[40]']],
             'tfs'                   => ['label' => 'テイルフリー', 'rules' => ['required', 'integer', 'greater_than_equal_to[-8]', 'less_than_equal_to[40]']],
             'freq_p'                => ['label' => '繰り返しペナルティ', 'rules' => ['required', 'integer', 'greater_than_equal_to[84]', 'less_than_equal_to[120]']],
-            'length'                => ['label' => '出力の長さ', 'rules' => ['required', 'integer', 'greater_than_equal_to[20]', 'less_than_equal_to[150]']],
+            'length'                => ['label' => '出力の長さ', 'rules' => ['required', 'integer', 'greater_than_equal_to[20]', 'less_than_equal_to[200]']],
             'typical_p'             => ['label' => 'タイピカルP', 'rules' => ['required', 'integer', 'greater_than_equal_to[80]', 'less_than_equal_to[100]']],
             'freq_p_range'          => ['label' => '繰り返しペナルティ（検索範囲）', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[256]']],
             'freq_p_slope'          => ['label' => '繰り返しペナルティ（傾斜）', 'rules' => ['required', 'integer', 'greater_than_equal_to[1]', 'less_than_equal_to[200]']],
