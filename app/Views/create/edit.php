@@ -383,7 +383,7 @@
 					<div class="col-12 col-lg-6 col-xxl-4">
 						<label for="length" class="form-label">出力の長さ</label>
 						<div class="row">
-							<div class="col-10 col-lg-9"><input type="range" class="form-range" id="length" name="length" min="20" max="150" value="<?= set_value('length', $post_data['length'] ?? '60') ?>"></div>
+							<div class="col-10 col-lg-9"><input type="range" class="form-range" id="length" name="length" min="20" max="200" value="<?= set_value('length', $post_data['length'] ?? '60') ?>"></div>
 							<div class="col-2 col-lg-3 text-center"><label id="length-label"></label></div>
 						</div>
 						<?= $validation->showError('length') ?>
