@@ -310,7 +310,7 @@ class Create extends BaseController
             }
 
             // バリデーションを実行
-            if ($this->validate($validation_rule, $post_data)) {
+            if ($this->validateData($post_data, $validation_rule)) {
                 if (isset($post_data['char_book'])) {
                     $post_data['char_book'] = array_filter($post_data['char_book'], static fn ($char_book) => ! empty($char_book['tag']));
                 }
@@ -695,7 +695,7 @@ class Create extends BaseController
             }
 
             // バリデーションを実行
-            if ($this->validate($validation_rule, $post_data)) {
+            if ($this->validateData($post_data, $validation_rule)) {
                 if (isset($post_data['char_book'])) {
                     $post_data['char_book'] = array_filter($post_data['char_book'], static fn ($char_book) => ! empty($char_book['tag']));
                 }
