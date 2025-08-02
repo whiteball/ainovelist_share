@@ -216,6 +216,42 @@ class Create extends BaseController
                     $post_data[$key] = $param;
                 }
 
+                // 改行文字統一のためのヘルパーを読み込み
+                helper('text');
+
+                // max_lengthルールが適用されるテキストフィールドの改行文字を統一
+                $fields_to_normalize = ['description', 'prompt', 'memory', 'authors_note', 'ng_words', 'chat_template'];
+
+                foreach ($fields_to_normalize as $field) {
+                    if (isset($post_data[$field]) && is_string($post_data[$field])) {
+                        $post_data[$field] = normalize_newlines($post_data[$field]);
+                    }
+                }
+
+                // スクリプトフィールドの改行文字も統一
+                if (isset($post_data['script']) && is_array($post_data['script'])) {
+                    foreach ($post_data['script'] as $key => $script) {
+                        if (isset($script['in']) && is_string($script['in'])) {
+                            $post_data['script'][$key]['in'] = normalize_newlines($script['in']);
+                        }
+                        if (isset($script['out']) && is_string($script['out'])) {
+                            $post_data['script'][$key]['out'] = normalize_newlines($script['out']);
+                        }
+                    }
+                }
+
+                // キャラクターブックフィールドの改行文字も統一
+                if (isset($post_data['char_book']) && is_array($post_data['char_book'])) {
+                    foreach ($post_data['char_book'] as $key => $char_book) {
+                        if (isset($char_book['tag']) && is_string($char_book['tag'])) {
+                            $post_data['char_book'][$key]['tag'] = normalize_newlines($char_book['tag']);
+                        }
+                        if (isset($char_book['content']) && is_string($char_book['content'])) {
+                            $post_data['char_book'][$key]['content'] = normalize_newlines($char_book['content']);
+                        }
+                    }
+                }
+
                 unset($validation_rule['tags']);
                 if ($this->validator->reset()->setRules($validation_rule)->run($post_data)) {
                     $post_data['tags'] = array_filter(array_unique(array_map(static fn ($val) => mb_substr($val, 0, 128), explode(' ', preg_replace('/\s+/u', ' ', $this->request->getPost('tags-file'))))), static fn ($value) => $value !== '');
@@ -228,27 +264,68 @@ class Create extends BaseController
 
                 $file_verify_error = true;
             }
-        } elseif ($this->isPost() && $this->validate($validation_rule)) {
+        } elseif ($this->isPost()) {
+            // 改行文字統一のためのヘルパーを読み込み
+            helper('text');
+
+            // POSTデータを取得
             $post_data = $this->request->getPost([
                 'title', 'tags', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'script', 'char_book', 'r18', 'draft', 'comment', 'license',
                 'temperature', 'top_p', 'tfs', 'freq_p', 'length', 'typical_p', 'freq_p_range', 'freq_p_slope', 'contextwindow', 'wiplacement', 'anplacement',
                 'wiscanrange', 'dialogue_density', 'parenthesis_density', 'periods_density', 'br_density', 'comma_density', 'long_term_memory', 'top_a',
                 'gui_mode', 'chat_auto_enter', 'chat_auto_brackets', 'chat_enter_key', 'chat_change_enter_key', 'chat_template',
             ]);
-            if (isset($post_data['char_book'])) {
-                $post_data['char_book'] = array_filter($post_data['char_book'], static fn ($char_book) => ! empty($char_book['tag']));
+
+            // max_lengthルールが適用されるテキストフィールドの改行文字を統一
+            $fields_to_normalize = ['description', 'prompt', 'memory', 'authors_note', 'ng_words', 'chat_template'];
+
+            foreach ($fields_to_normalize as $field) {
+                if (isset($post_data[$field]) && is_string($post_data[$field])) {
+                    $post_data[$field] = normalize_newlines($post_data[$field]);
+                }
             }
 
-            if (isset($post_data['script'])) {
-                $post_data['script'] = array_filter($post_data['script'], static fn ($script) => ! empty($script['in']));
+            // スクリプトフィールドの改行文字も統一
+            if (isset($post_data['script']) && is_array($post_data['script'])) {
+                foreach ($post_data['script'] as $key => $script) {
+                    if (isset($script['in']) && is_string($script['in'])) {
+                        $post_data['script'][$key]['in'] = normalize_newlines($script['in']);
+                    }
+                    if (isset($script['out']) && is_string($script['out'])) {
+                        $post_data['script'][$key]['out'] = normalize_newlines($script['out']);
+                    }
+                }
             }
 
-            $post_data['tags'] = array_filter(array_unique(array_map(static fn ($val) => mb_substr($val, 0, 128), explode(' ', preg_replace('/\s+/u', ' ', $post_data['tags'])))), static fn ($value) => $value !== '');
+            // キャラクターブックフィールドの改行文字も統一
+            if (isset($post_data['char_book']) && is_array($post_data['char_book'])) {
+                foreach ($post_data['char_book'] as $key => $char_book) {
+                    if (isset($char_book['tag']) && is_string($char_book['tag'])) {
+                        $post_data['char_book'][$key]['tag'] = normalize_newlines($char_book['tag']);
+                    }
+                    if (isset($char_book['content']) && is_string($char_book['content'])) {
+                        $post_data['char_book'][$key]['content'] = normalize_newlines($char_book['content']);
+                    }
+                }
+            }
 
-            $_SESSION['prompt_data'] = $post_data;
-            $this->session->markAsTempdata('prompt_data', 3600);
+            // バリデーションを実行
+            if ($this->validate($validation_rule, $post_data)) {
+                if (isset($post_data['char_book'])) {
+                    $post_data['char_book'] = array_filter($post_data['char_book'], static fn ($char_book) => ! empty($char_book['tag']));
+                }
 
-            return view('create/confirm', ['post_data' => $post_data, 'return_url' => 'create']);
+                if (isset($post_data['script'])) {
+                    $post_data['script'] = array_filter($post_data['script'], static fn ($script) => ! empty($script['in']));
+                }
+
+                $post_data['tags'] = array_filter(array_unique(array_map(static fn ($val) => mb_substr($val, 0, 128), explode(' ', preg_replace('/\s+/u', ' ', $post_data['tags'])))), static fn ($value) => $value !== '');
+
+                $_SESSION['prompt_data'] = $post_data;
+                $this->session->markAsTempdata('prompt_data', 3600);
+
+                return view('create/confirm', ['post_data' => $post_data, 'return_url' => 'create']);
+            }
         }
 
         $data = null;
@@ -524,6 +601,42 @@ class Create extends BaseController
                     $post_data[$key] = $param;
                 }
 
+                // 改行文字統一のためのヘルパーを読み込み
+                helper('text');
+
+                // max_lengthルールが適用されるテキストフィールドの改行文字を統一
+                $fields_to_normalize = ['description', 'prompt', 'memory', 'authors_note', 'ng_words', 'chat_template'];
+
+                foreach ($fields_to_normalize as $field) {
+                    if (isset($post_data[$field]) && is_string($post_data[$field])) {
+                        $post_data[$field] = normalize_newlines($post_data[$field]);
+                    }
+                }
+
+                // スクリプトフィールドの改行文字も統一
+                if (isset($post_data['script']) && is_array($post_data['script'])) {
+                    foreach ($post_data['script'] as $key => $script) {
+                        if (isset($script['in']) && is_string($script['in'])) {
+                            $post_data['script'][$key]['in'] = normalize_newlines($script['in']);
+                        }
+                        if (isset($script['out']) && is_string($script['out'])) {
+                            $post_data['script'][$key]['out'] = normalize_newlines($script['out']);
+                        }
+                    }
+                }
+
+                // キャラクターブックフィールドの改行文字も統一
+                if (isset($post_data['char_book']) && is_array($post_data['char_book'])) {
+                    foreach ($post_data['char_book'] as $key => $char_book) {
+                        if (isset($char_book['tag']) && is_string($char_book['tag'])) {
+                            $post_data['char_book'][$key]['tag'] = normalize_newlines($char_book['tag']);
+                        }
+                        if (isset($char_book['content']) && is_string($char_book['content'])) {
+                            $post_data['char_book'][$key]['content'] = normalize_newlines($char_book['content']);
+                        }
+                    }
+                }
+
                 unset($validation_rule['tags']);
                 if ($this->validator->reset()->setRules($validation_rule)->run($post_data)) {
                     $post_data['tags'] = array_filter(array_unique(array_map(static fn ($val) => mb_substr($val, 0, 128), explode(' ', preg_replace('/\s+/u', ' ', $this->request->getPost('tags-file'))))), static fn ($value) => $value !== '');
@@ -536,27 +649,68 @@ class Create extends BaseController
 
                 $file_verify_error = true;
             }
-        } elseif ($this->isPost() && $this->validate($validation_rule)) {
+        } elseif ($this->isPost()) {
+            // 改行文字統一のためのヘルパーを読み込み
+            helper('text');
+
+            // POSTデータを取得
             $post_data = $this->request->getPost([
                 'title', 'tags', 'description', 'prompt', 'memory', 'authors_note', 'ng_words', 'script', 'char_book', 'r18', 'draft', 'comment', 'license', 'updated_at_for_sort',
                 'temperature', 'top_p', 'tfs', 'freq_p', 'length', 'typical_p', 'freq_p_range', 'freq_p_slope', 'contextwindow', 'wiplacement', 'anplacement',
                 'wiscanrange', 'dialogue_density', 'parenthesis_density', 'periods_density', 'br_density', 'comma_density', 'long_term_memory', 'top_a',
                 'gui_mode', 'chat_auto_enter', 'chat_auto_brackets', 'chat_enter_key', 'chat_change_enter_key', 'chat_template',
             ]);
-            if (isset($post_data['char_book'])) {
-                $post_data['char_book'] = array_filter($post_data['char_book'], static fn ($char_book) => ! empty($char_book['tag']));
+
+            // max_lengthルールが適用されるテキストフィールドの改行文字を統一
+            $fields_to_normalize = ['description', 'prompt', 'memory', 'authors_note', 'ng_words', 'chat_template'];
+
+            foreach ($fields_to_normalize as $field) {
+                if (isset($post_data[$field]) && is_string($post_data[$field])) {
+                    $post_data[$field] = normalize_newlines($post_data[$field]);
+                }
             }
 
-            if (isset($post_data['script'])) {
-                $post_data['script'] = array_filter($post_data['script'], static fn ($script) => ! empty($script['in']));
+            // スクリプトフィールドの改行文字も統一
+            if (isset($post_data['script']) && is_array($post_data['script'])) {
+                foreach ($post_data['script'] as $key => $script) {
+                    if (isset($script['in']) && is_string($script['in'])) {
+                        $post_data['script'][$key]['in'] = normalize_newlines($script['in']);
+                    }
+                    if (isset($script['out']) && is_string($script['out'])) {
+                        $post_data['script'][$key]['out'] = normalize_newlines($script['out']);
+                    }
+                }
             }
 
-            $post_data['tags'] = array_filter(array_unique(array_map(static fn ($val) => mb_substr($val, 0, 128), explode(' ', preg_replace('/\s+/u', ' ', $post_data['tags'])))), static fn ($value) => $value !== '');
+            // キャラクターブックフィールドの改行文字も統一
+            if (isset($post_data['char_book']) && is_array($post_data['char_book'])) {
+                foreach ($post_data['char_book'] as $key => $char_book) {
+                    if (isset($char_book['tag']) && is_string($char_book['tag'])) {
+                        $post_data['char_book'][$key]['tag'] = normalize_newlines($char_book['tag']);
+                    }
+                    if (isset($char_book['content']) && is_string($char_book['content'])) {
+                        $post_data['char_book'][$key]['content'] = normalize_newlines($char_book['content']);
+                    }
+                }
+            }
 
-            $_SESSION['prompt_edit_data'] = $post_data;
-            $this->session->markAsTempdata('prompt_edit_data', 3600);
+            // バリデーションを実行
+            if ($this->validate($validation_rule, $post_data)) {
+                if (isset($post_data['char_book'])) {
+                    $post_data['char_book'] = array_filter($post_data['char_book'], static fn ($char_book) => ! empty($char_book['tag']));
+                }
 
-            return view('create/confirm', ['post_data' => $post_data, 'return_url' => 'edit/' . $prompt_id]);
+                if (isset($post_data['script'])) {
+                    $post_data['script'] = array_filter($post_data['script'], static fn ($script) => ! empty($script['in']));
+                }
+
+                $post_data['tags'] = array_filter(array_unique(array_map(static fn ($val) => mb_substr($val, 0, 128), explode(' ', preg_replace('/\s+/u', ' ', $post_data['tags'])))), static fn ($value) => $value !== '');
+
+                $_SESSION['prompt_edit_data'] = $post_data;
+                $this->session->markAsTempdata('prompt_edit_data', 3600);
+
+                return view('create/confirm', ['post_data' => $post_data, 'return_url' => 'edit/' . $prompt_id]);
+            }
         }
 
         if ($this->isPost()) {
