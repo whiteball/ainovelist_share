@@ -412,7 +412,7 @@ class Create extends BaseController
             'script.*.in'           => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
             'script.*.out'          => ['label' => 'スクリプト', 'rules' => ['max_length[1000]']],
             'char_book.*.tag'       => ['label' => 'キャラクターブック', 'rules' => ['max_length[500]']],
-            'char_book.*.content'   => ['label' => 'キャラクターブック', 'rules' => ['max_length[1000]']],
+            'char_book.*.content'   => ['label' => 'キャラクターブック', 'rules' => ['max_length[3000]']],
             'temperature'           => ['label' => 'ランダム度', 'rules' => ['required', 'integer', 'greater_than_equal_to[12]', 'less_than_equal_to[100]']],
             'top_p'                 => ['label' => 'トップP', 'rules' => ['required', 'integer', 'greater_than_equal_to[12]', 'less_than_equal_to[40]']],
             'tfs'                   => ['label' => 'テイルフリー', 'rules' => ['required', 'integer', 'greater_than_equal_to[-8]', 'less_than_equal_to[40]']],
